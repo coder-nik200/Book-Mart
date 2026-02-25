@@ -7,41 +7,79 @@ const orderSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-
+    orderNumber: {
+      type: String,
+      unique: true,
+      required: true,
+    },
     items: [
       {
-        product: {
+        book: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
+          ref: "Book",
+          required: true,
         },
-        name: String,
-        price: Number,
-        quantity: Number,
-        image: String,
+        quantity: {
+          type: Number,
+          required: true,
+          min: 1,
+        },
+        price: {
+          type: Number,
+          required: true,
+        },
       },
     ],
-
-    address: {
+    shippingAddress: {
       fullName: String,
-      phone: String,
-      addressLine: String,
+      phoneNumber: String,
+      street: String,
       city: String,
       state: String,
-      pincode: String,
+      zipCode: String,
+      country: String,
     },
-
-    totalAmount: {
+    totalPrice: {
       type: Number,
       required: true,
     },
-
-    status: {
-      type: String,
-      enum: ["placed", "confirmed", "shipped", "delivered", "cancelled"],
-      default: "placed",
+    shippingCost: {
+      type: Number,
+      default: 0,
     },
+    taxAmount: {
+      type: Number,
+      default: 0,
+    },
+    discountAmount: {
+      type: Number,
+      default: 0,
+    },
+    coupon: {
+      code: String,
+      discountPercentage: Number,
+    },
+    paymentStatus: {
+      type: String,
+      enum: ["pending", "completed", "failed", "refunded"],
+      default: "pending",
+    },
+    paymentMethod: {
+      type: String,
+      enum: ["credit_card", "debit_card", "upi", "net_banking"],
+      default: "credit_card",
+    },
+    orderstatus: {
+      type: String,
+      enum: ["pending", "confirmed", "shipped", "delivered", "cancelled"],
+      default: "pending",
+    },
+    stripePaymentId: String,
+    trackingNumber: String,
+    notes: String,
   },
   { timestamps: true }
 );
 
-export default mongoose.model("Order", orderSchema);
+const Order = mongoose.model("Order", orderSchema);
+export default Order;

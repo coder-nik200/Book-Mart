@@ -7,40 +7,43 @@ const addressSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-
     fullName: {
       type: String,
       required: true,
+      trim: true,
     },
-
-    phone: {
+    phoneNumber: {
       type: String,
       required: true,
     },
-
-    addressLine: {
+    street: {
       type: String,
       required: true,
     },
-
     city: {
       type: String,
       required: true,
     },
-
     state: {
       type: String,
       required: true,
     },
-
-    pincode: {
+    zipCode: {
       type: String,
       required: true,
     },
-
+    country: {
+      type: String,
+      required: true,
+    },
     isDefault: {
       type: Boolean,
       default: false,
+    },
+    addressType: {
+      type: String,
+      enum: ["home", "office", "other"],
+      default: "home",
     },
   },
   { timestamps: true }
