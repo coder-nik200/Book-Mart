@@ -8,6 +8,7 @@ import {
   X,
   LogOut,
   LayoutDashboard,
+  BookOpenText,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
@@ -37,13 +38,16 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link
-            to="/"
-            onClick={closeMobileMenu}
-            className="text-2xl font-bold text-blue-600 hover:scale-105 transition"
-          >
-            📚 BookMart
-          </Link>
+          <div>
+            <Link
+              to="/"
+              onClick={closeMobileMenu}
+              className="flex items-center gap-2 text-2xl font-bold text-blue-600 hover:scale-105 transition-transform duration-300"
+            >
+              <BookOpenText size={28} />
+              <span>BookMart</span>
+            </Link>
+          </div>
 
           {/* Search Bar (Desktop) */}
           <form onSubmit={handleSearch} className="hidden md:flex flex-1 mx-8">
