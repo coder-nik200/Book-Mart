@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Loading from "../components/Loading";
 import { useCart } from "../context/CartContext";
 import toast from "react-hot-toast";
-// import bookAPI from "../api/bookAPI";
+import { bookAPI } from "../api/apiClient";
 
 import HeroSection from "../components/Home/HeroSection";
 import CategorySection from "../components/Home/CategorySection";
