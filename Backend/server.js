@@ -14,7 +14,7 @@ import wishlistRoutes from "./src/routes/wishlistRoutes.js";
 import orderRoutes from "./src/routes/orderRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
 import adminRoutes from "./src/routes/adminRoutes.js";
-
+import path from "path";
 dotenv.config();
 
 const app = express();
@@ -27,7 +27,8 @@ app.use(cors({
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(cookieParser());
-
+// ✅ Serve local uploads (dev only)
+app.use("/upload", express.static(path.join(process.cwd(), "upload")));
 // ✅ Connect DB
 connectDB();
 

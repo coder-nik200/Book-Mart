@@ -1,52 +1,58 @@
 import Book from "../models/Book.js";
 import Review from "../models/Review.js";
 import Category from "../models/Category.js";
+import slugify from "slugify";
 
-// ==================== GET ALL BOOKS ====================
+/* ==================== GET ALL BOOKS ==================== */
 export const getAllBooks = async (req, res) => {
   try {
-    const { category, minPrice, maxPrice, sort, search, page = 1, limit = 12 } = req.query;
+    const {
+      category,
+      minPrice,
+      maxPrice,
+      sort,
+      search,
+      page = 1,
+      limit = 12,
+    } = req.query;
 
-    let filter = {};
+    const filter = {};
 
-    // Text search
+    // Search (safe regex)
     if (search) {
       filter.$or = [
         { title: { $regex: search, $options: "i" } },
         { author: { $regex: search, $options: "i" } },
-        { description: { $regex: search, $options: "i" } },
       ];
     }
 
-    // Category filter
-    if (category) {
-      filter.category = category;
-    }
+    if (category) filter.category = category;
 
-    // Price range filter
     if (minPrice || maxPrice) {
       filter.price = {};
-      if (minPrice) filter.price.$gte = minPrice;
-      if (maxPrice) filter.price.$lte = maxPrice;
+      if (minPrice) filter.price.$gte = Number(minPrice);
+      if (maxPrice) filter.price.$lte = Number(maxPrice);
     }
 
-    // Sorting
-    let sortObj = {};
-    if (sort === "price-low") sortObj.price = 1;
-    else if (sort === "price-high") sortObj.price = -1;
-    else if (sort === "newest") sortObj.createdAt = -1;
-    else if (sort === "rating") sortObj.rating = -1;
-    else if (sort === "popularity") sortObj.totalReviews = -1;
-    else sortObj.createdAt = -1;
+    const sortMap = {
+      "price-low": { price: 1 },
+      "price-high": { price: -1 },
+      newest: { createdAt: -1 },
+      rating: { rating: -1 },
+      popularity: { totalReviews: -1 },
+    };
 
-    // Pagination
-    const skip = (page - 1) * limit;
+    const sortObj = sortMap[sort] || { createdAt: -1 };
+
+    const pageNum = Number(page);
+    const limitNum = Number(limit);
+    const skip = (pageNum - 1) * limitNum;
 
     const books = await Book.find(filter)
       .populate("category")
       .sort(sortObj)
-      .limit(parseInt(limit))
-      .skip(skip);
+      .skip(skip)
+      .limit(limitNum);
 
     const total = await Book.countDocuments(filter);
 
@@ -54,8 +60,8 @@ export const getAllBooks = async (req, res) => {
       success: true,
       books,
       pagination: {
-        current: parseInt(page),
-        pages: Math.ceil(total / limit),
+        page: pageNum,
+        pages: Math.ceil(total / limitNum),
         total,
       },
     });
@@ -64,31 +70,30 @@ export const getAllBooks = async (req, res) => {
   }
 };
 
-// ==================== GET SINGLE BOOK ====================
+/* ==================== GET SINGLE BOOK ==================== */
 export const getBook = async (req, res) => {
   try {
-    const { id } = req.params;
+    const book = await Book.findById(req.params.id).populate("category");
 
-    const book = await Book.findById(id)
-      .populate("category")
-      .populate({
-        path: "reviews",
-        populate: { path: "user", select: "name" },
-      });
-
-    if (!book) {
+    if (!book)
       return res.status(404).json({ success: false, message: "Book not found" });
-    }
 
-    const reviews = await Review.find({ book: id }).populate("user", "name email");
-    const averageRating = reviews.length > 0 ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length : 0;
+    const reviews = await Review.find({ book: book._id }).populate(
+      "user",
+      "name email"
+    );
+
+    const avgRating =
+      reviews.length > 0
+        ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+        : 0;
 
     res.status(200).json({
       success: true,
       book: {
         ...book.toObject(),
         reviews,
-        averageRating: Math.round(averageRating * 10) / 10,
+        averageRating: Number(avgRating.toFixed(1)),
       },
     });
   } catch (error) {
@@ -96,104 +101,138 @@ export const getBook = async (req, res) => {
   }
 };
 
-// ==================== GET FEATURED BOOKS ====================
+/* ==================== FEATURED BOOKS ==================== */
 export const getFeaturedBooks = async (req, res) => {
   try {
-    const books = await Book.find({ isFeatured: true }).populate("category").limit(8);
+    const books = await Book.find({ isFeatured: true })
+      .populate("category")
+      .limit(8);
 
-    res.status(200).json({
-      success: true,
-      books,
-    });
+    res.status(200).json({ success: true, books });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// ==================== GET NEW ARRIVALS ====================
+/* ==================== NEW ARRIVALS ==================== */
 export const getNewArrivals = async (req, res) => {
   try {
-    const books = await Book.find({ isNewArrival: true }).populate("category").sort({ createdAt: -1 }).limit(8);
+    const books = await Book.find({ isNewArrival: true })
+      .populate("category")
+      .sort({ createdAt: -1 })
+      .limit(8);
 
-    res.status(200).json({
-      success: true,
-      books,
-    });
+    res.status(200).json({ success: true, books });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// ==================== GET BEST SELLERS ====================
+/* ==================== BEST SELLERS ==================== */
 export const getBestSellers = async (req, res) => {
   try {
-    const books = await Book.find({ isBestSeller: true }).populate("category").limit(8);
+    const books = await Book.find({ isBestSeller: true })
+      .populate("category")
+      .limit(8);
 
-    res.status(200).json({
-      success: true,
-      books,
-    });
+    res.status(200).json({ success: true, books });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// ==================== ADD REVIEW ====================
+/* ==================== ADD REVIEW ==================== */
 export const addReview = async (req, res) => {
   try {
-    const { bookId } = req.params;
     const { rating, comment } = req.body;
-    const userId = req.user._id;
+    const { bookId } = req.params;
 
-    if (!rating || !comment) {
-      return res.status(400).json({ success: false, message: "Rating and comment are required" });
-    }
+    if (!rating || !comment)
+      return res.status(400).json({ message: "All fields required" });
 
-    if (rating < 1 || rating > 5) {
-      return res.status(400).json({ success: false, message: "Rating must be between 1 and 5" });
-    }
-
-    // Check if user already reviewed this book
-    const existingReview = await Review.findOne({ book: bookId, user: userId });
-    if (existingReview) {
-      return res.status(400).json({ success: false, message: "You have already reviewed this book" });
-    }
-
-    const review = await Review.create({
+    const exists = await Review.findOne({
       book: bookId,
-      user: userId,
+      user: req.user._id,
+    });
+
+    if (exists)
+      return res
+        .status(400)
+        .json({ message: "Already reviewed this book" });
+
+    await Review.create({
+      book: bookId,
+      user: req.user._id,
       rating,
       comment,
     });
 
-    // Update book rating
-    const allReviews = await Review.find({ book: bookId });
-    const averageRating = allReviews.reduce((sum, r) => sum + r.rating, 0) / allReviews.length;
+    const reviews = await Review.find({ book: bookId });
+    const avg =
+      reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
 
     await Book.findByIdAndUpdate(bookId, {
-      rating: Math.round(averageRating * 10) / 10,
-      totalReviews: allReviews.length,
+      rating: Number(avg.toFixed(1)),
+      totalReviews: reviews.length,
     });
 
-    res.status(201).json({
-      success: true,
-      message: "Review added successfully",
-      review: await review.populate("user", "name email"),
-    });
+    res.status(201).json({ success: true, message: "Review added" });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// ==================== GET CATEGORIES ====================
+/* ==================== ADMIN: CREATE BOOK ==================== */
+export const createBook = async (req, res) => {
+  try {
+    const book = await Book.create({
+      ...req.body,
+      slug: slugify(req.body.title, { lower: true }),
+      createdBy: req.user._id,
+    });
+
+    res.status(201).json({ success: true, book });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+/* ==================== ADMIN: UPDATE BOOK ==================== */
+export const updateBook = async (req, res) => {
+  try {
+    if (req.body.title) {
+      req.body.slug = slugify(req.body.title, { lower: true });
+    }
+
+    const book = await Book.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    res.status(200).json({ success: true, book });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+/* ==================== ADMIN: DELETE BOOK ==================== */
+export const deleteBook = async (req, res) => {
+  try {
+    await Book.findByIdAndDelete(req.params.id);
+    await Review.deleteMany({ book: req.params.id });
+
+    res.status(200).json({ success: true, message: "Book deleted" });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+/* ==================== GET CATEGORIES ==================== */
 export const getCategories = async (req, res) => {
   try {
     const categories = await Category.find({ isActive: true });
-
-    res.status(200).json({
-      success: true,
-      categories,
-    });
+    res.status(200).json({ success: true, categories });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
