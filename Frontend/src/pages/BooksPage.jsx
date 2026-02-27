@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { bookAPI } from "../api/apiClient";
 import BookCard from "../components/BookCard";
 import Loading from "../components/Loading";
 import { useCart } from "../context/CartContext";
 import toast from "react-hot-toast";
-import { ChevronDown } from "lucide-react";
 
 const BooksPage = () => {
+  const { addToCart } = useCart();
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [books, setBooks] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,33 +18,74 @@ const BooksPage = () => {
 
   // Filters
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [sort, setSort] = useState("");
 
-  const { addToCart } = useCart();
+  /* ----------------------------
+     Initialize Filters From URL
+  ---------------------------- */
+  useEffect(() => {
+    setSearch(searchParams.get("search") || "");
+    setSelectedCategory(searchParams.get("category") || "");
+    setMinPrice(searchParams.get("minPrice") || "");
+    setMaxPrice(searchParams.get("maxPrice") || "");
+    setSort(searchParams.get("sort") || "");
+    setPage(Number(searchParams.get("page")) || 1);
+  }, []);
 
-  // Fetch categories
+  /* ----------------------------
+     Debounce Search
+  ---------------------------- */
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  /* ----------------------------
+     Update URL When Filters Change
+  ---------------------------- */
+  useEffect(() => {
+    setSearchParams({
+      search: debouncedSearch || "",
+      category: selectedCategory || "",
+      minPrice: minPrice || "",
+      maxPrice: maxPrice || "",
+      sort: sort || "",
+      page: page.toString(),
+    });
+  }, [debouncedSearch, selectedCategory, minPrice, maxPrice, sort, page]);
+
+  /* ----------------------------
+     Fetch Categories
+  ---------------------------- */
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await bookAPI.getCategories();
-        setCategories(response.data.categories);
-      } catch (error) {
+        const res = await bookAPI.getCategories();
+        setCategories(res.data.categories);
+      } catch (err) {
         toast.error("Failed to load categories");
       }
     };
     fetchCategories();
   }, []);
 
-  // Fetch books
+  /* ----------------------------
+     Fetch Books
+  ---------------------------- */
   useEffect(() => {
     const fetchBooks = async () => {
       try {
         setLoading(true);
-        const response = await bookAPI.getAllBooks({
-          search,
+
+        const res = await bookAPI.getAllBooks({
+          search: debouncedSearch,
           category: selectedCategory,
           minPrice: minPrice || undefined,
           maxPrice: maxPrice || undefined,
@@ -50,9 +94,9 @@ const BooksPage = () => {
           limit: 12,
         });
 
-        setBooks(response.data.books);
-        setTotalPages(response.data.pagination.pages);
-      } catch (error) {
+        setBooks(res.data.books);
+        setTotalPages(res.data.pagination.pages);
+      } catch (err) {
         toast.error("Failed to load books");
       } finally {
         setLoading(false);
@@ -60,16 +104,32 @@ const BooksPage = () => {
     };
 
     fetchBooks();
-  }, [search, selectedCategory, minPrice, maxPrice, sort, page]);
+  }, [debouncedSearch, selectedCategory, minPrice, maxPrice, sort, page]);
 
+  /* ----------------------------
+     Handlers
+  ---------------------------- */
   const handleAddToCart = (book) => {
     addToCart(book, 1);
     toast.success("Added to cart!");
   };
 
-  const handleAddToWishlist = (book) => {
+  const handleAddToWishlist = () => {
     toast.success("Added to wishlist!");
   };
+
+  const clearFilters = () => {
+    setSearch("");
+    setSelectedCategory("");
+    setMinPrice("");
+    setMaxPrice("");
+    setSort("");
+    setPage(1);
+  };
+
+  /* ----------------------------
+     Render
+  ---------------------------- */
 
   if (loading && books.length === 0) return <Loading />;
 
@@ -79,12 +139,12 @@ const BooksPage = () => {
         <h1 className="text-4xl font-bold mb-8">Browse Books</h1>
 
         <div className="grid md:grid-cols-4 gap-8">
-          {/* Filters */}
+          {/* ---------------- Filters ---------------- */}
           <div className="md:col-span-1">
-            <div className="bg-white rounded-lg shadow p-6 space-y-6 sticky top-20">
+            <div className="bg-white rounded-xl shadow p-6 space-y-6 sticky top-24">
               {/* Search */}
               <div>
-                <label className="block font-bold mb-2">Search</label>
+                <label className="block font-semibold mb-2">Search</label>
                 <input
                   type="text"
                   value={search}
@@ -93,13 +153,13 @@ const BooksPage = () => {
                     setPage(1);
                   }}
                   placeholder="Book title or author"
-                  className="w-full px-4 py-2 border rounded-lg"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                 />
               </div>
 
               {/* Category */}
               <div>
-                <label className="block font-bold mb-2">Category</label>
+                <label className="block font-semibold mb-2">Category</label>
                 <select
                   value={selectedCategory}
                   onChange={(e) => {
@@ -117,9 +177,9 @@ const BooksPage = () => {
                 </select>
               </div>
 
-              {/* Price Range */}
+              {/* Price */}
               <div>
-                <label className="block font-bold mb-2">Price Range</label>
+                <label className="block font-semibold mb-2">Price Range</label>
                 <div className="flex gap-2">
                   <input
                     type="number"
@@ -146,7 +206,7 @@ const BooksPage = () => {
 
               {/* Sort */}
               <div>
-                <label className="block font-bold mb-2">Sort By</label>
+                <label className="block font-semibold mb-2">Sort By</label>
                 <select
                   value={sort}
                   onChange={(e) => {
@@ -164,14 +224,7 @@ const BooksPage = () => {
               </div>
 
               <button
-                onClick={() => {
-                  setSearch("");
-                  setSelectedCategory("");
-                  setMinPrice("");
-                  setMaxPrice("");
-                  setSort("");
-                  setPage(1);
-                }}
+                onClick={clearFilters}
                 className="w-full bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg font-semibold transition"
               >
                 Clear Filters
@@ -179,7 +232,7 @@ const BooksPage = () => {
             </div>
           </div>
 
-          {/* Books Grid */}
+          {/* ---------------- Books ---------------- */}
           <div className="md:col-span-3">
             {loading ? (
               <Loading />
@@ -197,29 +250,37 @@ const BooksPage = () => {
                 </div>
 
                 {/* Pagination */}
-                <div className="flex justify-center gap-2 mt-8">
+                <div className="flex justify-center gap-2">
                   <button
-                    onClick={() => setPage(Math.max(1, page - 1))}
+                    onClick={() => setPage((p) => Math.max(1, p - 1))}
                     disabled={page === 1}
                     className="px-4 py-2 border rounded-lg disabled:opacity-50 hover:bg-gray-100"
                   >
                     Previous
                   </button>
 
-                  {Array.from({ length: totalPages }).map((_, i) => (
-                    <button
-                      key={i + 1}
-                      onClick={() => setPage(i + 1)}
-                      className={`px-4 py-2 rounded-lg ${
-                        page === i + 1 ? "bg-blue-600 text-white" : "border hover:bg-gray-100"
-                      }`}
-                    >
-                      {i + 1}
-                    </button>
-                  ))}
+                  {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                    const pageNumber = page <= 3 ? i + 1 : page + i - 2;
+
+                    if (pageNumber > totalPages) return null;
+
+                    return (
+                      <button
+                        key={pageNumber}
+                        onClick={() => setPage(pageNumber)}
+                        className={`px-4 py-2 rounded-lg ${
+                          page === pageNumber
+                            ? "bg-blue-600 text-white"
+                            : "border hover:bg-gray-100"
+                        }`}
+                      >
+                        {pageNumber}
+                      </button>
+                    );
+                  })}
 
                   <button
-                    onClick={() => setPage(Math.min(totalPages, page + 1))}
+                    onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                     disabled={page === totalPages}
                     className="px-4 py-2 border rounded-lg disabled:opacity-50 hover:bg-gray-100"
                   >
@@ -228,8 +289,18 @@ const BooksPage = () => {
                 </div>
               </>
             ) : (
-              <div className="text-center py-12">
-                <p className="text-xl text-gray-600">No books found</p>
+              <div className="text-center py-16 bg-white rounded-xl shadow">
+                <div className="text-6xl mb-4">📚</div>
+                <h2 className="text-2xl font-semibold mb-2">No Books Found</h2>
+                <p className="text-gray-500 mb-4">
+                  Try adjusting your filters or search.
+                </p>
+                <button
+                  onClick={clearFilters}
+                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                >
+                  Reset Filters
+                </button>
               </div>
             )}
           </div>
