@@ -11,9 +11,11 @@ import authRoutes from "./src/routes/authRoutes.js";
 import bookRoutes from "./src/routes/bookRoutes.js";
 import cartRoutes from "./src/routes/cartRoutes.js";
 import wishlistRoutes from "./src/routes/wishlistRoutes.js";
-import orderRoutes from "./src/routes/orderRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
-import adminRoutes from "./src/routes/adminRoutes.js";
+import adminBookRoutes from "./src/routes/adminBookRoutes.js";
+import adminOrderRoutes from "./src/routes/adminOrderRoutes.js";
+import adminUserRoutes from "./src/routes/adminUserRoutes.js";
+import adminDashboardRoutes from "./src/routes/adminDashboardRoutes.js";
 import path from "path";
 dotenv.config();
 
@@ -37,9 +39,11 @@ app.use("/api/auth", authRoutes);
 app.use("/api/books", bookRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/wishlist", wishlistRoutes);
-app.use("/api/orders", orderRoutes);
 app.use("/api/user", userRoutes);
-app.use("/api/admin", adminRoutes);
+app.use("/api/admin/dashboard", adminDashboardRoutes);
+app.use("/api/admin/books", adminBookRoutes);
+app.use("/api/admin/orders", adminOrderRoutes);
+app.use("/api/admin/users", adminUserRoutes);
 
 // ✅ Health Check
 app.get("/", (req, res) => {
