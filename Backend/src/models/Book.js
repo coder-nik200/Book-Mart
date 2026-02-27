@@ -129,7 +129,7 @@ const bookSchema = new mongoose.Schema(
       ref: "User",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 /* Text search index */

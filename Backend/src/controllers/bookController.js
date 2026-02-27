@@ -2,6 +2,7 @@ import Book from "../models/Book.js";
 import Review from "../models/Review.js";
 import Category from "../models/Category.js";
 import slugify from "slugify";
+import mongoose from "mongoose";
 
 /* ==================== GET ALL BOOKS ==================== */
 export const getAllBooks = async (req, res) => {
@@ -18,22 +19,27 @@ export const getAllBooks = async (req, res) => {
 
     const filter = {};
 
-    // Search (safe regex)
-    if (search) {
+    /* ---------------- SEARCH ---------------- */
+    if (search && search.trim() !== "") {
       filter.$or = [
         { title: { $regex: search, $options: "i" } },
         { author: { $regex: search, $options: "i" } },
       ];
     }
 
-    if (category) filter.category = category;
+    /* ---------------- CATEGORY ---------------- */
+    if (category && mongoose.Types.ObjectId.isValid(category)) {
+      filter.category = category;
+    }
 
+    /* ---------------- PRICE ---------------- */
     if (minPrice || maxPrice) {
       filter.price = {};
       if (minPrice) filter.price.$gte = Number(minPrice);
       if (maxPrice) filter.price.$lte = Number(maxPrice);
     }
 
+    /* ---------------- SORT ---------------- */
     const sortMap = {
       "price-low": { price: 1 },
       "price-high": { price: -1 },
@@ -44,6 +50,7 @@ export const getAllBooks = async (req, res) => {
 
     const sortObj = sortMap[sort] || { createdAt: -1 };
 
+    /* ---------------- PAGINATION ---------------- */
     const pageNum = Number(page);
     const limitNum = Number(limit);
     const skip = (pageNum - 1) * limitNum;
@@ -66,6 +73,7 @@ export const getAllBooks = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error("GET BOOKS ERROR:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -76,11 +84,13 @@ export const getBook = async (req, res) => {
     const book = await Book.findById(req.params.id).populate("category");
 
     if (!book)
-      return res.status(404).json({ success: false, message: "Book not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Book not found" });
 
     const reviews = await Review.find({ book: book._id }).populate(
       "user",
-      "name email"
+      "name email",
     );
 
     const avgRating =
@@ -156,9 +166,7 @@ export const addReview = async (req, res) => {
     });
 
     if (exists)
-      return res
-        .status(400)
-        .json({ message: "Already reviewed this book" });
+      return res.status(400).json({ message: "Already reviewed this book" });
 
     await Review.create({
       book: bookId,
@@ -168,8 +176,7 @@ export const addReview = async (req, res) => {
     });
 
     const reviews = await Review.find({ book: bookId });
-    const avg =
-      reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+    const avg = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
 
     await Book.findByIdAndUpdate(bookId, {
       rating: Number(avg.toFixed(1)),
@@ -204,11 +211,9 @@ export const updateBook = async (req, res) => {
       req.body.slug = slugify(req.body.title, { lower: true });
     }
 
-    const book = await Book.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const book = await Book.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
 
     res.status(200).json({ success: true, book });
   } catch (error) {

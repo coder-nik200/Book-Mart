@@ -14,6 +14,7 @@ import BooksPage from "./pages/BooksPage";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import NotFound from "./pages/404";
+import BookCard from "./components/BookCard";
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/books" element={<BooksPage />} />
+                <Route path="/book/:id" element={<BookCard />} />
 
                 {/* Protected Routes */}
                 <Route
@@ -48,7 +50,6 @@ const App = () => {
                     </ProtectedRoute>
                   }
                 />
-
                 {/* Catch All */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

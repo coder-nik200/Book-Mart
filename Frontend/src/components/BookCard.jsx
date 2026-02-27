@@ -6,22 +6,34 @@ const BookCard = ({ book, onAddToCart, onAddToWishlist }) => {
   return (
     <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
       {/* Image */}
-      <Link to={`/book/${book._id}`} className="block relative h-64 overflow-hidden bg-gray-200">
+      <Link
+        to={`/book/${book._id}`}
+        className="block relative h-64 overflow-hidden bg-gray-200"
+      >
         <img
-          src={book.image?.url || "https://via.placeholder.com/300x400?text=Book"}
+          src={
+            book.image?.url
+              ? `http://localhost:5000${book.image.url}`
+              : "https://via.placeholder.com/300x400?text=Book"
+          }
           alt={book.title}
-          className="w-full h-full object-cover hover:scale-105 transition-transform"
+          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
         />
         {book.discountPrice && (
           <div className="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-lg text-sm font-bold">
-            -{Math.round(((book.price - book.discountPrice) / book.price) * 100)}%
+            -
+            {Math.round(((book.price - book.discountPrice) / book.price) * 100)}
+            %
           </div>
         )}
       </Link>
 
       {/* Content */}
       <div className="p-4">
-        <Link to={`/book/${book._id}`} className="hover:text-blue-600 transition">
+        <Link
+          to={`/book/${book._id}`}
+          className="hover:text-blue-600 transition"
+        >
           <h3 className="font-bold text-lg mb-1 line-clamp-2">{book.title}</h3>
         </Link>
         <p className="text-gray-600 text-sm mb-3">{book.author}</p>
@@ -33,25 +45,39 @@ const BookCard = ({ book, onAddToCart, onAddToWishlist }) => {
               <Star
                 key={i}
                 size={14}
-                className={i < Math.floor(book.rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}
+                className={
+                  i < Math.floor(book.rating)
+                    ? "fill-yellow-400 text-yellow-400"
+                    : "text-gray-300"
+                }
               />
             ))}
           </div>
-          <span className="text-xs text-gray-600">({book.totalReviews} reviews)</span>
+          <span className="text-xs text-gray-600">
+            ({book.totalReviews} reviews)
+          </span>
         </div>
 
         {/* Price */}
         <div className="flex items-center gap-2 mb-4">
-          <span className="text-lg font-bold text-gray-900">${book.discountPrice || book.price}</span>
-          {book.discountPrice && <span className="line-through text-gray-500">${book.price}</span>}
+          <span className="text-lg font-bold text-gray-900">
+            ${book.discountPrice || book.price}
+          </span>
+          {book.discountPrice && (
+            <span className="line-through text-gray-500">${book.price}</span>
+          )}
         </div>
 
         {/* Stock Status */}
         <div className="mb-4">
           {book.stock > 0 ? (
-            <span className="text-xs text-green-600 font-semibold">In Stock</span>
+            <span className="text-xs text-green-600 font-semibold">
+              In Stock
+            </span>
           ) : (
-            <span className="text-xs text-red-600 font-semibold">Out of Stock</span>
+            <span className="text-xs text-red-600 font-semibold">
+              Out of Stock
+            </span>
           )}
         </div>
 

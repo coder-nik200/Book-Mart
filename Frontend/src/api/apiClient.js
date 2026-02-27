@@ -17,7 +17,7 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 // Handle token refresh
@@ -30,7 +30,11 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const response = await axios.post(`${API_BASE_URL}/auth/refresh-token`, {}, { withCredentials: true });
+        const response = await axios.post(
+          `${API_BASE_URL}/auth/refresh-token`,
+          {},
+          { withCredentials: true },
+        );
         const { accessToken } = response.data;
         localStorage.setItem("accessToken", accessToken);
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
@@ -43,7 +47,7 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 // ==================== AUTH APIs ====================
@@ -101,7 +105,8 @@ export const userAPI = {
   changePassword: (data) => api.post("/user/change-password", data),
   getAddresses: () => api.get("/user/addresses"),
   addAddress: (data) => api.post("/user/addresses", data),
-  updateAddress: (addressId, data) => api.put(`/user/addresses/${addressId}`, data),
+  updateAddress: (addressId, data) =>
+    api.put(`/user/addresses/${addressId}`, data),
   deleteAddress: (addressId) => api.delete(`/user/addresses/${addressId}`),
   getOrderHistory: (params) => api.get("/user/orders/history", { params }),
 };
@@ -109,26 +114,28 @@ export const userAPI = {
 // ==================== ADMIN APIs ====================
 export const adminAPI = {
   getDashboardStats: () => api.get("/admin/dashboard"),
-  
+
   // Books
   addBook: (data) => api.post("/admin/books", data),
   updateBook: (bookId, data) => api.put(`/admin/books/${bookId}`, data),
   deleteBook: (bookId) => api.delete(`/admin/books/${bookId}`),
-  
+
   // Categories
   addCategory: (data) => api.post("/admin/categories", data),
-  updateCategory: (categoryId, data) => api.put(`/admin/categories/${categoryId}`, data),
+  updateCategory: (categoryId, data) =>
+    api.put(`/admin/categories/${categoryId}`, data),
   deleteCategory: (categoryId) => api.delete(`/admin/categories/${categoryId}`),
-  
+
   // Users
   getAllUsers: (params) => api.get("/admin/users", { params }),
   blockUser: (userId) => api.put(`/admin/users/${userId}/block`),
   unblockUser: (userId) => api.put(`/admin/users/${userId}/unblock`),
-  
+
   // Orders
   getAllOrders: (params) => api.get("/admin/orders", { params }),
-  updateOrderStatus: (orderId, data) => api.put(`/admin/orders/${orderId}/status`, data),
-  
+  updateOrderStatus: (orderId, data) =>
+    api.put(`/admin/orders/${orderId}/status`, data),
+
   // Reviews
   getAllReviews: () => api.get("/admin/reviews"),
   deleteReview: (reviewId) => api.delete(`/admin/reviews/${reviewId}`),
