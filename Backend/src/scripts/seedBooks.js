@@ -46,7 +46,7 @@ const books = [
     stock: 40,
     rating: 4.8,
     totalReviews: 520,
-    image: { public_id: "mockingbird", url: "/uploads/mockingbird.png"},
+    image: { public_id: "mockingbird", url: "/upload/mockingbird.png"},
   },
   {
     title: "The Catcher in the Rye",
@@ -57,7 +57,7 @@ const books = [
     category: categories[0]._id,
     stock: 30,
     rating: 4.2,
-    image: { public_id: "catcher", url: "/uploads/catchereye.png" },
+    image: { public_id: "catcher", url: "/upload/catchereye.png" },
   },
   {
     title: "The Great Gatsby",
@@ -70,7 +70,7 @@ const books = [
     stock: 50,
     rating: 4.5,
     isFeatured: true,
-    image: { public_id: "gatsby", url: "/uploads/greatgatsby.png" },
+    image: { public_id: "gatsby", url: "/upload/greatgatsby.png" },
   },
   {
     title: "Pride and Prejudice",
@@ -81,7 +81,7 @@ const books = [
     category: categories[0]._id,
     stock: 35,
     rating: 4.6,
-    image: { public_id: "pride", url: "/uploads/prideandprejudice.png" },
+    image: { public_id: "pride", url: "/upload/prideandprejudice.png" },
   },
   {
     title: "Of Mice and Men",
@@ -92,7 +92,7 @@ const books = [
     category: categories[0]._id,
     stock: 28,
     rating: 4.3,
-    image: { public_id: "mice", url: "/uploads/miceandmen.png" },
+    image: { public_id: "mice", url: "/upload/miceandmen.png" },
   },
   {
     title: "The Old Man and the Sea",
@@ -103,7 +103,7 @@ const books = [
     category: categories[0]._id,
     stock: 32,
     rating: 4.4,
-    image: { public_id: "oldman", url: "/uploads/oldmanandsea.png" },
+    image: { public_id: "oldman", url: "/upload/oldmanandsea.png" },
   },
 
   /* ================= SCIENCE ================= */
@@ -118,7 +118,7 @@ const books = [
     stock: 25,
     rating: 4.6,
     isBestSeller: true,
-    image: { public_id: "time", url: "/uploads/historyoftime.png" },
+    image: { public_id: "time", url: "/upload/historyoftime.png" },
   },
   {
     title: "The Selfish Gene",
@@ -129,7 +129,7 @@ const books = [
     category: categories[1]._id,
     stock: 20,
     rating: 4.5,
-    image: { public_id: "gene", url: "/uploads/selfishgene.png" },
+    image: { public_id: "gene", url: "/upload/selfishgene.png" },
   },
   {
     title: "Cosmos",
@@ -140,7 +140,7 @@ const books = [
     category: categories[1]._id,
     stock: 30,
     rating: 4.7,
-    image: { public_id: "cosmos", url: "/uploads/cosmos.png" },
+    image: { public_id: "cosmos", url: "/upload/cosmos.png" },
   },
   {
     title: "Astrophysics for People in a Hurry",
@@ -151,7 +151,7 @@ const books = [
     category: categories[1]._id,
     stock: 27,
     rating: 4.4,
-    image: { public_id: "astro", url: "/uploads/astrophysics.jpg"},
+    image: { public_id: "astro", url: "/upload/astrophysics.jpg"},
   },
   {
     title: "The Elegant Universe",
@@ -162,7 +162,7 @@ const books = [
     category: categories[1]._id,
     stock: 18,
     rating: 4.3,
-    image: { public_id: "elegant", url: "/uploads/elegantuniverse.png" },
+    image: { public_id: "elegant", url: "/upload/elegantuniverse.png" },
   },
   {
     title: "Surely You're Joking, Mr. Feynman!",
@@ -173,7 +173,7 @@ const books = [
     category: categories[1]._id,
     stock: 22,
     rating: 4.6,
-    image: { public_id: "feynman", url: "/uploads/jokingfeyman.png" },
+    image: { public_id: "feynman", url: "/upload/jokingfeyman.png" },
   },
 
   /* ================= HISTORY ================= */
@@ -221,7 +221,7 @@ const books = [
     category: categories[2]._id,
     stock: 21,
     rating: 4.4,
-    image: { public_id: "silk", url: "/uploads/silkroads.png" },
+    image: { public_id: "silk", url: "/upload/silkroads.png" },
   },
   {
     title: "SPQR",
