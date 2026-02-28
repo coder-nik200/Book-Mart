@@ -26,7 +26,6 @@ import OrderHistory from "./pages/profile/OrderHistory";
 import ChangePassword from "./pages/profile/ChangePassword";
 import ProfileLayout from "./pages/profile/ProfileLayout";
 import OrderSuccessPageWrapper from "./components/OrderSuccessPageWrapper";
-import { OrderProvider } from "./context/OrderContext";
 
 const App = () => {
   return (
@@ -36,86 +35,84 @@ const App = () => {
       <Router>
         <AuthProvider>
           <CartProvider>
-            <OrderProvider>
-              <Layout>
-                <Routes>
-                  {/* Public */}
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="/signup" element={<SignupPage />} />
-                  <Route path="/books" element={<BooksPage />} />
-                  <Route path="/book/:id" element={<BookDetailsPage />} />
+            <Layout>
+              <Routes>
+                {/* Public */}
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="/books" element={<BooksPage />} />
+                <Route path="/book/:id" element={<BookDetailsPage />} />
 
-                  {/* User Protected */}
-                  <Route
-                    path="/cart"
-                    element={
-                      <ProtectedRoute>
-                        <CartPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/checkout"
-                    element={
-                      <ProtectedRoute>
-                        <CheckoutPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route path="/profile" element={<ProfileLayout />}>
-                    <Route index element={<ProfileOverview />} />
-                    <Route path="addresses" element={<AddressManager />} />
-                    <Route path="security" element={<ChangePassword />} />
-                    <Route path="orders" element={<OrderHistory />} />
-                  </Route>
-                  <Route
-                    path="/orders"
-                    element={
-                      <ProtectedRoute>
-                        <OrderPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/wishlist"
-                    element={
-                      <ProtectedRoute>
-                        <WishlistPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/dashboard"
-                    element={
-                      <ProtectedRoute>
-                        <DashboardPage />
-                      </ProtectedRoute>
-                    }
-                  />
+                {/* User Protected */}
+                <Route
+                  path="/cart"
+                  element={
+                    <ProtectedRoute>
+                      <CartPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/checkout"
+                  element={
+                    <ProtectedRoute>
+                      <CheckoutPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="/profile" element={<ProfileLayout />}>
+                  <Route index element={<ProfileOverview />} />
+                  <Route path="addresses" element={<AddressManager />} />
+                  <Route path="security" element={<ChangePassword />} />
+                  <Route path="orders" element={<OrderHistory />} />
+                </Route>
+                <Route
+                  path="/orders"
+                  element={
+                    <ProtectedRoute>
+                      <OrderPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/wishlist"
+                  element={
+                    <ProtectedRoute>
+                      <WishlistPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <DashboardPage />
+                    </ProtectedRoute>
+                  }
+                />
 
-                  {/* Admin */}
-                  <Route
-                    path="/admin"
-                    element={
-                      <ProtectedRoute adminOnly>
-                        <AdminDashboard />
-                      </ProtectedRoute>
-                    }
-                  />
+                {/* Admin */}
+                <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute adminOnly>
+                      <AdminDashboard />
+                    </ProtectedRoute>
+                  }
+                />
 
-                  <Route
-                    path="/order-success"
-                    element={<OrderSuccessPageWrapper />}
-                  />
+                <Route
+                  path="/order-success"
+                  element={<OrderSuccessPageWrapper />}
+                />
 
-                  <Route path="/order/:orderId" element={<OrderPage />} />
+                <Route path="/order/:orderId" element={<OrderPage />} />
 
-                  {/* Fallback */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Layout>
-            </OrderProvider>
+                {/* Fallback */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Layout>
           </CartProvider>
         </AuthProvider>
       </Router>

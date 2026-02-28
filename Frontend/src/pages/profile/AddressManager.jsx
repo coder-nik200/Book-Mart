@@ -40,13 +40,11 @@ const AddressManager = () => {
     loadAddresses();
   }, []);
 
-  /* ================= HANDLE FORM ================= */
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm({ ...form, [name]: type === "checkbox" ? checked : value });
   };
 
-  /* ================= ADD ADDRESS ================= */
   const addAddress = async () => {
     try {
       setSaving(true);
@@ -62,10 +60,8 @@ const AddressManager = () => {
     }
   };
 
-  /* ================= DELETE ADDRESS ================= */
   const deleteAddress = async (id) => {
     if (!window.confirm("Delete this address?")) return;
-
     try {
       setDeletingId(id);
       await userAPI.deleteAddress(id);
@@ -78,7 +74,6 @@ const AddressManager = () => {
     }
   };
 
-  /* ================= LOADING ================= */
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[300px]">
@@ -88,20 +83,19 @@ const AddressManager = () => {
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow p-6 sm:p-8">
-
+    <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 md:p-8">
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
         <div>
-          <h2 className="text-xl font-bold">Saved Addresses</h2>
-          <p className="text-sm text-gray-500">
+          <h2 className="text-xl sm:text-2xl font-bold">Saved Addresses</h2>
+          <p className="text-sm text-gray-500 mt-1 sm:mt-0">
             Manage your delivery addresses
           </p>
         </div>
 
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          className="flex items-center gap-2 mt-3 sm:mt-0 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
         >
           <Plus size={16} />
           Add Address
@@ -121,10 +115,10 @@ const AddressManager = () => {
         {addresses.map((addr) => (
           <div
             key={addr._id}
-            className="border rounded-xl p-5 flex flex-col sm:flex-row justify-between gap-4"
+            className="border rounded-xl p-5 flex flex-col sm:flex-row justify-between gap-4 shadow-sm hover:shadow-md transition"
           >
             <div>
-              <div className="flex items-center gap-2 mb-1">
+              <div className="flex items-center gap-2 mb-1 flex-wrap">
                 <p className="font-semibold">{addr.fullName}</p>
 
                 {addr.isDefault && (
@@ -145,15 +139,13 @@ const AddressManager = () => {
               <p className="text-sm text-gray-600">
                 {addr.country} - {addr.zipCode}
               </p>
-              <p className="text-sm text-gray-500">
-                Phone: {addr.phoneNumber}
-              </p>
+              <p className="text-sm text-gray-500">Phone: {addr.phoneNumber}</p>
             </div>
 
             <button
               onClick={() => deleteAddress(addr._id)}
               disabled={deletingId === addr._id}
-              className="flex items-center gap-2 text-red-600 hover:text-red-700"
+              className="flex items-center gap-2 text-red-600 hover:text-red-700 self-start sm:self-center"
             >
               {deletingId === addr._id ? (
                 <Loader2 size={16} className="animate-spin" />
@@ -168,12 +160,9 @@ const AddressManager = () => {
 
       {/* ================= MODAL ================= */}
       {showModal && (
-        <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
-          <div className="bg-white rounded-xl p-6 w-full max-w-xl">
-
-            <h3 className="text-lg font-semibold mb-4">
-              Add New Address
-            </h3>
+        <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl p-6 sm:p-8 w-full max-w-xl shadow-lg overflow-y-auto max-h-[90vh]">
+            <h3 className="text-lg font-semibold mb-4">Add New Address</h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
@@ -191,7 +180,7 @@ const AddressManager = () => {
                   placeholder={field}
                   value={form[field]}
                   onChange={handleChange}
-                  className="border px-4 py-2 rounded-lg"
+                  className="border px-4 py-2 rounded-lg w-full focus:ring-2 focus:ring-blue-500"
                 />
               ))}
 
@@ -199,14 +188,14 @@ const AddressManager = () => {
                 name="addressType"
                 value={form.addressType}
                 onChange={handleChange}
-                className="border px-4 py-2 rounded-lg"
+                className="border px-4 py-2 rounded-lg w-full focus:ring-2 focus:ring-blue-500"
               >
                 <option value="home">Home</option>
                 <option value="office">Office</option>
                 <option value="other">Other</option>
               </select>
 
-              <label className="flex items-center gap-2 text-sm">
+              <label className="flex items-center gap-2 text-sm col-span-full">
                 <input
                   type="checkbox"
                   name="isDefault"
@@ -217,10 +206,10 @@ const AddressManager = () => {
               </label>
             </div>
 
-            <div className="mt-6 flex justify-end gap-3">
+            <div className="mt-6 flex flex-col sm:flex-row justify-end gap-3">
               <button
                 onClick={() => setShowModal(false)}
-                className="px-4 py-2 border rounded-lg"
+                className="px-4 py-2 border rounded-lg w-full sm:w-auto"
               >
                 Cancel
               </button>
@@ -228,7 +217,7 @@ const AddressManager = () => {
               <button
                 onClick={addAddress}
                 disabled={saving}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 w-full sm:w-auto"
               >
                 {saving ? "Saving..." : "Save Address"}
               </button>

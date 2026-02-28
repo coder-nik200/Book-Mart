@@ -26,7 +26,7 @@ export const updateUserProfile = async (req, res) => {
     const user = await User.findByIdAndUpdate(
       userId,
       { name, email },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     ).select("-password");
 
     res.status(200).json({
@@ -46,18 +46,24 @@ export const changePassword = async (req, res) => {
     const { currentPassword, newPassword, confirmPassword } = req.body;
 
     if (!currentPassword || !newPassword || !confirmPassword) {
-      return res.status(400).json({ success: false, message: "All fields are required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "All fields are required" });
     }
 
     if (newPassword !== confirmPassword) {
-      return res.status(400).json({ success: false, message: "New passwords do not match" });
+      return res
+        .status(400)
+        .json({ success: false, message: "New passwords do not match" });
     }
 
     const user = await User.findById(userId).select("+password");
 
     const isPasswordCorrect = await user.matchPassword(currentPassword);
     if (!isPasswordCorrect) {
-      return res.status(400).json({ success: false, message: "Current password is incorrect" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Current password is incorrect" });
     }
 
     user.password = newPassword;
@@ -92,7 +98,17 @@ export const getAddresses = async (req, res) => {
 export const addAddress = async (req, res) => {
   try {
     const userId = req.user._id;
-    const { fullName, phoneNumber, street, city, state, zipCode, country, isDefault, addressType } = req.body;
+    const {
+      fullName,
+      phoneNumber,
+      street,
+      city,
+      state,
+      zipCode,
+      country,
+      isDefault,
+      addressType,
+    } = req.body;
 
     if (isDefault) {
       // Remove default from other addresses
@@ -127,11 +143,23 @@ export const updateAddress = async (req, res) => {
   try {
     const userId = req.user._id;
     const { addressId } = req.params;
-    const { fullName, phoneNumber, street, city, state, zipCode, country, isDefault, addressType } = req.body;
+    const {
+      fullName,
+      phoneNumber,
+      street,
+      city,
+      state,
+      zipCode,
+      country,
+      isDefault,
+      addressType,
+    } = req.body;
 
     const address = await Address.findById(addressId);
     if (!address || address.user.toString() !== userId.toString()) {
-      return res.status(404).json({ success: false, message: "Address not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Address not found" });
     }
 
     if (isDefault) {
@@ -170,7 +198,9 @@ export const deleteAddress = async (req, res) => {
 
     const address = await Address.findById(addressId);
     if (!address || address.user.toString() !== userId.toString()) {
-      return res.status(404).json({ success: false, message: "Address not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Address not found" });
     }
 
     await Address.findByIdAndDelete(addressId);
