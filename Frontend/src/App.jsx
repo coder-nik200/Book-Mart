@@ -16,11 +16,15 @@ import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import NotFound from "./pages/404";
 import BookDetailsPage from "./components/BookDetailsPage";
-import ProfilePage from "./components/ProfilePage";
 import OrderPage from "./components/OrderPage";
 import WishlistPage from "./components/WishlistPage";
 import DashboardPage from "./components/DashboardPage";
 import AdminDashboard from "./admin/AdminDashboard";
+import ProfileOverview from "./pages/profile/ProfileOverview";
+import AddressManager from "./pages/profile/AddressManager";
+import OrderHistory from "./pages/profile/OrderHistory";
+import ChangePassword from "./pages/profile/ChangePassword";
+import ProfileLayout from "./pages/profile/ProfileLayout";
 
 const App = () => {
   return (
@@ -56,14 +60,12 @@ const App = () => {
                     </ProtectedRoute>
                   }
                 />
-                <Route
-                  path="/profile"
-                  element={
-                    <ProtectedRoute>
-                      <ProfilePage />
-                    </ProtectedRoute>
-                  }
-                />
+                <Route path="/profile" element={<ProfileLayout />}>
+  <Route index element={<ProfileOverview />} />
+  <Route path="addresses" element={<AddressManager />} />
+  <Route path="security" element={<ChangePassword />} />
+  <Route path="orders" element={<OrderHistory />} />
+</Route>
                 <Route
                   path="/orders"
                   element={

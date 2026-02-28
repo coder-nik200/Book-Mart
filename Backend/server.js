@@ -9,6 +9,7 @@ import { errorHandler } from "./src/utils/errorHandler.js";
 // Routes
 import authRoutes from "./src/routes/authRoutes.js";
 import bookRoutes from "./src/routes/bookRoutes.js";
+import addressRoutes from "./src/routes/addresRoutes.js";
 import cartRoutes from "./src/routes/cartRoutes.js";
 import wishlistRoutes from "./src/routes/wishlistRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
@@ -44,7 +45,7 @@ app.use("/api/admin/dashboard", adminDashboardRoutes);
 app.use("/api/admin/books", adminBookRoutes);
 app.use("/api/admin/orders", adminOrderRoutes);
 app.use("/api/admin/users", adminUserRoutes);
-
+app.use("/api/user/addresses", addressRoutes);
 // ✅ Health Check
 app.get("/", (req, res) => {
   res.json({ message: "BookMart API is running" });

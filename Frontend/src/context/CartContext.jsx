@@ -1,88 +1,98 @@
-import React, { createContext, useState, useEffect, useCallback } from "react";
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useCallback,
+  useContext,
+} from "react";
+import { useAuth } from "./AuthContext";
 
 export const CartContext = createContext();
 
-export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState({ items: [], totalPrice: 0, totalItems: 0 });
+const EMPTY_CART = {
+  items: [],
+  totalPrice: 0,
+  totalItems: 0,
+};
 
-  // Load cart from localStorage
+export const CartProvider = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+  const [cart, setCart] = useState(EMPTY_CART);
+
+  /* ================= LOAD CART ================= */
   useEffect(() => {
+    if (!isAuthenticated) {
+      setCart(EMPTY_CART);               // 🔥 clear cart on logout
+      localStorage.removeItem("cart");
+      return;
+    }
+
     const savedCart = localStorage.getItem("cart");
     if (savedCart) {
       setCart(JSON.parse(savedCart));
     }
-  }, []);
+  }, [isAuthenticated]);
 
-  // Save cart to localStorage
+  /* ================= SAVE CART ================= */
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
+    if (isAuthenticated) {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+  }, [cart, isAuthenticated]);
 
-  const addToCart = useCallback(
-    (book, quantity = 1) => {
-      setCart((prevCart) => {
-        const existingItem = prevCart.items.find((item) => item._id === book._id);
+  /* ================= HELPERS ================= */
+  const recalcCart = (items) => ({
+    items,
+    totalPrice: items.reduce(
+      (sum, item) =>
+        sum + (item.discountPrice || item.price) * item.quantity,
+      0
+    ),
+    totalItems: items.reduce((sum, item) => sum + item.quantity, 0),
+  });
 
-        if (existingItem) {
-          return {
-            ...prevCart,
-            items: prevCart.items.map((item) =>
-              item._id === book._id ? { ...item, quantity: item.quantity + quantity } : item
-            ),
-          };
-        }
+  /* ================= ACTIONS ================= */
+  const addToCart = useCallback((book, quantity = 1) => {
+    setCart((prev) => {
+      const existing = prev.items.find((i) => i._id === book._id);
 
-        const newItems = [...prevCart.items, { ...book, quantity }];
-        const totalPrice = newItems.reduce((sum, item) => sum + (item.discountPrice || item.price) * item.quantity, 0);
-        const totalItems = newItems.reduce((sum, item) => sum + item.quantity, 0);
+      const items = existing
+        ? prev.items.map((i) =>
+            i._id === book._id
+              ? { ...i, quantity: i.quantity + quantity }
+              : i
+          )
+        : [...prev.items, { ...book, quantity }];
 
-        return {
-          items: newItems,
-          totalPrice,
-          totalItems,
-        };
-      });
-    },
-    []
-  );
+      return recalcCart(items);
+    });
+  }, []);
 
   const removeFromCart = useCallback((bookId) => {
-    setCart((prevCart) => {
-      const newItems = prevCart.items.filter((item) => item._id !== bookId);
-      const totalPrice = newItems.reduce((sum, item) => sum + (item.discountPrice || item.price) * item.quantity, 0);
-      const totalItems = newItems.reduce((sum, item) => sum + item.quantity, 0);
-
-      return {
-        items: newItems,
-        totalPrice,
-        totalItems,
-      };
-    });
+    setCart((prev) => recalcCart(prev.items.filter((i) => i._id !== bookId)));
   }, []);
 
-  const updateQuantity = useCallback((bookId, quantity) => {
-    if (quantity <= 0) {
-      removeFromCart(bookId);
-      return;
-    }
+  const updateQuantity = useCallback(
+    (bookId, quantity) => {
+      if (quantity <= 0) {
+        removeFromCart(bookId);
+        return;
+      }
 
-    setCart((prevCart) => {
-      const newItems = prevCart.items.map((item) =>
-        item._id === bookId ? { ...item, quantity } : item
+      setCart((prev) =>
+        recalcCart(
+          prev.items.map((i) =>
+            i._id === bookId ? { ...i, quantity } : i
+          )
+        )
       );
-      const totalPrice = newItems.reduce((sum, item) => sum + (item.discountPrice || item.price) * item.quantity, 0);
-      const totalItems = newItems.reduce((sum, item) => sum + item.quantity, 0);
-
-      return {
-        items: newItems,
-        totalPrice,
-        totalItems,
-      };
-    });
-  }, [removeFromCart]);
+    },
+    [removeFromCart]
+  );
 
   const clearCart = useCallback(() => {
-    setCart({ items: [], totalPrice: 0, totalItems: 0 });
+    setCart(EMPTY_CART);
+    localStorage.removeItem("cart");
   }, []);
 
   const value = {
@@ -93,11 +103,16 @@ export const CartProvider = ({ children }) => {
     clearCart,
   };
 
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
+  return (
+    <CartContext.Provider value={value}>
+      {children}
+    </CartContext.Provider>
+  );
 };
 
+/* ================= HOOK ================= */
 export const useCart = () => {
-  const context = React.useContext(CartContext);
+  const context = useContext(CartContext);
   if (!context) {
     throw new Error("useCart must be used within CartProvider");
   }
