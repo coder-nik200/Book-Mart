@@ -8,7 +8,6 @@ const BookSection = ({
   link,
   books = [],
   onAddToCart,
-  onAddToWishlist,
   bg = "bg-gradient-to-b from-white to-gray-50",
   showViewAll = true,
   limit = 4,
@@ -63,7 +62,6 @@ const BookSection = ({
                 <BookCard
                   book={book}
                   onAddToCart={onAddToCart}
-                  onAddToWishlist={onAddToWishlist}
                 />
               </div>
             ))}

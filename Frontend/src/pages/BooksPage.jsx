@@ -114,10 +114,6 @@ const BooksPage = () => {
     toast.success("Added to cart!");
   };
 
-  const handleAddToWishlist = () => {
-    toast.success("Added to wishlist!");
-  };
-
   const clearFilters = () => {
     setSearch("");
     setSelectedCategory("");
@@ -260,7 +256,6 @@ const BooksPage = () => {
                       key={book._id}
                       book={book}
                       onAddToCart={handleAddToCart}
-                      onAddToWishlist={handleAddToWishlist}
                     />
                   ))}
                 </div>

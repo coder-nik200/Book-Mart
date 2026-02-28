@@ -26,6 +26,7 @@ import OrderHistory from "./pages/profile/OrderHistory";
 import ChangePassword from "./pages/profile/ChangePassword";
 import ProfileLayout from "./pages/profile/ProfileLayout";
 import OrderSuccessPageWrapper from "./components/OrderSuccessPageWrapper";
+import AboutPage from "./pages/AboutPage";
 
 const App = () => {
   return (
@@ -43,6 +44,7 @@ const App = () => {
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/books" element={<BooksPage />} />
                 <Route path="/book/:id" element={<BookDetailsPage />} />
+                <Route path="/about" element={<AboutPage />} />
 
                 {/* User Protected */}
                 <Route
