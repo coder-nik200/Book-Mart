@@ -48,7 +48,6 @@ const bookSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
       required: true,
-      index: true,
     },
 
     image: {
@@ -74,20 +73,9 @@ const bookSchema = new mongoose.Schema(
 
     stock: {
       type: Number,
-      required: true,
-      min: 0,
       default: 0,
+      min: 0,
     },
-
-    isbn: {
-      type: String,
-      unique: true,
-      sparse: true,
-    },
-
-    publisher: String,
-    publicationYear: Number,
-    pages: Number,
 
     language: {
       type: String,
@@ -109,19 +97,22 @@ const bookSchema = new mongoose.Schema(
     isFeatured: {
       type: Boolean,
       default: false,
-      index: true,
     },
 
     isNewArrival: {
       type: Boolean,
       default: false,
-      index: true,
     },
 
     isBestSeller: {
       type: Boolean,
       default: false,
-      index: true,
+    },
+
+    status: {
+      type: String,
+      enum: ["active", "inactive"],
+      default: "active",
     },
 
     createdBy: {
@@ -129,10 +120,9 @@ const bookSchema = new mongoose.Schema(
       ref: "User",
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
-/* Text search index */
 bookSchema.index({ title: "text", author: "text" });
 
 const Book = mongoose.model("Book", bookSchema);
