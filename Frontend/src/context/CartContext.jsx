@@ -1,10 +1,13 @@
 import React, { createContext, useState, useEffect, useCallback } from "react";
-import { cartAPI } from "../api/apiClient"; // make sure this exists
+import { cartAPI } from "../api/apiClient";
+import { useAuth } from "./AuthContext";
 import toast from "react-hot-toast";
 
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+
   const [cart, setCart] = useState({
     items: [],
     totalPrice: 0,
@@ -13,8 +16,13 @@ export const CartProvider = ({ children }) => {
 
   const [loading, setLoading] = useState(true);
 
-  // ================= LOAD CART =================
   const fetchCart = useCallback(async () => {
+    if (!isAuthenticated) {
+      setCart({ items: [], totalPrice: 0, totalItems: 0 });
+      setLoading(false);
+      return;
+    }
+
     try {
       const res = await cartAPI.getCart();
       setCart(res.data.cart);
@@ -23,13 +31,12 @@ export const CartProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     fetchCart();
   }, [fetchCart]);
 
-  // ================= ADD TO CART =================
   const addToCart = async (bookId, quantity = 1) => {
     try {
       const res = await cartAPI.addToCart(bookId, quantity);
@@ -40,7 +47,6 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // ================= UPDATE =================
   const updateQuantity = async (bookId, quantity) => {
     try {
       const res = await cartAPI.updateCart(bookId, quantity);
@@ -50,7 +56,6 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // ================= REMOVE =================
   const removeFromCart = async (bookId) => {
     try {
       const res = await cartAPI.removeFromCart(bookId);
@@ -60,7 +65,6 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // ================= CLEAR =================
   const clearCart = async () => {
     try {
       await cartAPI.clearCart();
