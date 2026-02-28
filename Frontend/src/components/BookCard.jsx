@@ -72,11 +72,11 @@ const BookCard = ({ book, onAddToCart, onAddToWishlist }) => {
           {/* Price */}
           <div className="flex items-center gap-3 mb-3">
             <span className="text-xl font-bold text-gray-900">
-              ${book.discountPrice || book.price}
+              ₹{book.discountPrice || book.price}
             </span>
             {book.discountPrice && (
               <span className="line-through text-gray-400 text-sm">
-                ${book.price}
+                ₹{book.price}
               </span>
             )}
           </div>

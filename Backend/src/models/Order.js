@@ -7,11 +7,13 @@ const orderSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+
     orderNumber: {
       type: String,
       unique: true,
       required: true,
     },
+
     items: [
       {
         book: {
@@ -30,6 +32,7 @@ const orderSchema = new mongoose.Schema(
         },
       },
     ],
+
     shippingAddress: {
       fullName: String,
       phoneNumber: String,
@@ -39,46 +42,55 @@ const orderSchema = new mongoose.Schema(
       zipCode: String,
       country: String,
     },
+
     totalPrice: {
       type: Number,
       required: true,
     },
+
     shippingCost: {
       type: Number,
       default: 0,
     },
+
     taxAmount: {
       type: Number,
       default: 0,
     },
+
     discountAmount: {
       type: Number,
       default: 0,
     },
+
     coupon: {
       code: String,
       discountPercentage: Number,
     },
+
     paymentStatus: {
       type: String,
       enum: ["pending", "completed", "failed", "refunded"],
       default: "pending",
     },
+
     paymentMethod: {
       type: String,
       enum: ["credit_card", "debit_card", "upi", "net_banking"],
       default: "credit_card",
     },
+
     orderstatus: {
       type: String,
       enum: ["pending", "confirmed", "shipped", "delivered", "cancelled"],
       default: "pending",
     },
+
     stripePaymentId: String,
     trackingNumber: String,
     notes: String,
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 orderSchema.index({ user: 1, createdAt: -1 });
 const Order = mongoose.model("Order", orderSchema);

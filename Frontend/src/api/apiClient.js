@@ -81,14 +81,6 @@ export const cartAPI = {
   clearCart: () => api.delete("/cart"),
 };
 
-// export const cartAPI = {
-//   getCart: () => api.get("/cart"),
-//   addToCart: (data) => api.post("/cart/add", data),
-//   updateCartItem: (data) => api.put("/cart/update", data),
-//   removeFromCart: (bookId) => api.delete(`/cart/${bookId}`),
-//   clearCart: () => api.delete("/cart"),
-// };
-
 // ==================== WISHLIST APIs ====================
 export const wishlistAPI = {
   getWishlist: () => api.get("/wishlist"),
