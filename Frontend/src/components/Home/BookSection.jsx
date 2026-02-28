@@ -11,21 +11,25 @@ const BookSection = ({
   onAddToWishlist,
   bg = "bg-gradient-to-b from-white to-gray-50",
   showViewAll = true,
+  limit = 4,
 }) => {
+  const displayedBooks = books.slice(0, limit);
+
   return (
-    <section className={`${bg} py-24`}>
-      <div className="max-w-7xl mx-auto px-6">
+    <section className={`${bg} py-16 sm:py-20 lg:py-24`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+
         {/* ================= HEADER ================= */}
-        <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-6 mb-16">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-6 mb-12 lg:mb-16">
           <div>
-            <h2 className="text-4xl font-bold text-gray-900 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
               {title}
             </h2>
 
-            <div className="h-1 w-16 bg-blue-600 rounded-full mt-4"></div>
+            <div className="h-1 w-14 bg-blue-600 rounded-full mt-3" />
 
             {subtitle && (
-              <p className="text-gray-500 mt-4 text-base max-w-xl leading-relaxed">
+              <p className="text-gray-500 mt-4 text-sm sm:text-base max-w-xl leading-relaxed">
                 {subtitle}
               </p>
             )}
@@ -34,7 +38,8 @@ const BookSection = ({
           {showViewAll && link && (
             <Link
               to={link}
-              className="group inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
+              className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md hover:border-blue-500 transition-all duration-300"
+              aria-label={`View all ${title}`}
             >
               <span className="font-medium text-gray-700 group-hover:text-blue-600 transition">
                 View All
@@ -48,9 +53,9 @@ const BookSection = ({
         </div>
 
         {/* ================= BOOK GRID ================= */}
-        {books.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
-            {books.slice(0, 4).map((book) => (
+        {displayedBooks.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {displayedBooks.map((book) => (
               <div
                 key={book._id}
                 className="transition-transform duration-300 hover:-translate-y-2"
@@ -64,11 +69,19 @@ const BookSection = ({
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl shadow-sm border">
-            <div className="text-6xl mb-4">📚</div>
-            <p className="text-gray-500 text-lg font-medium">
-              No books available right now.
+          <div className="flex flex-col items-center justify-center py-16 bg-white rounded-2xl shadow-sm border border-gray-200 text-center">
+            <div className="text-5xl mb-4">📚</div>
+            <p className="text-gray-500 text-base sm:text-lg font-medium">
+              No books available at the moment.
             </p>
+            {link && (
+              <Link
+                to={link}
+                className="mt-4 text-blue-600 font-medium hover:underline"
+              >
+                Explore all books
+              </Link>
+            )}
           </div>
         )}
       </div>
