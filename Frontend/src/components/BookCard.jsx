@@ -37,7 +37,7 @@ const BookCard = ({ book, onAddToCart, onAddToWishlist }) => {
             to={`/book/${book._id}`}
             className="hover:text-blue-600 transition-colors"
           >
-            <h3 className="text-lg font-semibold text-gray-800 line-clamp-2 leading-snug">
+            <h3 className="text-lg font-semibold text-gray-800 line-clamp-1 leading-snug">
               {book.title}
             </h3>
           </Link>

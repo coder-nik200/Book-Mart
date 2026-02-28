@@ -74,11 +74,20 @@ export const bookAPI = {
 // ==================== CART APIs ====================
 export const cartAPI = {
   getCart: () => api.get("/cart"),
-  addToCart: (data) => api.post("/cart/add", data),
-  updateCartItem: (data) => api.put("/cart/update", data),
+  addToCart: (bookId, quantity) => api.post("/cart/add", { bookId, quantity }),
+  updateCart: (bookId, quantity) =>
+    api.put("/cart/update", { bookId, quantity }),
   removeFromCart: (bookId) => api.delete(`/cart/${bookId}`),
   clearCart: () => api.delete("/cart"),
 };
+
+// export const cartAPI = {
+//   getCart: () => api.get("/cart"),
+//   addToCart: (data) => api.post("/cart/add", data),
+//   updateCartItem: (data) => api.put("/cart/update", data),
+//   removeFromCart: (bookId) => api.delete(`/cart/${bookId}`),
+//   clearCart: () => api.delete("/cart"),
+// };
 
 // ==================== WISHLIST APIs ====================
 export const wishlistAPI = {
