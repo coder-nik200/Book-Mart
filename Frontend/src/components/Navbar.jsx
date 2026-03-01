@@ -10,7 +10,6 @@ import {
   User,
   LayoutDashboard,
   BookOpenText,
-  ShieldCheck,
   Package,
   UserPlus,
   LogIn,
@@ -18,20 +17,26 @@ import {
 
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
+import { useWishlist } from "../context/WishlistContext"; // ✅ Added
 
 const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const { cart } = useCart();
+  const { totalItems: wishlistCount } = useWishlist(); // ✅ Wishlist count
+
   const navigate = useNavigate();
   const location = useLocation();
+
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const searchRef = useRef(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
+  const searchRef = useRef(null);
   const profileRef = useRef(null);
+
+  /* ================= CLOSE SEARCH ON OUTSIDE CLICK ================= */
   useEffect(() => {
     const handler = (e) => {
       if (searchRef.current && !searchRef.current.contains(e.target)) {
@@ -54,7 +59,7 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  // Close mobile menu on route change
+  /* ================= CLOSE MOBILE MENU ON ROUTE CHANGE ================= */
   useEffect(() => {
     setMobileMenuOpen(false);
     setProfileOpen(false);
@@ -91,7 +96,7 @@ const Navbar = () => {
     <nav className="bg-white/80 backdrop-blur-md shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
+          {/* ================= LOGO ================= */}
           <Link
             to="/"
             className="flex items-center gap-2 text-2xl font-bold text-blue-600"
@@ -200,10 +205,18 @@ const Navbar = () => {
               </button>
             </div>
 
-            <NavLink to="/wishlist">
+            {/* ================= RIGHT SIDE ================= */}
+            {/* ❤️ Wishlist with Badge */}
+            <NavLink to="/wishlist" className="relative">
               <Heart size={22} />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
             </NavLink>
 
+            {/* 🛒 Cart with Badge */}
             <NavLink to="/cart" className="relative">
               <ShoppingCart size={22} />
               {cart?.totalItems > 0 && (
@@ -213,7 +226,7 @@ const Navbar = () => {
               )}
             </NavLink>
 
-            {/* Profile */}
+            {/* ================= AUTH SECTION ================= */}
             {isAuthenticated ? (
               <div className="relative hidden md:block" ref={profileRef}>
                 <button onClick={() => setProfileOpen(!profileOpen)}>
@@ -222,78 +235,35 @@ const Navbar = () => {
 
                 {profileOpen && (
                   <div className="absolute right-0 mt-3 w-60 bg-white shadow-lg rounded-lg p-2 z-50">
-                    {/* Greeting */}
-                    <p className="px-4 py-2 font-semibold text-gray-900 border-b border-gray-100">
+                    <p className="px-4 py-2 font-semibold border-b">
                       Hi, {user?.name}
                     </p>
 
-                    {/* Links */}
-                    <nav className="flex flex-col">
-                      <NavLink
-                        to="/profile"
-                        className={({ isActive }) =>
-                          `px-4 py-2 rounded flex items-center gap-2 transition text-gray-700 hover:bg-gray-100 ${
-                            isActive
-                              ? "bg-blue-50 text-blue-600 font-medium"
-                              : ""
-                          }`
-                        }
-                      >
-                        <User size={16} />
-                        Profile
-                      </NavLink>
+                    <NavLink
+                      to="/profile"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      Profile
+                    </NavLink>
 
-                      <NavLink
-                        to="/orders"
-                        className={({ isActive }) =>
-                          `px-4 py-2 rounded flex items-center gap-2 transition text-gray-700 hover:bg-gray-100 ${
-                            isActive
-                              ? "bg-blue-50 text-blue-600 font-medium"
-                              : ""
-                          }`
-                        }
-                      >
-                        <Package size={16} />
-                        My Orders
-                      </NavLink>
+                    <NavLink
+                      to="/orders"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      My Orders
+                    </NavLink>
 
-                      <NavLink
-                        to="/wishlist"
-                        className={({ isActive }) =>
-                          `px-4 py-2 rounded flex items-center gap-2 transition text-gray-700 hover:bg-gray-100 ${
-                            isActive
-                              ? "bg-blue-50 text-blue-600 font-medium"
-                              : ""
-                          }`
-                        }
-                      >
-                        <Heart size={16} />
-                        Wishlist
-                      </NavLink>
+                    <NavLink
+                      to="/dashboard"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      Dashboard
+                    </NavLink>
 
-                      <NavLink
-                        to="/dashboard"
-                        className={({ isActive }) =>
-                          `px-4 py-2 rounded flex items-center gap-2 transition text-gray-700 hover:bg-gray-100 ${
-                            isActive
-                              ? "bg-blue-50 text-blue-600 font-medium"
-                              : ""
-                          }`
-                        }
-                      >
-                        <LayoutDashboard size={16} />
-                        Dashboard
-                      </NavLink>
-                    </nav>
-
-                    <hr className="my-2 border-gray-200" />
-
-                    {/* Logout */}
                     <button
                       onClick={logout}
-                      className="flex items-center gap-2 px-4 py-2 text-red-600 rounded hover:bg-red-50 w-full transition"
+                      className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50"
                     >
-                      <LogOut size={16} />
                       Logout
                     </button>
                   </div>
@@ -308,7 +278,7 @@ const Navbar = () => {
               </div>
             )}
 
-            {/* Mobile Toggle */}
+            {/* ================= MOBILE TOGGLE ================= */}
             <button
               className="md:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
