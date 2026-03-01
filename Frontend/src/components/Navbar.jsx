@@ -220,6 +220,10 @@ import {
   User,
   LayoutDashboard,
   BookOpenText,
+  ShieldCheck,
+  Package,
+  UserPlus,
+  LogIn,
 } from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
@@ -261,14 +265,12 @@ const Navbar = () => {
     setSearchQuery("");
   };
 
-  const linkStyle =
-    "block px-4 py-2 rounded-md hover:bg-gray-100 transition";
+  const linkStyle = "block px-4 py-2 rounded-md hover:bg-gray-100 transition";
 
   return (
     <nav className="bg-white/80 backdrop-blur-md shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-
           {/* Logo */}
           <Link
             to="/"
@@ -314,28 +316,93 @@ const Navbar = () => {
                 </button>
 
                 {profileOpen && (
-                  <div className="absolute right-0 mt-3 w-56 bg-white shadow-lg rounded-lg p-2">
-                    <p className="px-4 py-2 font-semibold">
+                  <div className="absolute right-0 mt-3 w-60 bg-white shadow-lg rounded-lg p-2 z-50">
+                    {/* Greeting */}
+                    <p className="px-4 py-2 font-semibold text-gray-900 border-b border-gray-100">
                       Hi, {user?.name}
                     </p>
 
-                    <NavLink to="/profile" className={linkStyle}>Profile</NavLink>
-                    <NavLink to="/orders" className={linkStyle}>My Orders</NavLink>
-                    <NavLink to="/wishlist" className={linkStyle}>Wishlist</NavLink>
-                    <NavLink to="/dashboard" className={linkStyle}>Dashboard</NavLink>
-
-                    {user?.role === "admin" && (
-                      <NavLink to="/admin" className={linkStyle}>
-                        <LayoutDashboard size={16} className="inline mr-2" />
-                        Admin Panel
+                    {/* Links */}
+                    <nav className="flex flex-col">
+                      <NavLink
+                        to="/profile"
+                        className={({ isActive }) =>
+                          `px-4 py-2 rounded flex items-center gap-2 transition text-gray-700 hover:bg-gray-100 ${
+                            isActive
+                              ? "bg-blue-50 text-blue-600 font-medium"
+                              : ""
+                          }`
+                        }
+                      >
+                        <User size={16} />
+                        Profile
                       </NavLink>
-                    )}
 
-                    <hr className="my-2" />
+                      <NavLink
+                        to="/orders"
+                        className={({ isActive }) =>
+                          `px-4 py-2 rounded flex items-center gap-2 transition text-gray-700 hover:bg-gray-100 ${
+                            isActive
+                              ? "bg-blue-50 text-blue-600 font-medium"
+                              : ""
+                          }`
+                        }
+                      >
+                        <Package size={16} />
+                        My Orders
+                      </NavLink>
 
+                      <NavLink
+                        to="/wishlist"
+                        className={({ isActive }) =>
+                          `px-4 py-2 rounded flex items-center gap-2 transition text-gray-700 hover:bg-gray-100 ${
+                            isActive
+                              ? "bg-blue-50 text-blue-600 font-medium"
+                              : ""
+                          }`
+                        }
+                      >
+                        <Heart size={16} />
+                        Wishlist
+                      </NavLink>
+
+                      <NavLink
+                        to="/dashboard"
+                        className={({ isActive }) =>
+                          `px-4 py-2 rounded flex items-center gap-2 transition text-gray-700 hover:bg-gray-100 ${
+                            isActive
+                              ? "bg-blue-50 text-blue-600 font-medium"
+                              : ""
+                          }`
+                        }
+                      >
+                        <LayoutDashboard size={16} />
+                        Dashboard
+                      </NavLink>
+
+                      {user?.role === "admin" && (
+                        <NavLink
+                          to="/admin"
+                          className={({ isActive }) =>
+                            `px-4 py-2 rounded flex items-center gap-2 transition text-gray-700 hover:bg-gray-100 ${
+                              isActive
+                                ? "bg-blue-50 text-blue-600 font-medium"
+                                : ""
+                            }`
+                          }
+                        >
+                          <ShieldCheck size={16} />
+                          Admin Panel
+                        </NavLink>
+                      )}
+                    </nav>
+
+                    <hr className="my-2 border-gray-200" />
+
+                    {/* Logout */}
                     <button
                       onClick={logout}
-                      className="flex items-center gap-2 px-4 py-2 text-red-600 w-full"
+                      className="flex items-center gap-2 px-4 py-2 text-red-600 rounded hover:bg-red-50 w-full transition"
                     >
                       <LogOut size={16} />
                       Logout
@@ -376,28 +443,107 @@ const Navbar = () => {
 
             {isAuthenticated ? (
               <>
-                <NavLink to="/profile" className={linkStyle}>Profile</NavLink>
-                <NavLink to="/orders" className={linkStyle}>Orders</NavLink>
-                <NavLink to="/wishlist" className={linkStyle}>Wishlist</NavLink>
-                <NavLink to="/dashboard" className={linkStyle}>Dashboard</NavLink>
+                <NavLink
+                  to="/profile"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 transition ${
+                      isActive
+                        ? "bg-blue-50 text-blue-600 font-medium"
+                        : "text-gray-700"
+                    }`
+                  }
+                >
+                  <User size={16} /> Profile
+                </NavLink>
+
+                <NavLink
+                  to="/orders"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 transition ${
+                      isActive
+                        ? "bg-blue-50 text-blue-600 font-medium"
+                        : "text-gray-700"
+                    }`
+                  }
+                >
+                  <Package size={16} /> Orders
+                </NavLink>
+
+                <NavLink
+                  to="/wishlist"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 transition ${
+                      isActive
+                        ? "bg-blue-50 text-blue-600 font-medium"
+                        : "text-gray-700"
+                    }`
+                  }
+                >
+                  <Heart size={16} /> Wishlist
+                </NavLink>
+
+                <NavLink
+                  to="/dashboard"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 transition ${
+                      isActive
+                        ? "bg-blue-50 text-blue-600 font-medium"
+                        : "text-gray-700"
+                    }`
+                  }
+                >
+                  <LayoutDashboard size={16} /> Dashboard
+                </NavLink>
 
                 {user?.role === "admin" && (
-                  <NavLink to="/admin" className={linkStyle}>
-                    Admin Panel
+                  <NavLink
+                    to="/admin"
+                    className={({ isActive }) =>
+                      `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 transition ${
+                        isActive
+                          ? "bg-blue-50 text-blue-600 font-medium"
+                          : "text-gray-700"
+                      }`
+                    }
+                  >
+                    <ShieldCheck size={16} /> Admin Panel
                   </NavLink>
                 )}
 
                 <button
                   onClick={logout}
-                  className="text-red-600 px-4 py-2 w-full text-left"
+                  className="flex items-center gap-2 px-4 py-2 text-red-600 w-full text-left rounded hover:bg-red-50 transition"
                 >
-                  Logout
+                  <LogOut size={16} /> Logout
                 </button>
               </>
             ) : (
               <>
-                <NavLink to="/login" className={linkStyle}>Login</NavLink>
-                <NavLink to="/signup" className={linkStyle}>Sign Up</NavLink>
+                <NavLink
+                  to="/login"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 transition ${
+                      isActive
+                        ? "bg-blue-50 text-blue-600 font-medium"
+                        : "text-gray-700"
+                    }`
+                  }
+                >
+                  <LogIn size={16} /> Login
+                </NavLink>
+
+                <NavLink
+                  to="/signup"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 transition ${
+                      isActive
+                        ? "bg-blue-50 text-blue-600 font-medium"
+                        : "text-gray-700"
+                    }`
+                  }
+                >
+                  <UserPlus size={16} /> Sign Up
+                </NavLink>
               </>
             )}
           </div>

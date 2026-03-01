@@ -8,6 +8,7 @@ const wishlistSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+
     books: [
       {
         book: {
@@ -22,7 +23,7 @@ const wishlistSchema = new mongoose.Schema(
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Wishlist = mongoose.model("Wishlist", wishlistSchema);

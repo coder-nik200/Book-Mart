@@ -17,16 +17,20 @@ import adminBookRoutes from "./src/routes/adminBookRoutes.js";
 import adminOrderRoutes from "./src/routes/adminOrderRoutes.js";
 import adminUserRoutes from "./src/routes/adminUserRoutes.js";
 import adminDashboardRoutes from "./src/routes/adminDashboardRoutes.js";
+import orderRoutes from "./src/routes/orderRoutes.js";
+
 import path from "path";
 dotenv.config();
 
 const app = express();
 
 // ✅ Middleware
-app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:5173",
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    credentials: true,
+  }),
+);
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(cookieParser());
@@ -51,6 +55,8 @@ app.use("/api/admin/books", adminBookRoutes);
 app.use("/api/admin/orders", adminOrderRoutes);
 app.use("/api/admin/users", adminUserRoutes);
 app.use("/api/user/addresses", addressRoutes);
+app.use("/api/orders", orderRoutes);
+
 // ✅ Health Check
 app.get("/", (req, res) => {
   res.json({ message: "BookMart API is running" });

@@ -10,28 +10,22 @@ const ProfileOverview = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  /* ================= FETCH PROFILE ================= */
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         setLoading(true);
         const res = await userAPI.getProfile();
         setProfile(res.data.user);
-        setForm({
-          name: res.data.user.name,
-          email: res.data.user.email,
-        });
+        setForm({ name: res.data.user.name, email: res.data.user.email });
       } catch (error) {
         toast.error("Failed to load profile");
       } finally {
         setLoading(false);
       }
     };
-
     fetchProfile();
   }, []);
 
-  /* ================= UPDATE PROFILE ================= */
   const updateProfile = async () => {
     try {
       setSaving(true);
@@ -46,34 +40,31 @@ const ProfileOverview = () => {
     }
   };
 
-  /* ================= LOADING ================= */
-  if (loading) {
+  if (loading)
     return (
       <div className="flex justify-center items-center min-h-[300px]">
         <Loader2 size={36} className="animate-spin text-blue-600" />
       </div>
     );
-  }
 
   if (!profile) return null;
 
   return (
-    <div className="bg-white rounded-2xl shadow p-6 sm:p-8">
+    <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 max-w-xl mx-auto">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8">
         <div>
-          <h2 className="text-xl font-bold text-gray-900">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
             Profile Information
           </h2>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 mt-1 sm:mt-0">
             View and update your personal details
           </p>
         </div>
-
         {!edit && (
           <button
             onClick={() => setEdit(true)}
-            className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50 transition"
+            className="flex items-center gap-2 mt-3 sm:mt-0 px-4 py-2 border rounded-lg hover:bg-gray-50 transition"
           >
             <Edit2 size={16} />
             Edit
@@ -82,29 +73,29 @@ const ProfileOverview = () => {
       </div>
 
       {/* Avatar */}
-      <div className="flex flex-col items-center mb-8">
-        <div className="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-4xl font-bold">
+      <div className="flex flex-col items-center mb-6 sm:mb-8">
+        <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-4xl sm:text-5xl font-bold shadow-inner">
           {profile.name.charAt(0).toUpperCase()}
         </div>
-        <p className="mt-3 font-semibold text-lg">{profile.name}</p>
-        <p className="text-sm text-gray-500">{profile.role}</p>
+        <p className="mt-2 sm:mt-3 font-semibold text-lg sm:text-xl text-gray-800">
+          {profile.name}
+        </p>
+        <p className="text-sm text-gray-500">{profile.role || "User"}</p>
       </div>
 
       {/* Form */}
-      <div className="space-y-6 max-w-xl mx-auto">
+      <div className="space-y-4 sm:space-y-6">
         {/* Name */}
         <div>
           <label className="text-sm text-gray-500">Full Name</label>
           <div className="mt-1 relative">
-            <User size={18} className="absolute left-3 top-3 text-gray-400" />
+            <User className="absolute left-3 top-3 text-gray-400" size={18} />
             <input
               disabled={!edit}
               value={form.name}
-              onChange={(e) =>
-                setForm({ ...form, name: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
               className={`w-full pl-10 pr-4 py-2 border rounded-lg transition
-                ${edit ? "focus:ring-2 focus:ring-blue-500" : "bg-gray-50"}
+                ${edit ? "focus:ring-2 focus:ring-blue-500 bg-white" : "bg-gray-50 cursor-not-allowed"}
               `}
             />
           </div>
@@ -114,15 +105,13 @@ const ProfileOverview = () => {
         <div>
           <label className="text-sm text-gray-500">Email Address</label>
           <div className="mt-1 relative">
-            <Mail size={18} className="absolute left-3 top-3 text-gray-400" />
+            <Mail className="absolute left-3 top-3 text-gray-400" size={18} />
             <input
               disabled={!edit}
               value={form.email}
-              onChange={(e) =>
-                setForm({ ...form, email: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
               className={`w-full pl-10 pr-4 py-2 border rounded-lg transition
-                ${edit ? "focus:ring-2 focus:ring-blue-500" : "bg-gray-50"}
+                ${edit ? "focus:ring-2 focus:ring-blue-500 bg-white" : "bg-gray-50 cursor-not-allowed"}
               `}
             />
           </div>
@@ -131,16 +120,13 @@ const ProfileOverview = () => {
 
       {/* Actions */}
       {edit && (
-        <div className="mt-8 flex justify-end gap-4">
+        <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-end gap-3 sm:gap-4">
           <button
             onClick={() => {
               setEdit(false);
-              setForm({
-                name: profile.name,
-                email: profile.email,
-              });
+              setForm({ name: profile.name, email: profile.email });
             }}
-            className="flex items-center gap-2 px-5 py-2 border rounded-lg hover:bg-gray-50"
+            className="flex items-center justify-center gap-2 px-5 py-2 border rounded-lg hover:bg-gray-50 transition w-full sm:w-auto"
           >
             <X size={16} />
             Cancel
@@ -149,7 +135,7 @@ const ProfileOverview = () => {
           <button
             onClick={updateProfile}
             disabled={saving}
-            className="flex items-center gap-2 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-60"
+            className="flex items-center justify-center gap-2 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-60 transition w-full sm:w-auto"
           >
             {saving ? (
               <Loader2 size={16} className="animate-spin" />

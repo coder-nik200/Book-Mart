@@ -16,9 +16,7 @@ const OrderHistory = () => {
 
       {orders.map((order) => (
         <div key={order._id} className="border-b py-4">
-          <p className="font-semibold">
-            Order #{order._id.slice(-6)}
-          </p>
+          <p className="font-semibold">Order #{order._id.slice(-6)}</p>
           <p className="text-sm text-gray-500">
             Items: {order.items.length} • Status: {order.status}
           </p>

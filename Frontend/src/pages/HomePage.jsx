@@ -55,17 +55,8 @@ const HomePage = () => {
       addToCart(book, 1);
       toast.success("Book added to cart");
     },
-    [addToCart]
+    [addToCart],
   );
-
-  /**
-   * Wishlist handler (API ready)
-   */
-  const handleAddToWishlist = useCallback((book) => {
-    // TODO: connect wishlist API
-    console.log("Wishlist:", book);
-    toast.success("Added to wishlist");
-  }, []);
 
   if (loading) return <Loading />;
 
@@ -83,7 +74,6 @@ const HomePage = () => {
         link="/books"
         books={featuredBooks}
         onAddToCart={handleAddToCart}
-        onAddToWishlist={handleAddToWishlist}
       />
 
       {/* New Arrivals */}
@@ -92,7 +82,6 @@ const HomePage = () => {
         link="/books?sort=newest"
         books={newArrivals}
         onAddToCart={handleAddToCart}
-        onAddToWishlist={handleAddToWishlist}
         bg="bg-gray-100"
       />
 
@@ -102,7 +91,6 @@ const HomePage = () => {
         link="/books?sort=popularity"
         books={bestSellers}
         onAddToCart={handleAddToCart}
-        onAddToWishlist={handleAddToWishlist}
       />
 
       {/* Platform Features */}

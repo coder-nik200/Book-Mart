@@ -18,7 +18,6 @@ const ChangePassword = () => {
 
   const [loading, setLoading] = useState(false);
 
-  /* ================= HANDLERS ================= */
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -27,27 +26,22 @@ const ChangePassword = () => {
     setShow({ ...show, [key]: !show[key] });
   };
 
-  /* ================= VALIDATION ================= */
   const validate = () => {
     if (!form.currentPassword || !form.newPassword || !form.confirmPassword) {
       toast.error("All fields are required");
       return false;
     }
-
     if (form.newPassword.length < 8) {
       toast.error("New password must be at least 8 characters");
       return false;
     }
-
     if (form.newPassword !== form.confirmPassword) {
       toast.error("Passwords do not match");
       return false;
     }
-
     return true;
   };
 
-  /* ================= SUBMIT ================= */
   const submit = async () => {
     if (!validate()) return;
 
@@ -55,26 +49,19 @@ const ChangePassword = () => {
       setLoading(true);
       await userAPI.changePassword(form);
       toast.success("Password updated successfully");
-
-      setForm({
-        currentPassword: "",
-        newPassword: "",
-        confirmPassword: "",
-      });
+      setForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Password update failed"
-      );
+      toast.error(error.response?.data?.message || "Password update failed");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow p-6 sm:p-8 max-w-xl">
+    <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 max-w-xl mx-auto">
       {/* Header */}
-      <div className="mb-8">
-        <h2 className="text-xl font-bold text-gray-900">
+      <div className="mb-6 sm:mb-8">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
           Change Password
         </h2>
         <p className="text-sm text-gray-500 mt-1">
@@ -83,19 +70,18 @@ const ChangePassword = () => {
       </div>
 
       {/* Form */}
-      <div className="space-y-6">
-
+      <div className="space-y-4 sm:space-y-6">
         {/* Current Password */}
         <div>
           <label className="text-sm text-gray-600">Current Password</label>
           <div className="relative mt-1">
-            <Lock size={18} className="absolute left-3 top-3 text-gray-400" />
+            <Lock className="absolute left-3 top-3 text-gray-400" size={18} />
             <input
               type={show.current ? "text" : "password"}
               name="currentPassword"
               value={form.currentPassword}
               onChange={handleChange}
-              className="w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 transition"
             />
             <button
               type="button"
@@ -111,13 +97,13 @@ const ChangePassword = () => {
         <div>
           <label className="text-sm text-gray-600">New Password</label>
           <div className="relative mt-1">
-            <Lock size={18} className="absolute left-3 top-3 text-gray-400" />
+            <Lock className="absolute left-3 top-3 text-gray-400" size={18} />
             <input
               type={show.new ? "text" : "password"}
               name="newPassword"
               value={form.newPassword}
               onChange={handleChange}
-              className="w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 transition"
             />
             <button
               type="button"
@@ -136,13 +122,13 @@ const ChangePassword = () => {
         <div>
           <label className="text-sm text-gray-600">Confirm New Password</label>
           <div className="relative mt-1">
-            <Lock size={18} className="absolute left-3 top-3 text-gray-400" />
+            <Lock className="absolute left-3 top-3 text-gray-400" size={18} />
             <input
               type={show.confirm ? "text" : "password"}
               name="confirmPassword"
               value={form.confirmPassword}
               onChange={handleChange}
-              className="w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 transition"
             />
             <button
               type="button"
@@ -155,11 +141,11 @@ const ChangePassword = () => {
         </div>
 
         {/* Submit */}
-        <div className="pt-4 flex justify-end">
+        <div className="pt-4 flex flex-col sm:flex-row justify-end gap-3">
           <button
             onClick={submit}
             disabled={loading}
-            className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-60"
+            className="flex items-center justify-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-60 w-full sm:w-auto transition"
           >
             {loading ? (
               <Loader2 size={16} className="animate-spin" />

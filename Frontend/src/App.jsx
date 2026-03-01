@@ -24,6 +24,9 @@ import ProfileOverview from "./pages/profile/ProfileOverview";
 import AddressManager from "./pages/profile/AddressManager";
 import OrderHistory from "./pages/profile/OrderHistory";
 import ChangePassword from "./pages/profile/ChangePassword";
+// import ProfileLayout from "./pages/profile/ProfileLayout";
+import OrderSuccessPageWrapper from "./components/OrderSuccessPageWrapper";
+import AboutPage from "./pages/AboutPage";
 
 // Admin
 import AdminLogin from "./admin/AdminLogin";
@@ -51,6 +54,7 @@ const App = () => {
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/books" element={<BooksPage />} />
                 <Route path="/book/:id" element={<BookDetailsPage />} />
+                <Route path="/about" element={<AboutPage />} />
 
                 <Route
                   path="/cart"
@@ -104,6 +108,24 @@ const App = () => {
                   }
                 />
 
+                {/* Admin */}
+                <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute adminOnly>
+                      <AdminDashboard />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/order-success"
+                  element={<OrderSuccessPageWrapper />}
+                />
+
+                <Route path="/order/:orderId" element={<OrderPage />} />
+
+                {/* Fallback */}
                 <Route path="*" element={<NotFound />} />
               </Route>
 
