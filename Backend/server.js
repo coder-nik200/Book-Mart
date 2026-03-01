@@ -31,7 +31,12 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(cookieParser());
 // ✅ Serve local uploads (dev only)
+
+// ✅ Serve seeded images
 app.use("/upload", express.static(path.join(process.cwd(), "upload")));
+
+// ✅ Serve user uploaded images
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 // ✅ Connect DB
 connectDB();
 
