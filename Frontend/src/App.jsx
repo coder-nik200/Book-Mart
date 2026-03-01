@@ -44,9 +44,7 @@ const App = () => {
       <Router>
         <AuthProvider>
           <CartProvider>
-
             <Routes>
-
               {/* ============ WEBSITE LAYOUT ROUTES ============ */}
               <Route element={<Layout />}>
                 <Route path="/" element={<HomePage />} />
@@ -130,26 +128,24 @@ const App = () => {
               </Route>
 
               {/* ============ ADMIN ROUTES (NO LAYOUT) ============ */}
-{/* ============ ADMIN ROUTES ============ */}
-<Route path="/admin/login" element={<AdminLogin />} />
+              {/* ============ ADMIN ROUTES ============ */}
+              <Route path="/admin/login" element={<AdminLogin />} />
 
-<Route
-  path="/admin"
-  element={
-    <AdminRoute>
-      <AdminLayout />
-    </AdminRoute>
-  }
->
-  <Route path="dashboard" element={<AdminDashboard />} />
-  {/* future admin routes */}
-  <Route path="users" element={<AdminUsers />} />
-  <Route path="books" element={<AdminBooks />} />
-  <Route path="orders" element={<AdminOrders />} />
-</Route>
-
+              <Route
+                path="/admin"
+                element={
+                  <AdminRoute>
+                    <AdminLayout />
+                  </AdminRoute>
+                }
+              >
+                <Route path="dashboard" element={<AdminDashboard />} />
+                {/* future admin routes */}
+                <Route path="users" element={<AdminUsers />} />
+                <Route path="books" element={<AdminBooks />} />
+                <Route path="orders" element={<AdminOrders />} />
+              </Route>
             </Routes>
-
           </CartProvider>
         </AuthProvider>
       </Router>

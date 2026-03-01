@@ -52,7 +52,8 @@ export const getUserOrders = async (req, res) => {
   const orders = await Order.find({ user: req.user._id })
     .sort({ createdAt: -1 })
     .limit(limit * 1)
-    .skip((page - 1) * limit);
+    .skip((page - 1) * limit)
+    .populate("items.book", "title image price"); // <-- populate the book details
 
   res.json({
     success: true,
@@ -67,7 +68,7 @@ export const getOrder = async (req, res) => {
   const order = await Order.findOne({
     _id: req.params.orderId,
     user: req.user._id,
-  });
+  }).populate("items.book", "title image price"); // <-- populate book
 
   if (!order) {
     return res.status(404).json({ message: "Order not found" });

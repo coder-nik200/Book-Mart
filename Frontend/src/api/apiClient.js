@@ -248,7 +248,6 @@ export const cartAPI = {
 };
 
 /* ==================== WISHLIST APIs ==================== */
-// ==================== WISHLIST APIs ====================
 export const wishlistAPI = {
   getWishlist: () => api.get("/wishlist"),
   addToWishlist: (data) => api.post("/wishlist/add", data),

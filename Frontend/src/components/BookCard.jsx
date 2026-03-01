@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { ShoppingCart, Heart } from "lucide-react";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { wishlistAPI } from "../api/apiClient";
 import toast from "react-hot-toast";
 
 const BookCard = ({ book, onAddToCart }) => {
   const [inWishlist, setInWishlist] = useState(false);
   const [wishlistLoading, setWishlistLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   /* =============================
      Check If Book Is In Wishlist
@@ -52,12 +54,12 @@ const BookCard = ({ book, onAddToCart }) => {
   };
 
   return (
-    <div className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+    <div
+      onClick={() => navigate(`/book/${book._id}`)}
+      className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+    >
       {/* Image */}
-      <Link
-        to={`/book/${book._id}`}
-        className="block relative h-72 overflow-hidden bg-gray-100"
-      >
+      <Link className="block relative h-72 overflow-hidden bg-gray-100">
         <img
           src={
             book.image?.url

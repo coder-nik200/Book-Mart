@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { bookAPI, wishlistAPI } from "../api/apiClient";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaStar, FaStarHalfAlt, FaRegStar, FaBookOpen } from "react-icons/fa";
 import { ShoppingCart, Heart } from "lucide-react";
 import { useCart } from "../context/CartContext";
@@ -16,6 +16,7 @@ const FullMenu = () => {
   const [wishlistLoading, setWishlistLoading] = useState(false);
 
   const { addToCart } = useCart();
+  const navigate = useNavigate();
 
   const fetchBooks = async (page = 1) => {
     try {
@@ -121,7 +122,11 @@ const FullMenu = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
                     whileHover={{ y: -8 }}
-                    className="bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden"
+                    className="bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer"
+                    onClick={() => {
+                      window.scrollTo({ top: 0, behavior: "smooth" }); // scroll to top
+                      navigate(`/book/${book._id}`); // go to book page
+                    }}
                   >
                     <img
                       src={`http://localhost:5000${book.image?.url}`}
