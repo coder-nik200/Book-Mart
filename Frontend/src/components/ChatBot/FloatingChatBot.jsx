@@ -5,7 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 const FloatingChatBot = () => {
   const { isAuthenticated } = useAuth();
 
-  if (!isAuthenticated) return null; // show only if logged in
+  if (!isAuthenticated) return null; 
 
   return (
     <div
@@ -22,7 +22,7 @@ const FloatingChatBot = () => {
         cursor: "pointer",
       }}
       onClick={() => {
-        // you can implement toggle here for full chat window
+
         const chat = document.getElementById("ai-chat-window");
         if (chat)
           chat.style.display = chat.style.display === "none" ? "block" : "none";

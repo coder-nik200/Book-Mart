@@ -2,7 +2,6 @@ import User from "../models/User.js";
 import Address from "../models/Address.js";
 import Order from "../models/Order.js";
 
-// ==================== GET USER PROFILE ====================
 export const getUserProfile = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -17,7 +16,6 @@ export const getUserProfile = async (req, res) => {
   }
 };
 
-// ==================== UPDATE USER PROFILE ====================
 export const updateUserProfile = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -38,8 +36,6 @@ export const updateUserProfile = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
-// ==================== CHANGE PASSWORD ====================
 export const changePassword = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -78,7 +74,6 @@ export const changePassword = async (req, res) => {
   }
 };
 
-// ==================== GET ALL ADDRESSES ====================
 export const getAddresses = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -94,7 +89,6 @@ export const getAddresses = async (req, res) => {
   }
 };
 
-// ==================== ADD ADDRESS ====================
 export const addAddress = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -111,7 +105,6 @@ export const addAddress = async (req, res) => {
     } = req.body;
 
     if (isDefault) {
-      // Remove default from other addresses
       await Address.updateMany({ user: userId }, { isDefault: false });
     }
 
@@ -137,8 +130,6 @@ export const addAddress = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
-// ==================== UPDATE ADDRESS ====================
 export const updateAddress = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -190,7 +181,6 @@ export const updateAddress = async (req, res) => {
   }
 };
 
-// ==================== DELETE ADDRESS ====================
 export const deleteAddress = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -214,7 +204,6 @@ export const deleteAddress = async (req, res) => {
   }
 };
 
-// ==================== GET ORDER HISTORY ====================
 export const getOrderHistory = async (req, res) => {
   try {
     const userId = req.user._id;

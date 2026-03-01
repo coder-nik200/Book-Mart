@@ -11,9 +11,6 @@ const BookCard = ({ book, onAddToCart }) => {
 
   const navigate = useNavigate();
 
-  /* =============================
-     Check If Book Is In Wishlist
-  ============================= */
   useEffect(() => {
     const checkWishlist = async () => {
       try {
@@ -29,9 +26,7 @@ const BookCard = ({ book, onAddToCart }) => {
     }
   }, [book?._id]);
 
-  /* =============================
-     Toggle Wishlist
-  ============================= */
+
   const handleWishlistClick = async () => {
     try {
       setWishlistLoading(true);
@@ -58,7 +53,7 @@ const BookCard = ({ book, onAddToCart }) => {
       onClick={() => navigate(`/book/${book._id}`)}
       className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
     >
-      {/* Image */}
+
       <Link className="block relative h-72 overflow-hidden bg-gray-100">
         <img
           src={
@@ -78,7 +73,6 @@ const BookCard = ({ book, onAddToCart }) => {
         )}
       </Link>
 
-      {/* Content */}
       <div className="p-5 flex flex-col justify-between h-[260px]">
         <div>
           <Link
@@ -92,7 +86,6 @@ const BookCard = ({ book, onAddToCart }) => {
 
           <p className="text-gray-500 text-sm mt-1 mb-3">{book.author}</p>
 
-          {/* Rating */}
           <div className="flex items-center gap-2 mb-3">
             <div className="flex text-yellow-400">
               {Array.from({ length: 5 }).map((_, i) => {
@@ -117,7 +110,6 @@ const BookCard = ({ book, onAddToCart }) => {
             </span>
           </div>
 
-          {/* Price */}
           <div className="flex items-center gap-3 mb-3">
             <span className="text-xl font-bold text-gray-900">
               ₹{book.discountPrice || book.price}
@@ -130,7 +122,6 @@ const BookCard = ({ book, onAddToCart }) => {
             )}
           </div>
 
-          {/* Stock */}
           <div>
             {book.stock > 0 ? (
               <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">
@@ -144,7 +135,6 @@ const BookCard = ({ book, onAddToCart }) => {
           </div>
         </div>
 
-        {/* Actions */}
         <div className="flex gap-3 mt-5">
           <button
             onClick={() => onAddToCart(book)}

@@ -1,8 +1,4 @@
 import Order from "../models/Order.js";
-
-/* =========================
-   GET ALL ORDERS (ADMIN)
-========================= */
 export const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find()
@@ -16,13 +12,10 @@ export const getAllOrders = async (req, res) => {
   }
 };
 
-/* =========================
-   UPDATE ORDER STATUS (ADMIN)
-   Only pending <-> delivered
-========================= */
+
 export const updateOrderStatus = async (req, res) => {
   try {
-    const { status } = req.body; // ✅ FIXED
+    const { status } = req.body;
 
     const allowedStatuses = ["pending", "delivered"];
 
@@ -38,9 +31,7 @@ export const updateOrderStatus = async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    order.orderstatus = status; // ✅ FIXED FIELD
-
-    // Business rule
+    order.orderstatus = status; 
     if (status === "delivered") {
       order.paymentStatus = "completed";
     }

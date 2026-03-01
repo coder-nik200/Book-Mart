@@ -1,7 +1,7 @@
 import Cart from "../models/Cart.js";
 import Book from "../models/Book.js";
 
-// ==================== GET CART ====================
+
 export const getCart = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -20,7 +20,6 @@ export const getCart = async (req, res) => {
   }
 };
 
-// ==================== ADD TO CART ====================
 export const addToCart = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -53,7 +52,6 @@ export const addToCart = async (req, res) => {
         ],
       });
     } else {
-      // Check if book already in cart
       const existingItem = cart.items.find((item) => item.book.toString() === bookId);
 
       if (existingItem) {
@@ -67,7 +65,6 @@ export const addToCart = async (req, res) => {
       }
     }
 
-    // Calculate total price and items
     cart.totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
     cart.totalPrice = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -83,8 +80,6 @@ export const addToCart = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
-// ==================== UPDATE CART ITEM ====================
 export const updateCartItem = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -113,8 +108,6 @@ export const updateCartItem = async (req, res) => {
       }
       cart.items[itemIndex].quantity = quantity;
     }
-
-    // Recalculate totals
     cart.totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
     cart.totalPrice = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -131,7 +124,6 @@ export const updateCartItem = async (req, res) => {
   }
 };
 
-// ==================== REMOVE FROM CART ====================
 export const removeFromCart = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -144,7 +136,6 @@ export const removeFromCart = async (req, res) => {
 
     cart.items = cart.items.filter((item) => item.book.toString() !== bookId);
 
-    // Recalculate totals
     cart.totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
     cart.totalPrice = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -161,7 +152,6 @@ export const removeFromCart = async (req, res) => {
   }
 };
 
-// ==================== CLEAR CART ====================
 export const clearCart = async (req, res) => {
   try {
     const userId = req.user._id;

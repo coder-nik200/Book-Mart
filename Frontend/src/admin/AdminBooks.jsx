@@ -6,7 +6,7 @@ import { adminAPI, bookAPI } from "../api/apiClient";
 const BASE_URL = "http://localhost:5000";
 
 const AdminBooks = () => {
-  /* ================= STATE ================= */
+
   const [allBooks, setAllBooks] = useState([]);
   const [books, setBooks] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -31,12 +31,11 @@ const AdminBooks = () => {
     isFeatured: false,
     isBestSeller: false,
     isNewArrival: false,
-    image: null, // IMPORTANT: single file only
+    image: null, 
   };
 
   const [formData, setFormData] = useState(initialFormState);
 
-  /* ================= FETCH ================= */
   const fetchBooks = async () => {
     try {
       setLoading(true);
@@ -45,10 +44,10 @@ const AdminBooks = () => {
         page: 1,
         limit: 100,
       });
-      // setBooks(res.data.books || []);
+
       const fetched = res.data.books || [];
-setAllBooks(fetched); // master copy
-setBooks(fetched);    // visible copy
+setAllBooks(fetched); 
+setBooks(fetched);    
     } catch {
       toast.error("Failed to load books");
     } finally {
@@ -86,7 +85,6 @@ setBooks(fetched);    // visible copy
   setBooks(filtered);
 }, [search, allBooks]);
 
-  /* ================= HELPERS ================= */
   const generateSlug = (text) =>
     text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
@@ -108,7 +106,6 @@ setBooks(fetched);    // visible copy
     setImagePreview(URL.createObjectURL(file));
   };
 
-  /* ================= MODAL ================= */
   const openAddModal = () => {
     setEditingBook(null);
     setFormData(initialFormState);
@@ -122,13 +119,12 @@ setBooks(fetched);    // visible copy
       ...initialFormState,
       ...book,
       category: book.category?._id || book.category,
-      image: null, // DO NOT preload file
+      image: null, 
     });
     setImagePreview(null);
     setShowModal(true);
   };
 
-  /* ================= SUBMIT ================= */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -154,7 +150,6 @@ setBooks(fetched);    // visible copy
 
       const payload = new FormData();
 
-      // ✅ STRICT FIELD WHITELIST (NO additionalImages!)
       const allowedFields = [
         "title",
         "slug",
@@ -199,7 +194,7 @@ setBooks(fetched);    // visible copy
     }
   };
 
-  /* ================= DELETE ================= */
+
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this book permanently?")) return;
     try {
@@ -215,17 +210,14 @@ const getImageUrl = (book) => {
 
   const url = book.image.url;
 
-  // Just prefix backend URL
   return url.startsWith("http")
     ? url
     : `${BASE_URL}${book.image.url}`;
 };
 
-  /* ================= UI ================= */
   return (
     <div className="flex flex-col h-full gap-6 text-white">
 
-      {/* HEADER */}
       <div className="flex flex-col md:flex-row justify-between gap-4">
         <h2 className="text-xl font-semibold">
           Manage Books ({books.length})
@@ -251,7 +243,6 @@ const getImageUrl = (book) => {
         </div>
       </div>
 
-      {/* TABLE */}
       <div className="flex-1 overflow-y-auto no-scrollbar">
         {loading ? (
           <div className="flex justify-center p-10">
@@ -298,7 +289,6 @@ const getImageUrl = (book) => {
         )}
       </div>
 
-      {/* MODAL */}
       {showModal && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
 <div className="bg-[#0b0f19] w-full max-w-lg p-6 rounded-xl max-h-[90vh] overflow-y-auto no-scrollbar">
@@ -321,7 +311,7 @@ const getImageUrl = (book) => {
 
             <form onSubmit={handleSubmit} className="space-y-3">
 
-              {/* TEXT FIELDS */}
+             
               {[
                 ["Title", "title"],
                 ["Slug", "slug"],
@@ -378,8 +368,6 @@ const getImageUrl = (book) => {
                   ))}
                 </select>
               </div>
-
-              {/* FLAGS */}
               <div className="flex gap-4 text-sm">
                 {["isFeatured", "isBestSeller", "isNewArrival"].map((flag) => (
                   <label key={flag} className="flex items-center gap-2">

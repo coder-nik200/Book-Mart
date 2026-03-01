@@ -3,13 +3,11 @@ import axios from "axios";
 
 const API_BASE_URL = "http://localhost:5000/api";
 
-/* ==================== AXIOS INSTANCE ==================== */
 const api = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
 });
 
-/* ==================== REQUEST INTERCEPTOR ==================== */
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("accessToken");
@@ -21,7 +19,6 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-/* ==================== RESPONSE INTERCEPTOR (TOKEN REFRESH) ==================== */
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -54,7 +51,6 @@ return Promise.reject(error);
   }
 );
 
-/* ==================== AUTH APIs ==================== */
 export const authAPI = {
   signup: (data) => api.post("/auth/signup", data),
   login: (data) => api.post("/auth/login", data),
@@ -64,7 +60,6 @@ export const authAPI = {
   resetPassword: (data) => api.post("/auth/reset-password", data),
 };
 
-/* ==================== PUBLIC BOOK APIs ==================== */
 export const bookAPI = {
   getAllBooks: (params) => api.get("/books", { params }),
   getBook: (id) => api.get(`/books/${id}`),
@@ -80,12 +75,10 @@ export const bookAPI = {
   }),
 };
 
-/* ==================== CATEGORY APIs (NEW) ==================== */
 export const categoryAPI = {
   getAllCategories: () => api.get("/admin/categories"),
 };
 
-/* ==================== CART APIs ==================== */
 export const cartAPI = {
   getCart: () => api.get("/cart"),
   addToCart: (bookId, quantity) =>
@@ -97,7 +90,6 @@ export const cartAPI = {
   clearCart: () => api.delete("/cart"),
 };
 
-/* ==================== WISHLIST APIs ==================== */
 export const wishlistAPI = {
   getWishlist: () => api.get("/wishlist"),
   addToWishlist: (data) => api.post("/wishlist/add", data),
@@ -107,7 +99,6 @@ export const wishlistAPI = {
     api.get(`/wishlist/check/${bookId}`),
 };
 
-/* ==================== ORDER APIs ==================== */
 export const orderAPI = {
   createOrder: (data) => api.post("/orders/create", data),
   getUserOrders: (params) =>
@@ -121,7 +112,6 @@ export const orderAPI = {
     api.post("/orders/confirm-payment", data),
 };
 
-/* ==================== USER APIs ==================== */
 export const userAPI = {
   getProfile: () => api.get("/user/profile"),
   updateProfile: (data) => api.put("/user/profile", data),
@@ -137,18 +127,15 @@ export const userAPI = {
     api.get("/user/orders/history", { params }),
 };
 
-/* ==================== ADMIN APIs ==================== */
 export const adminAPI = {
   getDashboardStats: () => api.get("/admin/dashboard"),
 
-  // Books
   addBook: (data) => api.post("/admin/books", data),
   updateBook: (bookId, data) =>
     api.put(`/admin/books/${bookId}`, data),
   deleteBook: (bookId) =>
     api.delete(`/admin/books/${bookId}`),
 
-  // Categories
   addCategory: (data) =>
     api.post("/admin/categories", data),
   updateCategory: (categoryId, data) =>
@@ -156,7 +143,6 @@ export const adminAPI = {
   deleteCategory: (categoryId) =>
     api.delete(`/admin/categories/${categoryId}`),
 
-  // Users
   getAllUsers: (params) =>
     api.get("/admin/users", { params }),
   blockUser: (userId) =>
@@ -164,13 +150,11 @@ export const adminAPI = {
   unblockUser: (userId) =>
     api.put(`/admin/users/${userId}/unblock`),
 
-  // Orders
   getAllOrders: (params) =>
     api.get("/admin/orders", { params }),
   updateOrderStatus: (orderId, data) =>
     api.put(`/admin/orders/${orderId}/status`, data),
 
-  // Reviews
   getAllReviews: () => api.get("/admin/reviews"),
   deleteReview: (reviewId) =>
     api.delete(`/admin/reviews/${reviewId}`),

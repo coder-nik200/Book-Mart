@@ -8,7 +8,6 @@ const AdminOrders = () => {
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState(null);
 
-  /* ================= FETCH ORDERS ================= */
   const fetchOrders = async () => {
     try {
       setLoading(true);
@@ -26,15 +25,11 @@ const AdminOrders = () => {
   useEffect(() => {
     fetchOrders();
   }, []);
-
-  /* ================= UPDATE STATUS ================= */
   const handleStatusChange = async (orderId, status) => {
     try {
       setUpdatingId(orderId);
 
       await adminAPI.updateOrderStatus(orderId, { status });
-
-      // ✅ Optimistic UI update
       setOrders((prev) =>
         prev.map((order) =>
           order._id === orderId
@@ -56,7 +51,6 @@ const AdminOrders = () => {
   return (
     <div className="w-full max-w-7xl mx-auto space-y-6 text-white">
 
-      {/* HEADER */}
       <div>
         <h1 className="text-2xl font-semibold flex items-center gap-2">
           <ShoppingBag size={22} /> Orders
@@ -65,8 +59,6 @@ const AdminOrders = () => {
           Update order status (Pending / Delivered)
         </p>
       </div>
-
-      {/* ================= DESKTOP TABLE ================= */}
       <div className="hidden md:block overflow-x-auto rounded-2xl border border-white/10">
         <table className="w-full text-sm min-w-[800px]">
           <thead className="bg-white/5 sticky top-0 backdrop-blur">
@@ -152,7 +144,7 @@ const AdminOrders = () => {
         </table>
       </div>
 
-      {/* ================= MOBILE CARDS ================= */}
+
       <div className="md:hidden space-y-4">
         {loading ? (
           <div className="flex justify-center py-12">

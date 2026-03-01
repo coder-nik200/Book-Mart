@@ -18,7 +18,6 @@ const BookSection = ({
     <section className={`${bg} py-16 sm:py-20 lg:py-24`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
-        {/* ================= HEADER ================= */}
         <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-6 mb-12 lg:mb-16">
           <div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
@@ -50,8 +49,6 @@ const BookSection = ({
             </Link>
           )}
         </div>
-
-        {/* ================= BOOK GRID ================= */}
         {displayedBooks.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {displayedBooks.map((book) => (

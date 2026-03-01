@@ -2,13 +2,8 @@ import Book from "../models/Book.js";
 import Order from "../models/Order.js";
 import User from "../models/User.js";
 
-/* =========================
-   DASHBOARD STATS (ADMIN)
-   FULL UPGRADE – SAFE
-========================= */
 export const getDashboardStats = async (req, res) => {
   try {
-    /* ===== DATE RANGE ===== */
     const rangeDays = Number(req.query.days) || 7;
 
     const startDate = new Date();
@@ -18,21 +13,18 @@ export const getDashboardStats = async (req, res) => {
     const previousStart = new Date(startDate);
     previousStart.setDate(previousStart.getDate() - rangeDays);
 
-    /* ===== BASIC COUNTS ===== */
     const [totalOrders, totalUsers, totalBooks] = await Promise.all([
       Order.countDocuments(),
       User.countDocuments(),
       Book.countDocuments(),
     ]);
 
-    /* ===== TOTAL REVENUE ===== */
     const revenueResult = await Order.aggregate([
       { $match: { paymentStatus: "completed" } },
       { $group: { _id: null, totalRevenue: { $sum: "$totalPrice" } } },
     ]);
     const totalRevenue = revenueResult[0]?.totalRevenue || 0;
 
-    /* ===== TODAY STATS ===== */
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
@@ -51,7 +43,6 @@ export const getDashboardStats = async (req, res) => {
     ]);
     const todayRevenue = todayRevenueAgg[0]?.total || 0;
 
-    /* ===== ORDER STATUS DISTRIBUTION ===== */
     const orderStatusAgg = await Order.aggregate([
       { $group: { _id: "$orderstatus", count: { $sum: 1 } } },
     ]);
@@ -61,7 +52,6 @@ export const getDashboardStats = async (req, res) => {
       value: o.count,
     }));
 
-    /* ===== REVENUE BY DATE (DYNAMIC RANGE) ===== */
     const revenueByDateAgg = await Order.aggregate([
       {
         $match: {
@@ -85,7 +75,6 @@ export const getDashboardStats = async (req, res) => {
       revenue: d.revenue,
     }));
 
-    /* ===== TOP SELLING BOOKS ===== */
     const topSellingBooks = await Order.aggregate([
       { $unwind: "$items" },
       {
@@ -113,7 +102,6 @@ export const getDashboardStats = async (req, res) => {
       },
     ]);
 
-    /* ===== GROWTH CALCULATION ===== */
     const currentOrders = await Order.countDocuments({
       createdAt: { $gte: startDate },
     });
@@ -155,7 +143,9 @@ export const getDashboardStats = async (req, res) => {
       orderGrowth:
         previousOrders === 0
           ? 100
-          : (((currentOrders - previousOrders) / previousOrders) * 100).toFixed(1),
+          : (((currentOrders - previousOrders) / previousOrders) * 100).toFixed(
+              1,
+            ),
       userGrowth:
         previousUsers === 0
           ? 100
@@ -163,10 +153,12 @@ export const getDashboardStats = async (req, res) => {
       revenueGrowth:
         revenuePrevious === 0
           ? 100
-          : (((revenueCurrent - revenuePrevious) / revenuePrevious) * 100).toFixed(1),
+          : (
+              ((revenueCurrent - revenuePrevious) / revenuePrevious) *
+              100
+            ).toFixed(1),
     };
 
-    /* ===== RECENT ACTIVITY ===== */
     const recentOrders = await Order.find()
       .sort({ createdAt: -1 })
       .limit(4)
@@ -190,7 +182,6 @@ export const getDashboardStats = async (req, res) => {
       .sort((a, b) => new Date(b.time) - new Date(a.time))
       .slice(0, 4);
 
-    /* ===== FINAL RESPONSE ===== */
     res.status(200).json({
       success: true,
       data: {

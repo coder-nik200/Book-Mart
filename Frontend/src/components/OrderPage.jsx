@@ -49,7 +49,7 @@ const OrderPage = () => {
             className="bg-white shadow-md rounded-lg border hover:shadow-xl transition-shadow duration-300"
           >
             <div className="p-5 space-y-3">
-              {/* Header */}
+              
               <div className="flex justify-between items-center mb-2">
                 <h2 className="text-lg font-semibold text-gray-800 flex items-center">
                   <Tag className="w-5 h-5 mr-1 text-blue-500" />{" "}
@@ -68,7 +68,7 @@ const OrderPage = () => {
                 </span>
               </div>
 
-              {/* Order Info */}
+              
               <p className="flex items-center text-gray-700">
                 <CreditCard className="w-4 h-4 mr-1 text-purple-500" />
                 <strong>Total:</strong> ₹{order.totalPrice.toFixed(2)}

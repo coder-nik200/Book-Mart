@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const AboutPage = () => {
   return (
     <div className="bg-gray-50 min-h-screen font-sans">
-      {/* Hero Section */}
+
       <section className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-32 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <motion.h1
@@ -29,7 +29,6 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Mission Section */}
       <section className="py-20">
         <div className="max-w-5xl mx-auto px-4 text-center">
           <motion.h2
@@ -54,7 +53,6 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Features / Values */}
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-10 text-center">
           {[
@@ -95,7 +93,6 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
       <section className="py-20 bg-gray-100">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <motion.h2
@@ -143,7 +140,6 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Call to Action */}
       <section className="py-20 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-center">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}

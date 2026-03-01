@@ -9,7 +9,7 @@ const Layout = () => {
     <div className="flex flex-col min-h-screen bg-gray-50 text-gray-800">
       <Navbar />
 
-      {/* Page Content */}
+
       <main className="flex-grow">
         <motion.div
           initial={{ opacity: 0, y: 10 }}

@@ -23,7 +23,6 @@ const AddressManager = () => {
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState(initialForm);
 
-  /* ================= LOAD ADDRESSES ================= */
   const loadAddresses = async () => {
     try {
       setLoading(true);
@@ -84,7 +83,7 @@ const AddressManager = () => {
 
   return (
     <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 md:p-8">
-      {/* Header */}
+   
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
         <div>
           <h2 className="text-xl sm:text-2xl font-bold">Saved Addresses</h2>
@@ -102,7 +101,6 @@ const AddressManager = () => {
         </button>
       </div>
 
-      {/* Empty State */}
       {addresses.length === 0 && (
         <div className="text-center py-12 border rounded-xl bg-gray-50">
           <MapPin size={40} className="mx-auto text-gray-400 mb-4" />
@@ -110,7 +108,6 @@ const AddressManager = () => {
         </div>
       )}
 
-      {/* Address List */}
       <div className="space-y-4">
         {addresses.map((addr) => (
           <div
@@ -158,7 +155,6 @@ const AddressManager = () => {
         ))}
       </div>
 
-      {/* ================= MODAL ================= */}
       {showModal && (
         <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
           <div className="bg-white rounded-xl p-6 sm:p-8 w-full max-w-xl shadow-lg overflow-y-auto max-h-[90vh]">

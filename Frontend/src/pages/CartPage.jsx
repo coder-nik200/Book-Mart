@@ -37,7 +37,6 @@ const CartPage = () => {
         </h1>
 
         <div className="grid md:grid-cols-3 gap-8 md:gap-10">
-          {/* ================= CART ITEMS ================= */}
           <div className="md:col-span-2 space-y-6">
             {cart.items.map((item) => {
               const book = item.book;
@@ -49,7 +48,7 @@ const CartPage = () => {
                 rounded-3xl p-4 sm:p-6 shadow-lg hover:shadow-2xl
                 transition-all duration-300 flex items-center gap-4 sm:gap-6"
                 >
-                  {/* Image */}
+                 
                   <img
                     src={
                       book.image?.url
@@ -60,7 +59,7 @@ const CartPage = () => {
                     className="w-24 h-32 sm:w-28 sm:h-36 object-cover rounded-2xl shadow-md flex-shrink-0"
                   />
 
-                  {/* Details */}
+                
                   <div className="flex-1 min-w-0">
                     <h3 className="text-base sm:text-lg font-bold text-gray-900 truncate">
                       {book.title}
@@ -75,7 +74,6 @@ const CartPage = () => {
                     </p>
                   </div>
 
-                  {/* Quantity + Remove */}
                   <div className="flex flex-col items-center justify-between h-full">
                     <div className="flex items-center bg-gray-100 rounded-full px-3 py-1">
                       <button
@@ -123,7 +121,6 @@ const CartPage = () => {
             </button>
           </div>
 
-          {/* ================= ORDER SUMMARY ================= */}
           <div
             className="bg-white/90 backdrop-blur-md border border-gray-200
           rounded-3xl p-6 sm:p-8 shadow-xl 

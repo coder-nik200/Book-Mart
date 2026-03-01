@@ -8,7 +8,6 @@ export const WishlistProvider = ({ children }) => {
   const { isAuthenticated } = useAuth();
   const [wishlist, setWishlist] = useState([]);
 
-  // Fetch once (on login / refresh)
   const fetchWishlist = async () => {
     try {
       const res = await wishlistAPI.getWishlist();
@@ -18,14 +17,12 @@ export const WishlistProvider = ({ children }) => {
     }
   };
 
-  // ✅ ADD (instant add)
   const addToWishlistLocal = (book) => {
     setWishlist((prev) =>
       prev.some((b) => b.id === book.id) ? prev : [...prev, book]
     );
   };
 
-  // ✅ ADD (instant remove)
   const removeFromWishlistLocal = (bookId) => {
     setWishlist((prev) => prev.filter((b) => b.id !== bookId));
   };

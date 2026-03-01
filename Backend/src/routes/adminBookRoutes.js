@@ -11,10 +11,6 @@ import adminOnly from "../middleware/role.middleware.js";
 import protect from "../middleware/auth.middleware.js";
 
 const router = express.Router();
-
-/* =========================
-   MULTER CONFIGURATION
-========================= */
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads/");
@@ -26,22 +22,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-/*
-  RULES:
-  - Only admin can access these routes
-  - protect MUST come before adminOnly
-*/
-
 router.use(protect, adminOnly);
-
-/* =========================
-   GET ALL BOOKS (Admin)
-========================= */
 router.get("/", getAllBooks);
-
-/* =========================
-   CREATE BOOK
-========================= */
 router.post(
   "/",
   upload.fields([
@@ -50,10 +32,6 @@ router.post(
   ]),
   createBook
 );
-
-/* =========================
-   UPDATE BOOK
-========================= */
 router.put(
   "/:id",
   upload.fields([
@@ -63,9 +41,7 @@ router.put(
   updateBook
 );
 
-/* =========================
-   DELETE BOOK
-========================= */
+
 router.delete("/:id", deleteBook);
 
 export default router;

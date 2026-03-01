@@ -13,9 +13,8 @@ const Footer = () => {
   return (
     <footer className="bg-gradient-to-r from-gray-900 via-black to-gray-900 text-gray-300 mt-20">
       <div className="max-w-7xl mx-auto px-6 py-16">
-        {/* Top Grid */}
         <div className="grid md:grid-cols-4 gap-10 mb-12">
-          {/* Brand */}
+         
           <div>
             <h3 className="text-2xl font-bold text-white mb-4">📚 BookMart</h3>
 
@@ -26,7 +25,7 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Quick Links */}
+
           <div>
             <h3 className="text-white font-semibold text-lg mb-4">
               Quick Links
@@ -68,7 +67,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Customer Service */}
           <div>
             <h3 className="text-white font-semibold text-lg mb-4">
               Customer Service
@@ -110,7 +108,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact Info */}
+         
           <div>
             <h3 className="text-white font-semibold text-lg mb-4">
               Contact Us
@@ -135,7 +133,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Social Section */}
+       
         <div className="border-t border-gray-800 pt-10 mb-10">
           <div className="flex justify-center gap-6">
             <a
@@ -161,7 +159,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom */}
+       
         <div className="border-t border-gray-800 pt-8 text-center text-sm text-gray-500">
           © {new Date().getFullYear()} BookMart. All rights reserved.
         </div>

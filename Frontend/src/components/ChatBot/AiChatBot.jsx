@@ -6,7 +6,7 @@ function AiChatBot() {
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(false); // ✅ NEW
+  const [loading, setLoading] = useState(false);
 
   const chatEndRef = useRef(null);
   const chatWindowRef = useRef(null);
@@ -18,13 +18,13 @@ function AiChatBot() {
   };
 
   const sendMessage = async () => {
-    if (!message.trim() || loading) return; // ✅ block spam
+    if (!message.trim() || loading) return; 
 
     const userText = message;
     setMessage("");
     setLoading(true);
 
-    // show user message immediately
+ 
     setChat((prev) => [...prev, { sender: "user", text: userText }]);
 
     try {
@@ -44,12 +44,10 @@ function AiChatBot() {
     }
   };
 
-  // Auto-scroll
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chat, loading]);
 
-  // Close on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -72,7 +70,6 @@ function AiChatBot() {
 
   return (
     <>
-      {/* Floating Button */}
       <button
         ref={botButtonRef}
         onClick={() => setIsOpen(!isOpen)}
@@ -91,7 +88,6 @@ function AiChatBot() {
         }
         `}
       >
-        {/* Header */}
         <div className="bg-[#5028c9] text-white py-3 px-4 font-semibold flex justify-between items-center">
           <span className="flex gap-2">
             <Bot /> BookMart AI Assistant
@@ -103,7 +99,7 @@ function AiChatBot() {
             <button
               onClick={() => {
                 setIsOpen(false);
-                // resetChat();
+             
               }}
             >
               <X size={18} />
@@ -111,7 +107,6 @@ function AiChatBot() {
           </div>
         </div>
 
-        {/* Messages */}
         <div className="h-[280px] p-3 space-y-2 overflow-y-auto bg-gray-100">
           {chat.length === 0 && (
             <p className="text-gray-400 text-sm text-center">
@@ -138,7 +133,6 @@ function AiChatBot() {
             </div>
           ))}
 
-          {/* Typing indicator */}
           {loading && (
             <div className="flex justify-start">
               <div className="bg-gray-200 px-3 py-2 rounded-xl text-sm text-gray-600 animate-pulse">
@@ -150,7 +144,6 @@ function AiChatBot() {
           <div ref={chatEndRef} />
         </div>
 
-        {/* Input */}
         <div className="flex items-center gap-2 p-3 border-t border-gray-400">
           <input
             value={message}

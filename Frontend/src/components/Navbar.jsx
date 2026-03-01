@@ -17,12 +17,12 @@ import {
 
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
-import { useWishlist } from "../context/WishlistContext"; // ✅ Added
+import { useWishlist } from "../context/WishlistContext"; 
 
 const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const { cart } = useCart();
-  const { totalItems: wishlistCount } = useWishlist(); // ✅ Wishlist count
+  const { totalItems: wishlistCount } = useWishlist(); 
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -36,7 +36,6 @@ const Navbar = () => {
   const searchRef = useRef(null);
   const profileRef = useRef(null);
 
-  /* ================= CLOSE SEARCH ON OUTSIDE CLICK ================= */
   useEffect(() => {
     const handler = (e) => {
       if (searchRef.current && !searchRef.current.contains(e.target)) {
@@ -48,7 +47,6 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  // Close profile dropdown on outside click
   useEffect(() => {
     const handler = (e) => {
       if (profileRef.current && !profileRef.current.contains(e.target)) {
@@ -59,7 +57,6 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  /* ================= CLOSE MOBILE MENU ON ROUTE CHANGE ================= */
   useEffect(() => {
     setMobileMenuOpen(false);
     setProfileOpen(false);
@@ -96,7 +93,7 @@ const Navbar = () => {
     <nav className="bg-white/80 backdrop-blur-md shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          {/* ================= LOGO ================= */}
+    
           <Link
             to="/"
             className="flex items-center gap-2 text-2xl font-bold text-blue-600"
@@ -105,7 +102,6 @@ const Navbar = () => {
             BookMart
           </Link>
 
-          {/* Search (Desktop) */}
           <div ref={searchRef} className="hidden md:flex flex-1 mx-8 relative">
             <form onSubmit={handleSearch} className="w-full">
               <div className="flex w-full items-center bg-gray-100 rounded-lg px-4">
@@ -128,7 +124,7 @@ const Navbar = () => {
                   <div
                     key={book._id}
                     onMouseDown={(e) => {
-                      // Use onMouseDown instead of onClick to avoid losing focus
+                    
                       e.preventDefault();
                       setSearchQuery("");
                       setShowSuggestions(false);
@@ -143,11 +139,10 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Right */}
           <div className="flex items-center gap-6">
-            {/* Mobile Search */}
+      
             <div className="flex items-center gap-2 pl-2 md:hidden w-full">
-              {/* Compact search */}
+       
               <div className="relative flex-1" ref={searchRef}>
                 <form onSubmit={handleSearch}>
                   <div className="flex items-center bg-gray-100 rounded-lg px-2 py-1">
@@ -164,7 +159,6 @@ const Navbar = () => {
                   </div>
                 </form>
 
-                {/* Suggestions dropdown */}
                 {showSuggestions && suggestions.length > 0 && (
                   <div className="absolute top-full left-0 right-0 mt-1 bg-white shadow-lg rounded-lg z-50 max-h-52 overflow-y-auto">
                     {suggestions.map((book) => (
@@ -184,12 +178,10 @@ const Navbar = () => {
                 )}
               </div>
 
-              {/* Wishlist icon */}
               <NavLink to="/wishlist">
                 <Heart size={22} />
               </NavLink>
 
-              {/* Cart icon */}
               <NavLink to="/cart" className="relative">
                 <ShoppingCart size={22} />
                 {cart?.totalItems > 0 && (
@@ -199,14 +191,12 @@ const Navbar = () => {
                 )}
               </NavLink>
 
-              {/* Mobile Menu toggle */}
               <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
                 {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
             </div>
 
-            {/* ================= RIGHT SIDE ================= */}
-            {/* ❤️ Wishlist with Badge */}
+  
             <NavLink to="/wishlist" className="relative">
               <Heart size={22} />
               {wishlistCount > 0 && (
@@ -216,7 +206,6 @@ const Navbar = () => {
               )}
             </NavLink>
 
-            {/* 🛒 Cart with Badge */}
             <NavLink to="/cart" className="relative">
               <ShoppingCart size={22} />
               {cart?.totalItems > 0 && (
@@ -226,7 +215,6 @@ const Navbar = () => {
               )}
             </NavLink>
 
-            {/* ================= AUTH SECTION ================= */}
             {isAuthenticated ? (
               <div className="relative hidden md:block" ref={profileRef}>
                 <button onClick={() => setProfileOpen(!profileOpen)}>
@@ -277,8 +265,6 @@ const Navbar = () => {
                 </NavLink>
               </div>
             )}
-
-            {/* ================= MOBILE TOGGLE ================= */}
             <button
               className="md:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -288,7 +274,6 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden border-t py-4 space-y-2">
             {isAuthenticated ? (

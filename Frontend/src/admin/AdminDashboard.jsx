@@ -33,7 +33,6 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState("7");
 
-  /* ================= FETCH DATA ================= */
   const fetchDashboardStats = useCallback(async () => {
     try {
       setLoading(true);
@@ -49,8 +48,6 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchDashboardStats();
   }, [fetchDashboardStats]);
-
-  /* ================= CSV EXPORT ================= */
   const exportCSV = () => {
     if (!stats) return;
 
@@ -109,7 +106,6 @@ const AdminDashboard = () => {
   return (
     <div className="w-full max-w-7xl mx-auto space-y-10 text-white">
 
-      {/* HEADER */}
       <div className="flex flex-col lg:flex-row justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold">Dashboard</h1>
@@ -138,7 +134,6 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* STATS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
         {statCards.map((stat, i) => (
           <div
@@ -158,7 +153,6 @@ const AdminDashboard = () => {
         ))}
       </div>
 
-      {/* RECENT ACTIVITY */}
       <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
           <Activity size={18} /> Recent Activity
@@ -185,7 +179,6 @@ const AdminDashboard = () => {
         )}
       </div>
 
-      {/* REVENUE TREND */}
       <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
         <h3 className="font-semibold mb-4">Revenue Trend</h3>
         <div className="h-64">
@@ -206,7 +199,6 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* TOP SELLING BOOKS */}
       <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
         <h3 className="font-semibold mb-4">Top Selling Books</h3>
         <div className="h-72">
@@ -222,7 +214,6 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* ORDER STATUS */}
       <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
         <h3 className="font-semibold mb-4">Order Status Distribution</h3>
         <div className="h-64">

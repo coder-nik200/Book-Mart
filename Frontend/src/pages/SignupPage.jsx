@@ -78,9 +78,9 @@ const SignupPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-700 via-blue-700 to-purple-800 px-4 py-10">
-      {/* Glass Card */}
+   
       <div className="w-full max-w-md bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20">
-        {/* Heading */}
+    
         <h1 className="text-3xl font-bold text-white text-center mb-2">
           Create Your Account
         </h1>
@@ -95,7 +95,7 @@ const SignupPage = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Name */}
+   
           <div>
             <label className="text-sm text-gray-200 mb-2 block">
               Full Name
@@ -118,7 +118,7 @@ const SignupPage = () => {
             )}
           </div>
 
-          {/* Email */}
+   
           <div>
             <label className="text-sm text-gray-200 mb-2 block">
               Email Address
@@ -141,7 +141,6 @@ const SignupPage = () => {
             )}
           </div>
 
-          {/* Password */}
           <div>
             <label className="text-sm text-gray-200 mb-2 block">Password</label>
             <div className="relative">
@@ -169,7 +168,6 @@ const SignupPage = () => {
             )}
           </div>
 
-          {/* Confirm Password */}
           <div>
             <label className="text-sm text-gray-200 mb-2 block">
               Confirm Password
@@ -194,7 +192,6 @@ const SignupPage = () => {
             )}
           </div>
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={loading}
@@ -204,7 +201,6 @@ const SignupPage = () => {
           </button>
         </form>
 
-        {/* Login Link */}
         <p className="text-center text-gray-200 mt-6">
           Already have an account?{" "}
           <Link

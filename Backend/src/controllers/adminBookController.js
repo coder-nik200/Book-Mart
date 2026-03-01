@@ -1,8 +1,5 @@
 import Book from "../models/Book.js";
 
-/* =========================
-   GET ALL BOOKS (SEARCH + PAGINATION)
-========================= */
 export const getAllBooks = async (req, res) => {
   try {
     const page = Number(req.query.page) || 1;
@@ -37,9 +34,7 @@ export const getAllBooks = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-/* =========================
-   CREATE BOOK
-========================= */
+
 export const createBook = async (req, res) => {
   try {
     const bookData = {
@@ -70,9 +65,7 @@ export const createBook = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
-/* =========================
-   UPDATE BOOK
-========================= */
+
 export const updateBook = async (req, res) => {
   try {
     const book = await Book.findById(req.params.id);
@@ -102,9 +95,7 @@ export const updateBook = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
-/* =========================
-   DELETE BOOK
-========================= */
+
 export const deleteBook = async (req, res) => {
   try {
     const book = await Book.findById(req.params.id);

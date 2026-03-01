@@ -22,7 +22,7 @@ const createAdmin = async () => {
     await User.create({
       name: ADMIN_NAME,
       email: ADMIN_EMAIL,
-      password: ADMIN_PASS, // 🔥 PLAIN password
+      password: ADMIN_PASS,
       role: "admin",
       isBlocked: false,
     });

@@ -51,7 +51,7 @@ const ProfileOverview = () => {
 
   return (
     <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 max-w-xl mx-auto">
-      {/* Header */}
+ 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8">
         <div>
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
@@ -72,7 +72,6 @@ const ProfileOverview = () => {
         )}
       </div>
 
-      {/* Avatar */}
       <div className="flex flex-col items-center mb-6 sm:mb-8">
         <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-4xl sm:text-5xl font-bold shadow-inner">
           {profile.name.charAt(0).toUpperCase()}
@@ -83,9 +82,7 @@ const ProfileOverview = () => {
         <p className="text-sm text-gray-500">{profile.role || "User"}</p>
       </div>
 
-      {/* Form */}
       <div className="space-y-4 sm:space-y-6">
-        {/* Name */}
         <div>
           <label className="text-sm text-gray-500">Full Name</label>
           <div className="mt-1 relative">
@@ -101,7 +98,7 @@ const ProfileOverview = () => {
           </div>
         </div>
 
-        {/* Email */}
+         
         <div>
           <label className="text-sm text-gray-500">Email Address</label>
           <div className="mt-1 relative">
@@ -118,7 +115,6 @@ const ProfileOverview = () => {
         </div>
       </div>
 
-      {/* Actions */}
       {edit && (
         <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-end gap-3 sm:gap-4">
           <button

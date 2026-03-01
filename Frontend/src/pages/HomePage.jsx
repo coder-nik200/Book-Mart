@@ -5,7 +5,7 @@ import Loading from "../components/Loading";
 import { useCart } from "../context/CartContext";
 import { bookAPI } from "../api/apiClient";
 
-// Home Sections
+
 import HeroSection from "../components/Home/HeroSection";
 import CategorySection from "../components/Home/CategorySection";
 import BookSection from "../components/Home/BookSection";
@@ -19,9 +19,6 @@ const HomePage = () => {
   const [bestSellers, setBestSellers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  /**
-   * Fetch all homepage book sections in parallel
-   */
   const fetchHomePageBooks = useCallback(async () => {
     try {
       setLoading(true);
@@ -47,9 +44,7 @@ const HomePage = () => {
     fetchHomePageBooks();
   }, [fetchHomePageBooks]);
 
-  /**
-   * Cart handler
-   */
+ 
   const handleAddToCart = useCallback(
     (book) => {
       addToCart(book, 1);
@@ -62,13 +57,12 @@ const HomePage = () => {
 
   return (
     <main className="bg-gray-50">
-      {/* Hero Banner */}
+ 
       <HeroSection />
 
-      {/* Categories */}
+
       <CategorySection />
 
-      {/* Featured */}
       <BookSection
         title="Featured Books"
         link="/books"
@@ -76,7 +70,6 @@ const HomePage = () => {
         onAddToCart={handleAddToCart}
       />
 
-      {/* New Arrivals */}
       <BookSection
         title="New Arrivals"
         link="/books?sort=newest"
@@ -85,7 +78,7 @@ const HomePage = () => {
         bg="bg-gray-100"
       />
 
-      {/* Best Sellers */}
+  
       <BookSection
         title="Best Sellers"
         link="/books?sort=popularity"
@@ -93,7 +86,7 @@ const HomePage = () => {
         onAddToCart={handleAddToCart}
       />
 
-      {/* Platform Features */}
+
       <FeaturesSection />
     </main>
   );

@@ -97,7 +97,6 @@ const LoginPage = () => {
             </div>
           </div>
 
-          {/* Password */}
           <div>
             <label className="text-sm text-gray-200 mb-2 block">Password</label>
 
@@ -133,7 +132,6 @@ const LoginPage = () => {
           </button>
         </form>
 
-        {/* Sign Up Link */}
         <p className="text-center text-gray-200 mt-6">
           Don't have an account?{" "}
           <Link

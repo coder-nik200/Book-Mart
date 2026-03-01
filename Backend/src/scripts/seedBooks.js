@@ -19,11 +19,10 @@ const seedBooks = async () => {
     const admin = await User.create({
       name: "Admin",
       email: "admin@example.com",
-      password: "12345678", // must be hashed via pre-save hook
+      password: "12345678",
       role: "admin",
     });
 
-    // Create categories
     const categories = await Category.insertMany([
       { name: "Fiction", isActive: true },
       { name: "Science", isActive: true },
@@ -34,7 +33,6 @@ const seedBooks = async () => {
     ]);
 
     const books = [
-  /* ================= FICTION ================= */
   {
     title: "To Kill a Mockingbird",
     slug: "to-kill-a-mockingbird",
@@ -139,7 +137,6 @@ const seedBooks = async () => {
     image: { public_id: "oldman", url: "/upload/oldmanandsea.png" },
   },
 
-  /* ================= SCIENCE ================= */
   {
     title: "A Brief History of Time",
     slug: "a-brief-history-of-time",
@@ -243,8 +240,6 @@ const seedBooks = async () => {
     image: { public_id: "feynman", url: "/upload/jokingfeyman.png" },
   },
 
-      /* ================= HISTORY ================= */
-      /* ================= HISTORY ================= */
 {
   title: "Sapiens",
   slug: "sapiens",
@@ -348,7 +343,7 @@ const seedBooks = async () => {
   image: { public_id: "rivals", url: "/upload/teamofrivals.png" },
 },
 
-      /* ================= SELF-HELP ================= */
+
 
 {
   title: "Atomic Habits",
@@ -452,7 +447,7 @@ const seedBooks = async () => {
   status: "active",
   image: { public_id: "ikigai", url: "/upload/ikigai.png" },
 },
-     /* ================= FANTASY ================= */
+
 {
   title: "The Hobbit",
   slug: "the-hobbit",
@@ -555,7 +550,7 @@ const seedBooks = async () => {
   image: { public_id: "eragon", url: "/upload/eragon.png" },
 },
 
-      /* ================= MYSTERY ================= */
+
 {
   title: "The Da Vinci Code",
   slug: "the-da-vinci-code",
@@ -673,6 +668,3 @@ const seedBooks = async () => {
 };
 
 seedBooks();
-
-// to run the seeBooks
-// node src/scripts/seedBooks.js

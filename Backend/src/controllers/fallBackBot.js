@@ -2,8 +2,6 @@ import replies from "../data/fallBackReplies.json";
 
 const getFallBackReply = (message) => {
   const userMessage = message.toLowerCase();
-
-  // 🔥 sort keywords by length (longest first)
   const sortedReplies = [...replies].sort(
     (a, b) => b.keyword.length - a.keyword.length,
   );
@@ -14,7 +12,6 @@ const getFallBackReply = (message) => {
     }
   }
 
-  // Date & time handled dynamically
   if (userMessage.includes("today") || userMessage.includes("date")) {
     return `Today's date is ${new Date().toDateString()} 📅`;
   }

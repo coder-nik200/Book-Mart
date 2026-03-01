@@ -17,10 +17,8 @@ const HeroSection = () => {
         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black/40"></div>
 
-      {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
         {/* Heading */}
         <motion.h1

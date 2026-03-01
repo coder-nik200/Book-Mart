@@ -1,7 +1,6 @@
 import OrderSuccessPage from "../pages/OrderSuccessPage";
 import { useLocation } from "react-router-dom";
 
-// Wrapper to get state from navigate
 const OrderSuccessPageWrapper = () => {
   const location = useLocation();
   const { orderId } = location.state || {};

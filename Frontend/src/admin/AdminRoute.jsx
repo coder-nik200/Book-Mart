@@ -5,7 +5,6 @@ const AdminRoute = ({ children }) => {
   const { user, loading } = useAuth();
   const location = useLocation();
 
-  // ⏳ While checking auth (important)
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0b0f19] text-white">
@@ -14,7 +13,6 @@ const AdminRoute = ({ children }) => {
     );
   }
 
-  // 🚫 Not logged in
   if (!user) {
     return (
       <Navigate
@@ -25,7 +23,6 @@ const AdminRoute = ({ children }) => {
     );
   }
 
-  // 🚫 Logged in but not admin
   if (user.role !== "admin") {
     return (
       <Navigate
@@ -35,7 +32,7 @@ const AdminRoute = ({ children }) => {
     );
   }
 
-  // ✅ Authorized admin
+
   return children;
 };
 
