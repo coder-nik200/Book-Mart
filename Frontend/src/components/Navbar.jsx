@@ -379,22 +379,6 @@ const Navbar = () => {
                         <LayoutDashboard size={16} />
                         Dashboard
                       </NavLink>
-
-                      {user?.role === "admin" && (
-                        <NavLink
-                          to="/admin"
-                          className={({ isActive }) =>
-                            `px-4 py-2 rounded flex items-center gap-2 transition text-gray-700 hover:bg-gray-100 ${
-                              isActive
-                                ? "bg-blue-50 text-blue-600 font-medium"
-                                : ""
-                            }`
-                          }
-                        >
-                          <ShieldCheck size={16} />
-                          Admin Panel
-                        </NavLink>
-                      )}
                     </nav>
 
                     <hr className="my-2 border-gray-200" />
@@ -494,21 +478,6 @@ const Navbar = () => {
                 >
                   <LayoutDashboard size={16} /> Dashboard
                 </NavLink>
-
-                {user?.role === "admin" && (
-                  <NavLink
-                    to="/admin"
-                    className={({ isActive }) =>
-                      `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 transition ${
-                        isActive
-                          ? "bg-blue-50 text-blue-600 font-medium"
-                          : "text-gray-700"
-                      }`
-                    }
-                  >
-                    <ShieldCheck size={16} /> Admin Panel
-                  </NavLink>
-                )}
 
                 <button
                   onClick={logout}

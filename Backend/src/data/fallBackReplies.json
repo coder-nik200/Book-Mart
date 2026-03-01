@@ -1,0 +1,95 @@
+[
+  { "keyword": "hello", "reply": "Hello 👋! Welcome to BookMart! 📚" },
+  {
+    "keyword": "hi",
+    "reply": "Hi there! Ready to explore some amazing books? 😃"
+  },
+  { "keyword": "hey", "reply": "Hey! Let’s find your next favorite read! 🚀" },
+  {
+    "keyword": "how are you",
+    "reply": "I'm doing great! Ready to help you shop for books! 😊"
+  },
+
+  { "keyword": "owner", "reply": "Nitish is the proud owner of BookMart 👨‍💻✨" },
+  {
+    "keyword": "creator",
+    "reply": "BookMart was created by Nitish, a passionate developer and book lover 💡📖"
+  },
+
+  {
+    "keyword": "books",
+    "reply": "We have a wide range of books 📚. Check out our Books page to browse!"
+  },
+  {
+    "keyword": "bestsellers",
+    "reply": "You can explore our top-selling books on the Bestsellers section 🏆"
+  },
+  {
+    "keyword": "new arrivals",
+    "reply": "Our latest books just arrived! Head to the New Arrivals section to see them 📦"
+  },
+  {
+    "keyword": "cart",
+    "reply": "You can view and manage your selected books in the Cart 🛒"
+  },
+  {
+    "keyword": "checkout",
+    "reply": "Ready to buy? Go to the Checkout page to complete your order 💳"
+  },
+
+  {
+    "keyword": "wishlist",
+    "reply": "Save your favorite books in your Wishlist ❤️"
+  },
+  {
+    "keyword": "orders",
+    "reply": "You can check your past orders in the Orders section 📄"
+  },
+  {
+    "keyword": "profile",
+    "reply": "Manage your account info, addresses, and password in your Profile ⚙️"
+  },
+
+  {
+    "keyword": "contact",
+    "reply": "Need help? Reach us via the Contact page or email support@bookmart.com 📧"
+  },
+  {
+    "keyword": "help",
+    "reply": "I can help you browse books, manage your cart, and answer questions about BookMart 🧠"
+  },
+
+  { "keyword": "thanks", "reply": "You're welcome! Happy reading 😃" },
+  { "keyword": "thank you", "reply": "No problem! Enjoy your books! ✨" },
+  { "keyword": "bye", "reply": "Goodbye 👋! See you soon at BookMart!" },
+  {
+    "keyword": "goodbye",
+    "reply": "Take care! Keep reading and exploring new stories 🌟"
+  },
+
+  {
+    "keyword": "recommend",
+    "reply": "Looking for a recommendation? Check out our Bestsellers or New Arrivals 📖"
+  },
+  {
+    "keyword": "study books",
+    "reply": "We have a selection of study and reference books to help you excel 🎓"
+  },
+  {
+    "keyword": "fiction",
+    "reply": "Explore our fiction books for thrilling stories and adventures ✨"
+  },
+  {
+    "keyword": "non-fiction",
+    "reply": "Discover our non-fiction books to learn and grow 📘"
+  },
+
+  {
+    "keyword": "offers",
+    "reply": "Check out our ongoing offers and discounts in the Deals section 💰"
+  },
+  {
+    "keyword": "sale",
+    "reply": "We have great discounts! Head to the Deals section to grab them 🏷️"
+  }
+]
