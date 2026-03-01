@@ -26,12 +26,11 @@ const categories = [
 
 const CategorySection = () => {
   return (
-    <section className="bg-gray-100 py-16 sm:py-20">
+    <section className="bg-gray-50 py-16 sm:py-20">
       <div className="max-w-7xl mx-auto px-4">
-
         {/* Section Heading */}
         <div className="text-center mb-14">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900">
             Browse by Category
           </h2>
           <p className="mt-4 text-gray-600 max-w-xl mx-auto">
@@ -58,14 +57,17 @@ const CategorySection = () => {
 
               {/* Content */}
               <div className="relative z-10 flex flex-col items-center gap-5">
-                <div className="transition-transform duration-300 group-hover:scale-110">
-                  <Icon size={42} />
+                <div className="p-5 rounded-full bg-white/20 backdrop-blur-md shadow-md transition-transform duration-300 group-hover:scale-110 group-hover:bg-white/30">
+                  <Icon size={48} className="drop-shadow-lg" />
                 </div>
 
-                <h3 className="text-lg sm:text-xl font-semibold tracking-wide">
+                <h3 className="text-lg sm:text-xl font-semibold tracking-wide text-white group-hover:text-yellow-300 transition-colors duration-300">
                   {name}
                 </h3>
               </div>
+
+              {/* Floating Glow Effect */}
+              <div className="absolute -inset-4 bg-white/5 rounded-3xl blur-3xl opacity-0 group-hover:opacity-50 transition-opacity duration-500 pointer-events-none"></div>
             </Link>
           ))}
         </div>

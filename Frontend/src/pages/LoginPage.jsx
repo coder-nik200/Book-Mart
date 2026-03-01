@@ -48,8 +48,7 @@ const LoginPage = () => {
 
       navigate(user.role === "admin" ? "/admin" : "/");
     } catch (error) {
-      const message =
-        error.response?.data?.message || "Login failed";
+      const message = error.response?.data?.message || "Login failed";
 
       toast.error(message);
       setErrors({ submit: message });
@@ -60,10 +59,8 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-700 via-blue-700 to-purple-800 px-4 py-10">
-
       {/* Glass Card */}
       <div className="w-full max-w-md bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20">
-
         {/* Heading */}
         <h1 className="text-3xl font-bold text-white text-center mb-2">
           Welcome Back 👋
@@ -80,7 +77,6 @@ const LoginPage = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
-
           {/* Email */}
           <div>
             <label className="text-sm text-gray-200 mb-2 block">
@@ -88,10 +84,7 @@ const LoginPage = () => {
             </label>
 
             <div className="relative">
-              <Mail
-                className="absolute left-3 top-3 text-gray-300"
-                size={20}
-              />
+              <Mail className="absolute left-3 top-3 text-gray-300" size={20} />
 
               <input
                 type="email"
@@ -106,15 +99,10 @@ const LoginPage = () => {
 
           {/* Password */}
           <div>
-            <label className="text-sm text-gray-200 mb-2 block">
-              Password
-            </label>
+            <label className="text-sm text-gray-200 mb-2 block">Password</label>
 
             <div className="relative">
-              <Lock
-                className="absolute left-3 top-3 text-gray-300"
-                size={20}
-              />
+              <Lock className="absolute left-3 top-3 text-gray-300" size={20} />
 
               <input
                 type={showPassword ? "text" : "password"}
@@ -130,23 +118,9 @@ const LoginPage = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-3 text-gray-300 hover:text-white transition"
               >
-                {showPassword ? (
-                  <EyeOff size={20} />
-                ) : (
-                  <Eye size={20} />
-                )}
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
-          </div>
-
-          {/* Forgot Password */}
-          <div className="text-right">
-            <Link
-              to="/forgot-password"
-              className="text-sm text-yellow-300 hover:text-yellow-400 transition"
-            >
-              Forgot password?
-            </Link>
           </div>
 
           {/* Submit Button */}
