@@ -10,6 +10,7 @@ import {
   createBook,
   updateBook,
   deleteBook,
+  searchBooks,
 } from "../controllers/bookController.js";
 
 import { protect } from "../middleware/auth.middleware.js";
@@ -23,7 +24,8 @@ const router = express.Router();
 
 // Get all books (filters, search, pagination)
 router.get("/", getAllBooks);
-
+// Search (Navbar + Search Page)
+router.get("/search", searchBooks);
 // Home page sections
 router.get("/featured", getFeaturedBooks);
 router.get("/new-arrivals", getNewArrivals);

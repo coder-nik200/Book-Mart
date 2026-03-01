@@ -151,6 +151,7 @@ const AppRoutes = () => {
   );
 };
 
+import SearchResultsPage from "./components/SearchResultsPage";
 const App = () => {
   return (
     <>
@@ -160,6 +161,109 @@ const App = () => {
           <CartProvider>
             <AppRoutes />
             <FloatingChatBot />
+            <Routes>
+              {/* ============ WEBSITE LAYOUT ROUTES ============ */}
+              <Route element={<Layout />}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="/books" element={<BooksPage />} />
+                <Route path="/book/:id" element={<BookDetailsPage />} />
+                <Route path="/about" element={<AboutPage />} />
+
+                <Route
+                  path="/cart"
+                  element={
+                    <ProtectedRoute>
+                      <CartPage />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/checkout"
+                  element={
+                    <ProtectedRoute>
+                      <CheckoutPage />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route path="/profile" element={<ProfileLayout />}>
+                  <Route index element={<ProfileOverview />} />
+                  <Route path="addresses" element={<AddressManager />} />
+                  <Route path="security" element={<ChangePassword />} />
+                  <Route path="orders" element={<OrderHistory />} />
+                </Route>
+
+                <Route
+                  path="/orders"
+                  element={
+                    <ProtectedRoute>
+                      <OrderPage />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/wishlist"
+                  element={
+                    <ProtectedRoute>
+                      <WishlistPage />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <DashboardPage />
+                    </ProtectedRoute>
+                  }
+                />
+
+                {/* Admin */}
+                <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute adminOnly>
+                      <AdminDashboard />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/order-success"
+                  element={<OrderSuccessPageWrapper />}
+                />
+                <Route path="/search" element={<SearchResultsPage />} />
+
+                <Route path="/order/:orderId" element={<OrderPage />} />
+
+                {/* Fallback */}
+                <Route path="*" element={<NotFound />} />
+              </Route>
+
+              {/* ============ ADMIN ROUTES (NO LAYOUT) ============ */}
+              {/* ============ ADMIN ROUTES ============ */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+
+              <Route
+                path="/admin"
+                element={
+                  <AdminRoute>
+                    <AdminLayout />
+                  </AdminRoute>
+                }
+              >
+                <Route path="dashboard" element={<AdminDashboard />} />
+                {/* future admin routes */}
+                <Route path="users" element={<AdminUsers />} />
+                <Route path="books" element={<AdminBooks />} />
+                <Route path="orders" element={<AdminOrders />} />
+              </Route>
+            </Routes>
           </CartProvider>
         </AuthProvider>
       </Router>

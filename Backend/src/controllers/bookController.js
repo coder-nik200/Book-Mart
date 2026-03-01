@@ -242,3 +242,43 @@ export const getCategories = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+/* ==================== SEARCH BOOKS (NAVBAR + SEARCH PAGE) ==================== */
+export const searchBooks = async (req, res) => {
+  try {
+    const { q, limit = 10 } = req.query;
+
+    if (!q || q.trim() === "") {
+      return res.status(200).json({ success: true, books: [] });
+    }
+
+    const books = await Book.find(
+      {
+        $or: [
+          { title: { $regex: q, $options: "i" } },
+          { author: { $regex: q, $options: "i" } },
+        ],
+        status: "active",
+      },
+      {
+        title: 1,
+        price: 1,
+        discountPrice: 1,
+        image: 1,
+      }
+    )
+      .limit(Number(limit))
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      books,
+    });
+  } catch (error) {
+    console.error("SEARCH ERROR:", error);
+    res.status(500).json({
+      success: false,
+      message: "Search failed",
+    });
+  }
+};
