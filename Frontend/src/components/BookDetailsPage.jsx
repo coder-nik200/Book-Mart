@@ -4,6 +4,7 @@ import { bookAPI, wishlistAPI } from "../api/apiClient";
 import toast from "react-hot-toast";
 import { Globe, PackageCheck, TagIcon } from "lucide-react";
 import { useCart } from "../context/CartContext";
+import FullMenu from "../pages/FullMenu";
 
 const BookDetailsPage = () => {
   const { id } = useParams();
@@ -227,6 +228,8 @@ const BookDetailsPage = () => {
           </div>
         </div>
       </div>
+
+      <FullMenu />
     </div>
   );
 };
