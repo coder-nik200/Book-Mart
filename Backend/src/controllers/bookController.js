@@ -258,14 +258,13 @@ export const searchBooks = async (req, res) => {
           { title: { $regex: q, $options: "i" } },
           { author: { $regex: q, $options: "i" } },
         ],
-        status: "active",
       },
       {
         title: 1,
         price: 1,
         discountPrice: 1,
         image: 1,
-      }
+      },
     )
       .limit(Number(limit))
       .sort({ createdAt: -1 });

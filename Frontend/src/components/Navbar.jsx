@@ -33,15 +33,15 @@ const Navbar = () => {
 
   const profileRef = useRef(null);
   useEffect(() => {
-  const handler = (e) => {
-    if (searchRef.current && !searchRef.current.contains(e.target)) {
-      setShowSuggestions(false);
-    }
-  };
+    const handler = (e) => {
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        setShowSuggestions(false);
+      }
+    };
 
-  document.addEventListener("mousedown", handler);
-  return () => document.removeEventListener("mousedown", handler);
-}, []);
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   // Close profile dropdown on outside click
   useEffect(() => {
@@ -60,31 +60,31 @@ const Navbar = () => {
     setProfileOpen(false);
   }, [location.pathname]);
 
-const handleSearch = (e) => {
-  e.preventDefault();
-  if (!searchQuery.trim()) return;
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
 
-  navigate(`/search?query=${searchQuery}`);
-  setShowSuggestions(false);
-};
-const fetchSuggestions = async (value) => {
-  if (!value.trim()) {
-    setSuggestions([]);
+    navigate(`/search?query=${searchQuery}`);
     setShowSuggestions(false);
-    return;
-  }
+  };
+  const fetchSuggestions = async (value) => {
+    if (!value.trim()) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
 
-  try {
-    const res = await fetch(
-      `http://localhost:5000/api/books/search?q=${value}&limit=8`
-    );
-    const data = await res.json();
-    setSuggestions(data.books || []);
-    setShowSuggestions(true);
-  } catch (err) {
-    console.error("Search error:", err);
-  }
-};
+    try {
+      const res = await fetch(
+        `http://localhost:5000/api/books/search?q=${value}&limit=8`,
+      );
+      const data = await res.json();
+      setSuggestions(data.books || []);
+      setShowSuggestions(true);
+    } catch (err) {
+      console.error("Search error:", err);
+    }
+  };
   const linkStyle = "block px-4 py-2 rounded-md hover:bg-gray-100 transition";
 
   return (
@@ -101,43 +101,105 @@ const fetchSuggestions = async (value) => {
           </Link>
 
           {/* Search (Desktop) */}
-          {/* <form onSubmit={handleSearch} className="hidden md:flex flex-1 mx-8"> */}
           <div ref={searchRef} className="hidden md:flex flex-1 mx-8 relative">
-  <form onSubmit={handleSearch} className="w-full">
-            <div className="flex w-full items-center bg-gray-100 rounded-lg px-4">
-              <Search size={20} className="text-gray-400" />
-              <input
-                value={searchQuery}
-                // onChange={(e) => setSearchQuery(e.target.value)}
-                onChange={(e) => {
-  setSearchQuery(e.target.value);
-  fetchSuggestions(e.target.value);
-}}
-                placeholder="Search books..."
-                className="flex-1 bg-transparent px-4 py-2 outline-none"
-              />
-            </div>
-          </form>
-{showSuggestions && suggestions.length > 0 && (
-  <div className="absolute top-full mt-1 w-full bg-white shadow-lg rounded-lg z-50 max-h-72 overflow-y-auto">
-    {suggestions.map((book) => (
-      <div
-        key={book._id}
-        onClick={() => {
-          navigate(`/book/${book._id}`);
-          setSearchQuery("");
-          setShowSuggestions(false);
-        }}
-        className="px-4 py-2 cursor-pointer hover:bg-gray-100 transition"
-      >
-        {book.title}
-      </div>
-    ))}
-  </div>
-)}
-</div>
+            <form onSubmit={handleSearch} className="w-full">
+              <div className="flex w-full items-center bg-gray-100 rounded-lg px-4">
+                <Search size={20} className="text-gray-400" />
+                <input
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    fetchSuggestions(e.target.value);
+                  }}
+                  placeholder="Search books..."
+                  className="flex-1 bg-transparent px-4 py-2 outline-none"
+                />
+              </div>
+            </form>
+
+            {showSuggestions && suggestions.length > 0 && (
+              <div className="absolute top-full mt-1 w-full bg-white shadow-lg rounded-lg z-50 max-h-72 overflow-y-auto">
+                {suggestions.map((book) => (
+                  <div
+                    key={book._id}
+                    onMouseDown={(e) => {
+                      // Use onMouseDown instead of onClick to avoid losing focus
+                      e.preventDefault();
+                      setSearchQuery("");
+                      setShowSuggestions(false);
+                      navigate(`/book/${book._id}`);
+                    }}
+                    className="px-4 py-2 cursor-pointer hover:bg-gray-100 transition"
+                  >
+                    {book.title}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           {/* Right */}
           <div className="flex items-center gap-6">
+            {/* Mobile Search */}
+            <div className="flex items-center gap-2 pl-2 md:hidden w-full">
+              {/* Compact search */}
+              <div className="relative flex-1" ref={searchRef}>
+                <form onSubmit={handleSearch}>
+                  <div className="flex items-center bg-gray-100 rounded-lg px-2 py-1">
+                    <Search size={16} className="text-gray-400" />
+                    <input
+                      value={searchQuery}
+                      onChange={(e) => {
+                        setSearchQuery(e.target.value);
+                        fetchSuggestions(e.target.value);
+                      }}
+                      placeholder="Search..."
+                      className="flex-1 bg-transparent px-1 py-1 outline-none text-xs max-w-[120px]"
+                    />
+                  </div>
+                </form>
+
+                {/* Suggestions dropdown */}
+                {showSuggestions && suggestions.length > 0 && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white shadow-lg rounded-lg z-50 max-h-52 overflow-y-auto">
+                    {suggestions.map((book) => (
+                      <div
+                        key={book._id}
+                        onClick={() => {
+                          navigate(`/book/${book._id}`);
+                          setSearchQuery("");
+                          setShowSuggestions(false);
+                        }}
+                        className="px-4 py-2 cursor-pointer hover:bg-gray-100 transition text-sm"
+                      >
+                        {book.title}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Wishlist icon */}
+              <NavLink to="/wishlist">
+                <Heart size={22} />
+              </NavLink>
+
+              {/* Cart icon */}
+              <NavLink to="/cart" className="relative">
+                <ShoppingCart size={22} />
+                {cart?.totalItems > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                    {cart.totalItems}
+                  </span>
+                )}
+              </NavLink>
+
+              {/* Mobile Menu toggle */}
+              <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+                {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
+
             <NavLink to="/wishlist">
               <Heart size={22} />
             </NavLink>
@@ -259,15 +321,6 @@ const fetchSuggestions = async (value) => {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden border-t py-4 space-y-2">
-            <form onSubmit={handleSearch}>
-              <input
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search books..."
-                className="w-full border px-4 py-2 rounded-lg"
-              />
-            </form>
-
             {isAuthenticated ? (
               <>
                 <NavLink
