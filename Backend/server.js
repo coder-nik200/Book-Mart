@@ -18,6 +18,7 @@ import adminOrderRoutes from "./src/routes/adminOrderRoutes.js";
 import adminUserRoutes from "./src/routes/adminUserRoutes.js";
 import adminDashboardRoutes from "./src/routes/adminDashboardRoutes.js";
 import orderRoutes from "./src/routes/orderRoutes.js";
+import chatRoute from "./src/routes/chatRouter.js";
 
 import path from "path";
 dotenv.config();
@@ -56,6 +57,7 @@ app.use("/api/admin/orders", adminOrderRoutes);
 app.use("/api/admin/users", adminUserRoutes);
 app.use("/api/user/addresses", addressRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/chat", chatRoute);
 
 // ✅ Health Check
 app.get("/", (req, res) => {
