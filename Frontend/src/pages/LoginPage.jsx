@@ -61,10 +61,8 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-700 via-blue-700 to-purple-800 px-4 py-10">
 
-      {/* Glass Card */}
       <div className="w-full max-w-md bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20">
 
-        {/* Heading */}
         <h1 className="text-3xl font-bold text-white text-center mb-2">
           Welcome Back 👋
         </h1>
@@ -81,7 +79,6 @@ const LoginPage = () => {
 
         <form onSubmit={handleSubmit} className="space-y-5">
 
-          {/* Email */}
           <div>
             <label className="text-sm text-gray-200 mb-2 block">
               Email Address
@@ -104,7 +101,6 @@ const LoginPage = () => {
             </div>
           </div>
 
-          {/* Password */}
           <div>
             <label className="text-sm text-gray-200 mb-2 block">
               Password
@@ -139,7 +135,6 @@ const LoginPage = () => {
             </div>
           </div>
 
-          {/* Forgot Password */}
           <div className="text-right">
             <Link
               to="/forgot-password"
@@ -149,7 +144,6 @@ const LoginPage = () => {
             </Link>
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
@@ -159,7 +153,6 @@ const LoginPage = () => {
           </button>
         </form>
 
-        {/* Sign Up Link */}
         <p className="text-center text-gray-200 mt-6">
           Don't have an account?{" "}
           <Link

@@ -59,7 +59,7 @@ const ChangePassword = () => {
 
   return (
     <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 max-w-xl mx-auto">
-      {/* Header */}
+     
       <div className="mb-6 sm:mb-8">
         <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
           Change Password
@@ -69,9 +69,9 @@ const ChangePassword = () => {
         </p>
       </div>
 
-      {/* Form */}
+
       <div className="space-y-4 sm:space-y-6">
-        {/* Current Password */}
+    
         <div>
           <label className="text-sm text-gray-600">Current Password</label>
           <div className="relative mt-1">
@@ -93,7 +93,7 @@ const ChangePassword = () => {
           </div>
         </div>
 
-        {/* New Password */}
+    
         <div>
           <label className="text-sm text-gray-600">New Password</label>
           <div className="relative mt-1">
@@ -118,7 +118,6 @@ const ChangePassword = () => {
           </p>
         </div>
 
-        {/* Confirm Password */}
         <div>
           <label className="text-sm text-gray-600">Confirm New Password</label>
           <div className="relative mt-1">
@@ -140,7 +139,7 @@ const ChangePassword = () => {
           </div>
         </div>
 
-        {/* Submit */}
+  
         <div className="pt-4 flex flex-col sm:flex-row justify-end gap-3">
           <button
             onClick={submit}

@@ -80,9 +80,9 @@ const CheckoutPage = () => {
         </h1>
 
         <div className="grid lg:grid-cols-3 gap-10">
-          {/* LEFT SIDE */}
+     
           <div className="lg:col-span-2 space-y-8">
-            {/* Address Section */}
+
             <SectionCard icon={<MapPin />} title="Delivery Address">
               {addresses.length > 0 ? (
                 <div className="space-y-4">
@@ -129,7 +129,6 @@ const CheckoutPage = () => {
               </Link>
             </SectionCard>
 
-            {/* Payment Section */}
             <SectionCard icon={<CreditCard />} title="Payment Method">
               <div className="space-y-4">
                 {[
@@ -162,7 +161,7 @@ const CheckoutPage = () => {
               </div>
             </SectionCard>
 
-            {/* Order Summary Section */}
+    
             <SectionCard icon={<Package />} title="Order Items">
               {cart.items.map((item) => (
                 <div
@@ -185,8 +184,6 @@ const CheckoutPage = () => {
               ))}
             </SectionCard>
           </div>
-
-          {/* RIGHT SIDE - PRICE BOX */}
           <div className="bg-white rounded-2xl shadow-lg p-8 h-fit sticky top-24">
             <h2 className="text-xl font-bold mb-6 text-gray-900">
               Price Details
@@ -233,7 +230,6 @@ const CheckoutPage = () => {
   );
 };
 
-// Reusable Section Card
 const SectionCard = ({ icon, title, children }) => (
   <div className="bg-white rounded-2xl shadow-md p-8 hover:shadow-lg transition">
     <div className="flex items-center gap-3 mb-6">

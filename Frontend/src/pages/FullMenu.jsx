@@ -32,7 +32,6 @@ const FullMenu = () => {
       setTotalPages(res.data.pagination.pages);
       setCurrentPage(res.data.pagination.page);
 
-      // Check wishlist status per book
       const wishlistStatus = {};
       for (let book of booksData) {
         try {
@@ -81,7 +80,7 @@ const FullMenu = () => {
 
   return (
     <div className="bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 min-h-screen mt-10">
-      {/* Hero */}
+
       <section className="bg-gradient-to-r from-indigo-700 via-blue-600 to-indigo-700 text-white py-20 rounded-3xl shadow-xl">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <motion.h1
@@ -98,7 +97,6 @@ const FullMenu = () => {
         </div>
       </section>
 
-      {/* Books */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-6">
           {loading ? (
@@ -124,8 +122,8 @@ const FullMenu = () => {
                     whileHover={{ y: -8 }}
                     className="bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer"
                     onClick={() => {
-                      window.scrollTo({ top: 0, behavior: "smooth" }); // scroll to top
-                      navigate(`/book/${book._id}`); // go to book page
+                      window.scrollTo({ top: 0, behavior: "smooth" }); 
+                      navigate(`/book/${book._id}`); 
                     }}
                   >
                     <img
@@ -149,7 +147,6 @@ const FullMenu = () => {
                           {book.author}
                         </p>
 
-                        {/* Rating */}
                         <div className="flex items-center gap-2 mb-3">
                           <div className="flex text-yellow-400">
                             {Array.from({ length: 5 }).map((_, i) => {
@@ -167,7 +164,7 @@ const FullMenu = () => {
                           </span>
                         </div>
 
-                        {/* Price */}
+                   
                         <div className="flex items-center gap-3 mb-3">
                           <span className="text-xl font-bold text-gray-900">
                             ₹{book.discountPrice || book.price}
@@ -180,7 +177,6 @@ const FullMenu = () => {
                           )}
                         </div>
 
-                        {/* Stock */}
                         <div>
                           {book.stock > 0 ? (
                             <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">
@@ -194,7 +190,7 @@ const FullMenu = () => {
                         </div>
                       </div>
 
-                      {/* Actions */}
+                     
                       <div className="flex gap-3 mt-5">
                         <button
                           disabled={book.stock === 0}
@@ -225,7 +221,6 @@ const FullMenu = () => {
                 ))}
               </div>
 
-              {/* Pagination */}
               <div className="flex justify-center items-center mt-16 gap-4 flex-wrap">
                 <button
                   disabled={currentPage === 1}

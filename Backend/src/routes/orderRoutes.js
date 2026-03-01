@@ -11,7 +11,6 @@ import { protect } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
-// All routes protected (user must be logged in)
 router.use(protect);
 
 router.post("/create", createOrder);

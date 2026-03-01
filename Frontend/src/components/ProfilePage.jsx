@@ -17,8 +17,6 @@ const ProfilePage = () => {
     name: "",
     email: "",
   });
-
-  /* ================= FETCH PROFILE ================= */
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -41,12 +39,10 @@ const ProfilePage = () => {
     fetchProfile();
   }, []);
 
-  /* ================= INPUT HANDLER ================= */
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  /* ================= UPDATE PROFILE ================= */
   const handleUpdateProfile = async () => {
     try {
       setSaving(true);
@@ -54,7 +50,7 @@ const ProfilePage = () => {
       const res = await userAPI.updateProfile(formData);
 
       setProfile(res.data.user);
-      setUser(res.data.user); // update AuthContext
+      setUser(res.data.user);
 
       toast.success("Profile updated successfully");
       setEditMode(false);
@@ -66,7 +62,6 @@ const ProfilePage = () => {
     }
   };
 
-  /* ================= LOADING STATE ================= */
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
@@ -75,7 +70,6 @@ const ProfilePage = () => {
     );
   }
 
-  /* ================= ERROR STATE ================= */
   if (!profile) {
     return (
       <div className="text-center py-20 text-gray-500">
@@ -84,12 +78,11 @@ const ProfilePage = () => {
     );
   }
 
-  /* ================= UI ================= */
+
   return (
     <section className="bg-gray-50 min-h-screen py-10">
       <div className="max-w-4xl mx-auto px-4">
-
-        {/* Header */}
+   
         <div className="bg-white rounded-2xl shadow-md p-6 mb-6 flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">
@@ -111,10 +104,10 @@ const ProfilePage = () => {
           )}
         </div>
 
-        {/* Profile Card */}
+       
         <div className="bg-white rounded-2xl shadow-md p-8">
 
-          {/* Avatar */}
+       
           <div className="flex flex-col items-center mb-8">
             <div className="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-4xl font-bold">
               {profile.name?.charAt(0).toUpperCase()}
@@ -127,10 +120,10 @@ const ProfilePage = () => {
             </p>
           </div>
 
-          {/* Details */}
+        
           <div className="space-y-6">
 
-            {/* Name */}
+      
             <div>
               <label className="text-sm text-gray-500">
                 Full Name
@@ -151,7 +144,6 @@ const ProfilePage = () => {
               )}
             </div>
 
-            {/* Email */}
             <div>
               <label className="text-sm text-gray-500">
                 Email Address
@@ -174,7 +166,6 @@ const ProfilePage = () => {
             </div>
           </div>
 
-          {/* Actions */}
           {editMode && (
             <div className="mt-8 flex justify-end gap-4">
               <button

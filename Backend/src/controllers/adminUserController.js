@@ -1,10 +1,4 @@
-
 import User from "../models/User.js";
-/* =========================
-   GET ALL USERS (ADMIN)
-   Supports pagination
-   Excludes admins
-========================= */
 export const getAllUsers = async (req, res) => {
   try {
     const page = Number(req.query.page) || 1;
@@ -14,7 +8,6 @@ export const getAllUsers = async (req, res) => {
 
     const skip = (page - 1) * limit;
 
-    // Search filter
     const query = {
       $or: [
         { name: { $regex: search, $options: "i" } },
@@ -43,9 +36,6 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
-/* =========================
-   BLOCK USER (ADMIN)
-========================= */
 export const blockUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -80,9 +70,6 @@ export const blockUser = async (req, res) => {
   }
 };
 
-/* =========================
-   UNBLOCK USER (ADMIN)
-========================= */
 export const unblockUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);

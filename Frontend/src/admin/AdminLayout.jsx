@@ -29,7 +29,7 @@ const AdminLayout = () => {
   return (
     <div className="h-screen w-full bg-[#0b0f19] text-white flex overflow-hidden">
 
-      {/* ================= MOBILE OVERLAY ================= */}
+
       {sidebarOpen && (
         <div
           className="fixed inset-0 bg-black/60 z-40 lg:hidden"
@@ -37,7 +37,7 @@ const AdminLayout = () => {
         />
       )}
 
-      {/* ================= SIDEBAR ================= */}
+
       <aside
         className={`fixed lg:static z-50 left-0 top-0 h-screen w-64
         bg-black/40 backdrop-blur-xl border-r border-white/10
@@ -45,7 +45,7 @@ const AdminLayout = () => {
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
         flex flex-col`}
       >
-        {/* Logo / Header */}
+
         <div className="flex items-center justify-between p-4 border-b border-white/10">
           <h2 className="text-lg font-semibold">BookMart Admin</h2>
           <button
@@ -56,7 +56,6 @@ const AdminLayout = () => {
           </button>
         </div>
 
-        {/* Navigation */}
         <nav className="mt-6 space-y-1 px-2 flex-1 overflow-y-auto no-scrollbar">
           <NavLink
             to="/admin/dashboard"
@@ -95,7 +94,6 @@ const AdminLayout = () => {
           </NavLink>
         </nav>
 
-        {/* Logout */}
         <div className="p-4 border-t border-white/10">
           <button
             onClick={handleLogout}
@@ -107,10 +105,10 @@ const AdminLayout = () => {
         </div>
       </aside>
 
-      {/* ================= MAIN CONTENT ================= */}
+   
       <div className="flex-1 flex flex-col min-h-screen overflow-hidden">
 
-        {/* Top Header */}
+ 
         <header className="h-16 flex items-center justify-between px-6
         border-b border-white/10 bg-black/30 backdrop-blur shrink-0">
           <button
@@ -132,7 +130,6 @@ const AdminLayout = () => {
           </div>
         </header>
 
-        {/* ✅ SINGLE SCROLL CONTAINER */}
         <main className="flex-1 overflow-y-auto p-6 no-scrollbar">
           <Outlet />
         </main>

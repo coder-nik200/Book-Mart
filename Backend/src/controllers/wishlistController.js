@@ -1,7 +1,6 @@
 import Wishlist from "../models/Wishlist.js";
 import Book from "../models/Book.js";
 
-// ==================== GET WISHLIST ====================
 export const getWishlist = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -13,7 +12,6 @@ export const getWishlist = async (req, res) => {
       wishlist = await Wishlist.create({ user: userId, books: [] });
     }
 
-    // Transform to flat array
     const books = wishlist.books.map((item) => ({
       id: item.book._id,
       title: item.book.title,
@@ -23,14 +21,13 @@ export const getWishlist = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      wishlist: books, // now frontend gets an array
+      wishlist: books,
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// ==================== ADD TO WISHLIST ====================
 export const addToWishlist = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -57,7 +54,6 @@ export const addToWishlist = async (req, res) => {
         books: [{ book: bookId }],
       });
     } else {
-      // Check if book already in wishlist
       const existingBook = wishlist.books.find(
         (b) => b.book.toString() === bookId,
       );
@@ -84,7 +80,6 @@ export const addToWishlist = async (req, res) => {
   }
 };
 
-// ==================== REMOVE FROM WISHLIST ====================
 export const removeFromWishlist = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -112,7 +107,6 @@ export const removeFromWishlist = async (req, res) => {
   }
 };
 
-// ==================== CHECK IF BOOK IN WISHLIST ====================
 export const isInWishlist = async (req, res) => {
   try {
     const userId = req.user._id;

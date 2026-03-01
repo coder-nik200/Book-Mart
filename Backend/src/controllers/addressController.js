@@ -1,6 +1,6 @@
 import Address from "../models/Address.js";
 
-/* ================= GET ADDRESSES ================= */
+
 export const getAddresses = async (req, res) => {
   try {
     const addresses = await Address.find({ user: req.user._id }).sort({
@@ -19,7 +19,7 @@ export const getAddresses = async (req, res) => {
   }
 };
 
-/* ================= ADD ADDRESS ================= */
+
 export const addAddress = async (req, res) => {
   try {
     const {
@@ -34,7 +34,7 @@ export const addAddress = async (req, res) => {
       addressType = "home",
     } = req.body;
 
-    // Basic validation
+
     if (
       !fullName ||
       !phoneNumber ||
@@ -50,7 +50,7 @@ export const addAddress = async (req, res) => {
       });
     }
 
-    // Handle default address
+
     if (isDefault) {
       await Address.updateMany(
         { user: req.user._id },
@@ -84,7 +84,7 @@ export const addAddress = async (req, res) => {
   }
 };
 
-/* ================= UPDATE ADDRESS ================= */
+
 export const updateAddress = async (req, res) => {
   try {
     const { addressId } = req.params;
@@ -101,7 +101,6 @@ export const updateAddress = async (req, res) => {
       });
     }
 
-    // If setting new default, remove old default
     if (req.body.isDefault) {
       await Address.updateMany(
         { user: req.user._id },
@@ -125,7 +124,7 @@ export const updateAddress = async (req, res) => {
   }
 };
 
-/* ================= DELETE ADDRESS ================= */
+
 export const deleteAddress = async (req, res) => {
   try {
     const { addressId } = req.params;

@@ -5,12 +5,12 @@ const NotFound = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-900 via-blue-900 to-black text-white px-4">
       <div className="text-center max-w-xl">
-        {/* 404 Number */}
+
         <h1 className="text-7xl md:text-9xl font-extrabold text-yellow-400 drop-shadow-lg">
           404
         </h1>
 
-        {/* Message */}
+
         <h2 className="text-2xl md:text-3xl font-bold mt-6 mb-4">
           Oops! Page Not Found
         </h2>
@@ -20,7 +20,6 @@ const NotFound = () => {
           temporarily unavailable.
         </p>
 
-        {/* Buttons */}
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Link
             to="/"

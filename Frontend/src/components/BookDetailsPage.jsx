@@ -21,7 +21,6 @@ const BookDetailsPage = () => {
         const res = await bookAPI.getBook(id);
         setBook(res.data.book);
 
-        // Check if book is in wishlist
         const wishlistRes = await wishlistAPI.isInWishlist(id);
         setInWishlist(wishlistRes.data.isInWishlist);
       } catch (err) {
@@ -75,7 +74,6 @@ const BookDetailsPage = () => {
   return (
     <div className="max-w-7xl mx-auto px-6 py-12">
       <div className="grid md:grid-cols-2 gap-14">
-        {/* LEFT SIDE - IMAGE */}
         <div className="flex justify-center">
           <img
             src={
@@ -88,9 +86,7 @@ const BookDetailsPage = () => {
           />
         </div>
 
-        {/* RIGHT SIDE - DETAILS */}
         <div className="flex flex-col justify-between">
-          {/* Badges */}
           <div className="flex gap-3 mb-4 flex-wrap">
             {book.isFeatured && (
               <span className="bg-purple-100 text-purple-700 px-4 py-1 text-xs rounded-full font-semibold">
@@ -109,17 +105,14 @@ const BookDetailsPage = () => {
             )}
           </div>
 
-          {/* Title */}
           <h1 className="text-4xl font-extrabold text-gray-900 mb-3 leading-tight">
             {book.title}
           </h1>
 
-          {/* Author */}
           <p className="text-lg text-gray-500 mb-4">
             by <span className="font-medium text-gray-800">{book.author}</span>
           </p>
 
-          {/* Rating */}
           <div className="flex items-center gap-3 mb-6">
             <div className="flex text-yellow-500 text-xl">
               {"★".repeat(Math.floor(book.rating))}
@@ -130,7 +123,6 @@ const BookDetailsPage = () => {
             </span>
           </div>
 
-          {/* Price Section */}
           <div className="mb-6">
             {book.discountPrice ? (
               <div className="flex items-center gap-4">
@@ -148,12 +140,10 @@ const BookDetailsPage = () => {
             )}
           </div>
 
-          {/* Description */}
           <p className="text-gray-600 leading-relaxed mb-8 border-l-4 border-blue-600 pl-4 italic">
             {book.description}
           </p>
 
-          {/* Extra Info */}
           <div className="relative bg-white/80 backdrop-blur-md border border-gray-200 rounded-3xl p-7 mb-10 shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500" />
             <div className="space-y-6 mt-3">
@@ -200,7 +190,6 @@ const BookDetailsPage = () => {
             </div>
           </div>
 
-          {/* Buttons */}
           <div className="flex gap-4">
             <button
               disabled={book.stock === 0}

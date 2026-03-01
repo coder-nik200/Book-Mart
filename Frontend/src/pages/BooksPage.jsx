@@ -16,7 +16,6 @@ const BooksPage = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  // Filters
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -24,9 +23,6 @@ const BooksPage = () => {
   const [maxPrice, setMaxPrice] = useState("");
   const [sort, setSort] = useState("");
 
-  /* ----------------------------
-     Initialize Filters From URL
-  ---------------------------- */
   useEffect(() => {
     setSearch(searchParams.get("search") || "");
     setSelectedCategory(searchParams.get("category") || "");
@@ -36,9 +32,6 @@ const BooksPage = () => {
     setPage(Number(searchParams.get("page")) || 1);
   }, []);
 
-  /* ----------------------------
-     Debounce Search
-  ---------------------------- */
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
@@ -47,9 +40,6 @@ const BooksPage = () => {
     return () => clearTimeout(timer);
   }, [search]);
 
-  /* ----------------------------
-     Update URL When Filters Change
-  ---------------------------- */
   useEffect(() => {
     setSearchParams({
       search: debouncedSearch || "",
@@ -61,9 +51,6 @@ const BooksPage = () => {
     });
   }, [debouncedSearch, selectedCategory, minPrice, maxPrice, sort, page]);
 
-  /* ----------------------------
-     Fetch Categories
-  ---------------------------- */
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -76,9 +63,6 @@ const BooksPage = () => {
     fetchCategories();
   }, []);
 
-  /* ----------------------------
-     Fetch Books
-  ---------------------------- */
   useEffect(() => {
     const fetchBooks = async () => {
       try {
@@ -106,9 +90,6 @@ const BooksPage = () => {
     fetchBooks();
   }, [debouncedSearch, selectedCategory, minPrice, maxPrice, sort, page]);
 
-  /* ----------------------------
-     Handlers
-  ---------------------------- */
   const handleAddToCart = (book) => {
     addToCart(book, 1);
     toast.success("Added to cart!");
@@ -123,16 +104,14 @@ const BooksPage = () => {
     setPage(1);
   };
 
-  /* ----------------------------
-     Render
-  ---------------------------- */
+
 
   if (loading && books.length === 0) return <Loading />;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="max-w-7xl mx-auto px-6 py-10">
-        {/* Heading */}
+  
         <div className="mb-10">
           <h1 className="text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
             Explore Books
@@ -143,12 +122,10 @@ const BooksPage = () => {
         </div>
 
         <div className="grid md:grid-cols-4 gap-10">
-          {/* ================= FILTER SIDEBAR ================= */}
           <div className="md:col-span-1">
             <div className="bg-white/70 backdrop-blur-lg border border-gray-200 rounded-2xl shadow-xl p-6 space-y-6 sticky top-24">
               <h2 className="text-xl font-bold mb-2">Filters</h2>
 
-              {/* Search */}
               <div>
                 <label className="text-sm font-semibold text-gray-600">
                   Search
@@ -165,7 +142,6 @@ const BooksPage = () => {
                 />
               </div>
 
-              {/* Category */}
               <div>
                 <label className="text-sm font-semibold text-gray-600">
                   Category
@@ -187,7 +163,6 @@ const BooksPage = () => {
                 </select>
               </div>
 
-              {/* Price Range */}
               <div>
                 <label className="text-sm font-semibold text-gray-600">
                   Price Range
@@ -214,7 +189,6 @@ const BooksPage = () => {
                 </div>
               </div>
 
-              {/* Sort */}
               <div>
                 <label className="text-sm font-semibold text-gray-600">
                   Sort By
@@ -244,7 +218,6 @@ const BooksPage = () => {
             </div>
           </div>
 
-          {/* ================= BOOK GRID ================= */}
           <div className="md:col-span-3">
             {loading ? (
               <Loading />
@@ -260,7 +233,6 @@ const BooksPage = () => {
                   ))}
                 </div>
 
-                {/* Premium Pagination */}
                 <div className="flex justify-center gap-3">
                   <button
                     onClick={() => setPage((p) => Math.max(1, p - 1))}

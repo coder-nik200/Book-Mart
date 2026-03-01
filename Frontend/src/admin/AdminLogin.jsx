@@ -55,16 +55,12 @@ const AdminLogin = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-[#0b0f19] flex items-center justify-center px-6">
-      
-      {/* ===== Background Grid / Glow ===== */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(99,102,241,0.15),transparent_60%)]" />
       <div className="absolute inset-0 bg-[linear-gradient(to_right,_rgba(255,255,255,0.04)_1px,_transparent_1px),linear-gradient(to_bottom,_rgba(255,255,255,0.04)_1px,_transparent_1px)] bg-[size:40px_40px]" />
-
-      {/* ===== Login Shell ===== */}
       <div className="relative z-10 w-full max-w-lg">
         <div className="backdrop-blur-xl bg-white/10 border border-white/15 rounded-2xl shadow-[0_30px_80px_rgba(0,0,0,0.6)] p-10 text-white">
 
-          {/* Header */}
+
           <div className="mb-10">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-11 h-11 rounded-xl bg-indigo-600/20 flex items-center justify-center">
@@ -83,10 +79,10 @@ const AdminLogin = () => {
             </p>
           </div>
 
-          {/* Form */}
+     
           <form onSubmit={handleSubmit} className="space-y-6">
 
-            {/* Email */}
+    
             <div>
               <label className="text-sm text-gray-300 block mb-1">
                 Admin Email
@@ -101,7 +97,7 @@ const AdminLogin = () => {
               />
             </div>
 
-            {/* Password */}
+       
             <div>
               <label className="text-sm text-gray-300 block mb-1">
                 Password
@@ -125,7 +121,7 @@ const AdminLogin = () => {
               </div>
             </div>
 
-            {/* Submit */}
+      
             <button
               type="submit"
               disabled={loading}
@@ -138,7 +134,7 @@ const AdminLogin = () => {
             </button>
           </form>
 
-          {/* Footer */}
+     
           <div className="mt-10 text-xs text-gray-400 flex justify-between">
             <span>© {new Date().getFullYear()} BookMart</span>
             <span className="opacity-70">Admin Access</span>

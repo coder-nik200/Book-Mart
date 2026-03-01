@@ -7,8 +7,6 @@ import { CartProvider } from "./context/CartContext";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
-
-// Website pages
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
@@ -22,15 +20,11 @@ import OrderPage from "./components/OrderPage";
 import OrderSuccessPageWrapper from "./components/OrderSuccessPageWrapper";
 import AboutPage from "./pages/AboutPage";
 import SearchResultsPage from "./components/SearchResultsPage";
-
-// Profile pages
 import ProfileLayout from "./pages/profile/ProfileLayout";
 import ProfileOverview from "./pages/profile/ProfileOverview";
 import AddressManager from "./pages/profile/AddressManager";
 import OrderHistory from "./pages/profile/OrderHistory";
 import ChangePassword from "./pages/profile/ChangePassword";
-
-// Admin pages
 import AdminLogin from "./admin/AdminLogin";
 import AdminDashboard from "./admin/AdminDashboard";
 import AdminLayout from "./admin/AdminLayout";
@@ -38,21 +32,16 @@ import AdminUsers from "./admin/AdminUsers";
 import AdminBooks from "./admin/AdminBooks";
 import AdminOrders from "./admin/AdminOrders";
 
-// ChatBot
 import AiChatBot from "./components/ChatBot/AiChatBot";
 import FloatingChatBot from "./components/ChatBot/FloatingChatBot";
-
-// Fallback
 import NotFound from "./pages/404";
 import { WishlistProvider } from "./context/WishlistContext";
 
-/* ===================== ROUTES ===================== */
 
 const AppRoutes = () => (
   <Routes>
-    {/* ========== WEBSITE LAYOUT ========== */}
     <Route element={<Layout />}>
-      {/* Public */}
+
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
@@ -62,7 +51,6 @@ const AppRoutes = () => (
       <Route path="/search" element={<SearchResultsPage />} />
       <Route path="/order-success" element={<OrderSuccessPageWrapper />} />
 
-      {/* Protected */}
       <Route
         path="/cart"
         element={
@@ -112,7 +100,7 @@ const AppRoutes = () => (
         }
       />
 
-      {/* Profile */}
+
       <Route
         path="/profile"
         element={
@@ -127,7 +115,6 @@ const AppRoutes = () => (
         <Route path="orders" element={<OrderHistory />} />
       </Route>
 
-      {/* Chat */}
       <Route
         path="/chat"
         element={
@@ -136,9 +123,7 @@ const AppRoutes = () => (
           </ProtectedRoute>
         }
       />
-    </Route>
 
-    {/* ========== ADMIN ========== */}
     <Route path="/admin/login" element={<AdminLogin />} />
 
     <Route
@@ -155,12 +140,10 @@ const AppRoutes = () => (
       <Route path="orders" element={<AdminOrders />} />
     </Route>
 
-    {/* Fallback */}
     <Route path="*" element={<NotFound />} />
   </Routes>
 );
 
-/* ===================== APP ===================== */
 
 const App = () => (
   <>
@@ -179,4 +162,3 @@ const App = () => (
 );
 
 export default App;
-// See the change bro

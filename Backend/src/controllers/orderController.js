@@ -4,18 +4,12 @@ import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-// Generate a simple unique order number
 const generateOrderNumber = () => {
   return `BM-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 };
 
-/**
- * 1️⃣ CREATE ORDER
- */
 export const createOrder = async (req, res) => {
   const { items, shippingAddress, paymentMethod, totalPrice } = req.body;
-
-  // Validate request
   if (!items || items.length === 0) {
     return res.status(400).json({ message: "No order items" });
   }
@@ -23,17 +17,15 @@ export const createOrder = async (req, res) => {
   if (!shippingAddress || !paymentMethod || !totalPrice) {
     return res.status(400).json({ message: "Missing data" });
   }
-
-  // Create order
   const order = await Order.create({
-    user: req.user._id, // Make sure authMiddleware sets req.user
+    user: req.user._id,
     items,
     shippingAddress,
     paymentMethod,
     totalPrice,
-    orderNumber: generateOrderNumber(), // ✅ Add orderNumber
+    orderNumber: generateOrderNumber(), 
     shippingCost: 0,
-    taxAmount: totalPrice * 0.1, // Example 10% tax
+    taxAmount: totalPrice * 0.1, 
   });
 
   res.status(201).json({
@@ -43,9 +35,6 @@ export const createOrder = async (req, res) => {
   });
 };
 
-/**
- * 2️⃣ GET USER ORDERS
- */
 export const getUserOrders = async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
 
@@ -53,7 +42,7 @@ export const getUserOrders = async (req, res) => {
     .sort({ createdAt: -1 })
     .limit(limit * 1)
     .skip((page - 1) * limit)
-    .populate("items.book", "title image price"); // <-- populate the book details
+    .populate("items.book", "title image price");
 
   res.json({
     success: true,
@@ -61,14 +50,12 @@ export const getUserOrders = async (req, res) => {
   });
 };
 
-/**
- * 3️⃣ GET SINGLE ORDER
- */
+
 export const getOrder = async (req, res) => {
   const order = await Order.findOne({
     _id: req.params.orderId,
     user: req.user._id,
-  }).populate("items.book", "title image price"); // <-- populate book
+  }).populate("items.book", "title image price");
 
   if (!order) {
     return res.status(404).json({ message: "Order not found" });
@@ -80,9 +67,6 @@ export const getOrder = async (req, res) => {
   });
 };
 
-/**
- * 4️⃣ CANCEL ORDER
- */
 export const cancelOrder = async (req, res) => {
   const order = await Order.findOne({
     _id: req.params.orderId,
@@ -108,14 +92,12 @@ export const cancelOrder = async (req, res) => {
   });
 };
 
-/**
- * 5️⃣ CREATE STRIPE PAYMENT INTENT
- */
+
 export const createPaymentIntent = async (req, res) => {
   const { amount } = req.body;
 
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: amount * 100, // convert to cents
+    amount: amount * 100, 
     currency: "usd",
   });
 
@@ -124,9 +106,7 @@ export const createPaymentIntent = async (req, res) => {
   });
 };
 
-/**
- * 6️⃣ CONFIRM PAYMENT
- */
+
 export const confirmPayment = async (req, res) => {
   const { orderId, paymentIntentId } = req.body;
 
@@ -142,7 +122,6 @@ export const confirmPayment = async (req, res) => {
 
   await order.save();
 
-  // Optional: Clear cart after payment
   await Cart.findOneAndDelete({ user: req.user._id });
 
   res.json({

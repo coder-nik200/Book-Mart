@@ -16,7 +16,7 @@ const ProfileLayout = () => {
   return (
     <section className="bg-gray-50 min-h-screen pt-6">
       <div className="max-w-7xl mx-auto px-4">
-        {/* ================= MOBILE HEADER ================= */}
+    
         <div className="md:hidden flex items-center justify-between bg-white rounded-xl shadow px-4 py-3 mb-4">
           <h2 className="text-lg font-semibold text-gray-800">My Account</h2>
           <button
@@ -28,7 +28,6 @@ const ProfileLayout = () => {
         </div>
 
         <div className="grid md:grid-cols-4 gap-6">
-          {/* ================= SIDEBAR ================= */}
           <aside
             className={`
               fixed md:static
@@ -41,15 +40,13 @@ const ProfileLayout = () => {
               md:translate-x-0
             `}
           >
-            {/* Overlay (mobile only) */}
             <div
               className="md:hidden fixed top-16 inset-x-0 bottom-0 bg-black/40 backdrop-blur-sm"
               onClick={() => setOpen(false)}
             />
 
-            {/* Sidebar Panel */}
             <div className="relative bg-white h-full w-72 md:w-full rounded-tr-2xl rounded-br-2xl md:rounded-2xl shadow-md md:shadow-none p-6 z-50">
-              {/* Close button */}
+ 
               <button
                 onClick={() => setOpen(false)}
                 className="md:hidden absolute top-4 right-4 p-2 rounded-lg hover:bg-gray-100 transition"
@@ -57,7 +54,7 @@ const ProfileLayout = () => {
                 <X size={22} />
               </button>
 
-              {/* User Info */}
+ 
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg">
                   <User2 />
@@ -68,7 +65,7 @@ const ProfileLayout = () => {
                 </div>
               </div>
 
-              {/* Navigation */}
+      
               <nav className="space-y-2">
                 <NavLink
                   to="/profile"
@@ -106,7 +103,6 @@ const ProfileLayout = () => {
             </div>
           </aside>
 
-          {/* ================= CONTENT ================= */}
           <div className="md:col-span-3">
             <div className="bg-white rounded-2xl shadow-md p-6 md:p-8">
               <Outlet />

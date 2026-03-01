@@ -52,7 +52,6 @@ const UserDashboard = () => {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      {/* Header */}
       <div className="mb-10">
         <h1 className="text-4xl font-bold text-gray-800 mb-2">
           Welcome to Your Dashboard
@@ -62,7 +61,6 @@ const UserDashboard = () => {
         </p>
       </div>
 
-      {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
         <motion.div
           whileHover={{ scale: 1.05 }}
@@ -101,7 +99,6 @@ const UserDashboard = () => {
         </motion.div>
       </div>
 
-      {/* Recent Orders */}
       <div className="bg-white rounded-xl shadow-md p-6 mb-8">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800 border-b pb-2">
           Recent Orders
@@ -119,12 +116,10 @@ const UserDashboard = () => {
                 className="p-4 border rounded-lg hover:shadow-lg hover:bg-gray-50 transition cursor-pointer flex flex-col gap-2"
                 onClick={() => navigate(`/order/${order._id}`)}
               >
-                {/* First Book Title */}
                 <p className="text-gray-800 font-medium text-lg">
                   {order.items[0]?.book?.title || "Unknown Book"}
                 </p>
 
-                {/* Order Details */}
                 <div className="flex flex-wrap gap-4 text-gray-500 text-sm">
                   <div className="flex items-center gap-1">
                     <FaCalendarAlt className="text-indigo-500" />
@@ -149,7 +144,6 @@ const UserDashboard = () => {
         )}
       </div>
 
-      {/* Wishlist Preview */}
       <div className="bg-white rounded-xl shadow-md p-6 mb-8">
         <h2 className="text-2xl font-semibold mb-4 text-gray-800 border-b pb-2">
           Wishlist Preview

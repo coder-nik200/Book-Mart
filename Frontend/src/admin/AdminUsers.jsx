@@ -10,7 +10,6 @@ import {
 import toast from "react-hot-toast";
 import { adminAPI } from "../api/apiClient";
 
-/* ================= DEBOUNCE ================= */
 const useDebounce = (value, delay = 500) => {
   const [debounced, setDebounced] = useState(value);
 
@@ -37,7 +36,6 @@ const AdminUsers = () => {
 
   const debouncedSearch = useDebounce(search);
 
-  /* ================= FETCH USERS ================= */
   const fetchUsers = useCallback(async () => {
     try {
       setLoading(true);
@@ -62,7 +60,6 @@ const AdminUsers = () => {
     fetchUsers();
   }, [fetchUsers]);
 
-  /* ================= SINGLE ACTION ================= */
   const toggleBlockUser = async (user) => {
     if (!window.confirm("Are you sure you want to change this user status?"))
       return;
@@ -82,7 +79,6 @@ const AdminUsers = () => {
     }
   };
 
-  /* ================= BULK ACTION ================= */
   const bulkAction = async (type) => {
     if (!window.confirm(`Are you sure you want to ${type} selected users?`))
       return;
@@ -110,7 +106,6 @@ const AdminUsers = () => {
   return (
     <div className="space-y-6 min-h-screen overflow-y-auto">
 
-      {/* ================= HEADER ================= */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold flex items-center gap-2">
@@ -141,7 +136,6 @@ const AdminUsers = () => {
         )}
       </div>
 
-      {/* ================= CONTROLS ================= */}
       <div className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
         <div className="relative w-full md:max-w-sm">
           <Search className="absolute left-3 top-3 text-gray-400" size={18} />
@@ -176,7 +170,6 @@ const AdminUsers = () => {
         </div>
       </div>
 
-      {/* ================= TABLE ================= */}
       <div className="overflow-x-auto rounded-2xl border border-white/10">
         <table className="min-w-full text-sm">
           <thead className="bg-white/5 sticky top-0 backdrop-blur">
@@ -270,8 +263,6 @@ const AdminUsers = () => {
           </tbody>
         </table>
       </div>
-
-      {/* ================= PAGINATION ================= */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-gray-400">
           Page {page} of {pages}

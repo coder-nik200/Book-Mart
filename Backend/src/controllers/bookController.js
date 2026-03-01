@@ -3,8 +3,6 @@ import Review from "../models/Review.js";
 import Category from "../models/Category.js";
 import slugify from "slugify";
 import mongoose from "mongoose";
-
-/* ==================== GET ALL BOOKS ==================== */
 export const getAllBooks = async (req, res) => {
   try {
     const {
@@ -18,28 +16,20 @@ export const getAllBooks = async (req, res) => {
     } = req.query;
 
     const filter = {};
-
-    /* ---------------- SEARCH ---------------- */
     if (search && search.trim() !== "") {
       filter.$or = [
         { title: { $regex: search, $options: "i" } },
         { author: { $regex: search, $options: "i" } },
       ];
     }
-
-    /* ---------------- CATEGORY ---------------- */
     if (category && mongoose.Types.ObjectId.isValid(category)) {
       filter.category = category;
     }
-
-    /* ---------------- PRICE ---------------- */
     if (minPrice || maxPrice) {
       filter.price = {};
       if (minPrice) filter.price.$gte = Number(minPrice);
       if (maxPrice) filter.price.$lte = Number(maxPrice);
     }
-
-    /* ---------------- SORT ---------------- */
     const sortMap = {
       "price-low": { price: 1 },
       "price-high": { price: -1 },
@@ -49,8 +39,6 @@ export const getAllBooks = async (req, res) => {
     };
 
     const sortObj = sortMap[sort] || { createdAt: -1 };
-
-    /* ---------------- PAGINATION ---------------- */
     const pageNum = Number(page);
     const limitNum = Number(limit);
     const skip = (pageNum - 1) * limitNum;
@@ -78,7 +66,6 @@ export const getAllBooks = async (req, res) => {
   }
 };
 
-/* ==================== GET SINGLE BOOK ==================== */
 export const getBook = async (req, res) => {
   try {
     const book = await Book.findById(req.params.id).populate("category");
@@ -111,7 +98,6 @@ export const getBook = async (req, res) => {
   }
 };
 
-/* ==================== FEATURED BOOKS ==================== */
 export const getFeaturedBooks = async (req, res) => {
   try {
     const books = await Book.find({ isFeatured: true })
@@ -124,7 +110,6 @@ export const getFeaturedBooks = async (req, res) => {
   }
 };
 
-/* ==================== NEW ARRIVALS ==================== */
 export const getNewArrivals = async (req, res) => {
   try {
     const books = await Book.find({ isNewArrival: true })
@@ -138,7 +123,6 @@ export const getNewArrivals = async (req, res) => {
   }
 };
 
-/* ==================== BEST SELLERS ==================== */
 export const getBestSellers = async (req, res) => {
   try {
     const books = await Book.find({ isBestSeller: true })
@@ -151,7 +135,6 @@ export const getBestSellers = async (req, res) => {
   }
 };
 
-/* ==================== ADD REVIEW ==================== */
 export const addReview = async (req, res) => {
   try {
     const { rating, comment } = req.body;
@@ -189,7 +172,6 @@ export const addReview = async (req, res) => {
   }
 };
 
-/* ==================== ADMIN: CREATE BOOK ==================== */
 export const createBook = async (req, res) => {
   try {
     const book = await Book.create({
@@ -204,7 +186,6 @@ export const createBook = async (req, res) => {
   }
 };
 
-/* ==================== ADMIN: UPDATE BOOK ==================== */
 export const updateBook = async (req, res) => {
   try {
     if (req.body.title) {
@@ -221,7 +202,6 @@ export const updateBook = async (req, res) => {
   }
 };
 
-/* ==================== ADMIN: DELETE BOOK ==================== */
 export const deleteBook = async (req, res) => {
   try {
     await Book.findByIdAndDelete(req.params.id);
@@ -233,7 +213,6 @@ export const deleteBook = async (req, res) => {
   }
 };
 
-/* ==================== GET CATEGORIES ==================== */
 export const getCategories = async (req, res) => {
   try {
     const categories = await Category.find({ isActive: true });
@@ -243,7 +222,6 @@ export const getCategories = async (req, res) => {
   }
 };
 
-/* ==================== SEARCH BOOKS (NAVBAR + SEARCH PAGE) ==================== */
 export const searchBooks = async (req, res) => {
   try {
     const { q, limit = 10 } = req.query;
