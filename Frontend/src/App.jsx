@@ -7,6 +7,7 @@ import { CartProvider } from "./context/CartContext";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
+
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
@@ -20,11 +21,13 @@ import OrderPage from "./components/OrderPage";
 import OrderSuccessPageWrapper from "./components/OrderSuccessPageWrapper";
 import AboutPage from "./pages/AboutPage";
 import SearchResultsPage from "./components/SearchResultsPage";
+
 import ProfileLayout from "./pages/profile/ProfileLayout";
 import ProfileOverview from "./pages/profile/ProfileOverview";
 import AddressManager from "./pages/profile/AddressManager";
 import OrderHistory from "./pages/profile/OrderHistory";
 import ChangePassword from "./pages/profile/ChangePassword";
+
 import AdminLogin from "./admin/AdminLogin";
 import AdminDashboard from "./admin/AdminDashboard";
 import AdminLayout from "./admin/AdminLayout";
@@ -40,8 +43,9 @@ import { WishlistProvider } from "./context/WishlistContext";
 
 const AppRoutes = () => (
   <Routes>
+    
     <Route element={<Layout />}>
-
+  
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
@@ -99,8 +103,6 @@ const AppRoutes = () => (
           </ProtectedRoute>
         }
       />
-
-
       <Route
         path="/profile"
         element={
@@ -114,7 +116,6 @@ const AppRoutes = () => (
         <Route path="security" element={<ChangePassword />} />
         <Route path="orders" element={<OrderHistory />} />
       </Route>
-
       <Route
         path="/chat"
         element={
@@ -123,7 +124,7 @@ const AppRoutes = () => (
           </ProtectedRoute>
         }
       />
-
+    </Route>
     <Route path="/admin/login" element={<AdminLogin />} />
 
     <Route
