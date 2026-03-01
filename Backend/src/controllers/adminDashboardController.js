@@ -1,36 +1,36 @@
-
 import Book from "../models/Book.js";
 import Order from "../models/Order.js";
 import User from "../models/User.js";
 
 /* =========================
    DASHBOARD STATS (ADMIN)
+   FULL UPGRADE – SAFE
 ========================= */
 export const getDashboardStats = async (req, res) => {
   try {
-    const totalOrders = await Order.countDocuments();
-    const totalUsers = await User.countDocuments();
-    const totalBooks = await Book.countDocuments();
+    /* ===== DATE RANGE ===== */
+    const rangeDays = Number(req.query.days) || 7;
 
-    /* ===== TOTAL REVENUE (COMPLETED PAYMENTS) ===== */
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - (rangeDays - 1));
+    startDate.setHours(0, 0, 0, 0);
+
+    const previousStart = new Date(startDate);
+    previousStart.setDate(previousStart.getDate() - rangeDays);
+
+    /* ===== BASIC COUNTS ===== */
+    const [totalOrders, totalUsers, totalBooks] = await Promise.all([
+      Order.countDocuments(),
+      User.countDocuments(),
+      Book.countDocuments(),
+    ]);
+
+    /* ===== TOTAL REVENUE ===== */
     const revenueResult = await Order.aggregate([
       { $match: { paymentStatus: "completed" } },
-      {
-        $group: {
-          _id: null,
-          totalRevenue: { $sum: "$totalPrice" },
-        },
-      },
+      { $group: { _id: null, totalRevenue: { $sum: "$totalPrice" } } },
     ]);
     const totalRevenue = revenueResult[0]?.totalRevenue || 0;
-
-    /* ===== ORDER STATUS COUNTS ===== */
-    const pendingOrders = await Order.countDocuments({
-      orderstatus: "pending",
-    });
-    const deliveredOrders = await Order.countDocuments({
-      orderstatus: "delivered",
-    });
 
     /* ===== TODAY STATS ===== */
     const today = new Date();
@@ -40,23 +40,133 @@ export const getDashboardStats = async (req, res) => {
       createdAt: { $gte: today },
     });
 
-    const todayRevenueResult = await Order.aggregate([
+    const todayRevenueAgg = await Order.aggregate([
       {
         $match: {
           paymentStatus: "completed",
           createdAt: { $gte: today },
         },
       },
+      { $group: { _id: null, total: { $sum: "$totalPrice" } } },
+    ]);
+    const todayRevenue = todayRevenueAgg[0]?.total || 0;
+
+    /* ===== ORDER STATUS DISTRIBUTION ===== */
+    const orderStatusAgg = await Order.aggregate([
+      { $group: { _id: "$orderstatus", count: { $sum: 1 } } },
+    ]);
+
+    const orderStatusDistribution = orderStatusAgg.map((o) => ({
+      name: o._id,
+      value: o.count,
+    }));
+
+    /* ===== REVENUE BY DATE (DYNAMIC RANGE) ===== */
+    const revenueByDateAgg = await Order.aggregate([
+      {
+        $match: {
+          paymentStatus: "completed",
+          createdAt: { $gte: startDate },
+        },
+      },
       {
         $group: {
-          _id: null,
-          total: { $sum: "$totalPrice" },
+          _id: {
+            $dateToString: { format: "%Y-%m-%d", date: "$createdAt" },
+          },
+          revenue: { $sum: "$totalPrice" },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
+
+    const revenueByDate = revenueByDateAgg.map((d) => ({
+      date: d._id,
+      revenue: d.revenue,
+    }));
+
+    /* ===== TOP SELLING BOOKS ===== */
+    const topSellingBooks = await Order.aggregate([
+      { $unwind: "$items" },
+      {
+        $group: {
+          _id: "$items.book",
+          sales: { $sum: "$items.quantity" },
+        },
+      },
+      { $sort: { sales: -1 } },
+      { $limit: 5 },
+      {
+        $lookup: {
+          from: "books",
+          localField: "_id",
+          foreignField: "_id",
+          as: "book",
+        },
+      },
+      { $unwind: "$book" },
+      {
+        $project: {
+          title: "$book.title",
+          sales: 1,
         },
       },
     ]);
-    const todayRevenue = todayRevenueResult[0]?.total || 0;
 
-    /* ===== RECENT ACTIVITY (LIGHTWEIGHT) ===== */
+    /* ===== GROWTH CALCULATION ===== */
+    const currentOrders = await Order.countDocuments({
+      createdAt: { $gte: startDate },
+    });
+    const previousOrders = await Order.countDocuments({
+      createdAt: { $gte: previousStart, $lt: startDate },
+    });
+
+    const currentUsers = await User.countDocuments({
+      createdAt: { $gte: startDate },
+    });
+    const previousUsers = await User.countDocuments({
+      createdAt: { $gte: previousStart, $lt: startDate },
+    });
+
+    const revenueCurrentAgg = await Order.aggregate([
+      {
+        $match: {
+          paymentStatus: "completed",
+          createdAt: { $gte: startDate },
+        },
+      },
+      { $group: { _id: null, total: { $sum: "$totalPrice" } } },
+    ]);
+
+    const revenuePrevAgg = await Order.aggregate([
+      {
+        $match: {
+          paymentStatus: "completed",
+          createdAt: { $gte: previousStart, $lt: startDate },
+        },
+      },
+      { $group: { _id: null, total: { $sum: "$totalPrice" } } },
+    ]);
+
+    const revenueCurrent = revenueCurrentAgg[0]?.total || 0;
+    const revenuePrevious = revenuePrevAgg[0]?.total || 0;
+
+    const growth = {
+      orderGrowth:
+        previousOrders === 0
+          ? 100
+          : (((currentOrders - previousOrders) / previousOrders) * 100).toFixed(1),
+      userGrowth:
+        previousUsers === 0
+          ? 100
+          : (((currentUsers - previousUsers) / previousUsers) * 100).toFixed(1),
+      revenueGrowth:
+        revenuePrevious === 0
+          ? 100
+          : (((revenueCurrent - revenuePrevious) / revenuePrevious) * 100).toFixed(1),
+    };
+
+    /* ===== RECENT ACTIVITY ===== */
     const recentOrders = await Order.find()
       .sort({ createdAt: -1 })
       .limit(4)
@@ -68,13 +178,13 @@ export const getDashboardStats = async (req, res) => {
       .select("createdAt");
 
     const recentActivity = [
-      ...recentOrders.map((order) => ({
-        message: `New order placed (#${order._id.toString().slice(-6)})`,
-        time: order.createdAt,
+      ...recentOrders.map((o) => ({
+        message: `New order placed (#${o._id.toString().slice(-6)})`,
+        time: o.createdAt,
       })),
-      ...recentUsers.map((user) => ({
+      ...recentUsers.map(() => ({
         message: "New user registered",
-        time: user.createdAt,
+        time: new Date(),
       })),
     ]
       .sort((a, b) => new Date(b.time) - new Date(a.time))
@@ -84,16 +194,21 @@ export const getDashboardStats = async (req, res) => {
     res.status(200).json({
       success: true,
       data: {
+        rangeDays,
+
         totalOrders,
         totalUsers,
         totalBooks,
         totalRevenue,
 
-        pendingOrders,
-        deliveredOrders,
-
         todayOrders,
         todayRevenue,
+
+        orderStatusDistribution,
+        revenueByDate,
+
+        topSellingBooks,
+        growth,
 
         recentActivity,
       },

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import {
   Search,
   ShieldOff,
@@ -10,7 +10,7 @@ import {
 import toast from "react-hot-toast";
 import { adminAPI } from "../api/apiClient";
 
-/* ================= DEBOUNCE HOOK ================= */
+/* ================= DEBOUNCE ================= */
 const useDebounce = (value, delay = 500) => {
   const [debounced, setDebounced] = useState(value);
 
@@ -27,6 +27,8 @@ const AdminUsers = () => {
   const [selected, setSelected] = useState([]);
 
   const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState(false);
+
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [limit, setLimit] = useState(10);
@@ -36,7 +38,7 @@ const AdminUsers = () => {
   const debouncedSearch = useDebounce(search);
 
   /* ================= FETCH USERS ================= */
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       setLoading(true);
       const res = await adminAPI.getAllUsers({
@@ -54,43 +56,59 @@ const AdminUsers = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, limit, sort, debouncedSearch]);
 
   useEffect(() => {
     fetchUsers();
-  }, [page, limit, sort, debouncedSearch]);
+  }, [fetchUsers]);
 
   /* ================= SINGLE ACTION ================= */
   const toggleBlockUser = async (user) => {
+    if (!window.confirm("Are you sure you want to change this user status?"))
+      return;
+
     try {
+      setActionLoading(true);
       user.isBlocked
         ? await adminAPI.unblockUser(user._id)
         : await adminAPI.blockUser(user._id);
 
-      toast.success("Action successful");
+      toast.success("User status updated");
       fetchUsers();
     } catch {
       toast.error("Action failed");
+    } finally {
+      setActionLoading(false);
     }
   };
 
   /* ================= BULK ACTION ================= */
   const bulkAction = async (type) => {
+    if (!window.confirm(`Are you sure you want to ${type} selected users?`))
+      return;
+
     try {
-      for (const id of selected) {
-        type === "block"
-          ? await adminAPI.blockUser(id)
-          : await adminAPI.unblockUser(id);
-      }
+      setActionLoading(true);
+
+      await Promise.all(
+        selected.map((id) =>
+          type === "block"
+            ? adminAPI.blockUser(id)
+            : adminAPI.unblockUser(id)
+        )
+      );
+
       toast.success("Bulk action completed");
       fetchUsers();
     } catch {
       toast.error("Bulk action failed");
+    } finally {
+      setActionLoading(false);
     }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 min-h-screen overflow-y-auto">
 
       {/* ================= HEADER ================= */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -106,14 +124,16 @@ const AdminUsers = () => {
         {selected.length > 0 && (
           <div className="flex gap-2">
             <button
+              disabled={actionLoading}
               onClick={() => bulkAction("block")}
-              className="px-3 py-2 text-sm bg-red-600/20 text-red-400 rounded-lg"
+              className="px-4 py-2 text-sm bg-red-600/20 text-red-400 rounded-xl hover:bg-red-600/30 transition"
             >
               Block Selected
             </button>
             <button
+              disabled={actionLoading}
               onClick={() => bulkAction("unblock")}
-              className="px-3 py-2 text-sm bg-green-600/20 text-green-400 rounded-lg"
+              className="px-4 py-2 text-sm bg-green-600/20 text-green-400 rounded-xl hover:bg-green-600/30 transition"
             >
               Unblock Selected
             </button>
@@ -138,7 +158,7 @@ const AdminUsers = () => {
           <select
             value={limit}
             onChange={(e) => setLimit(Number(e.target.value))}
-            className="bg-black/30 border border-white/10 rounded-lg px-3 py-2 text-sm"
+            className="bg-black/30 border border-white/10 rounded-xl px-3 py-2 text-sm"
           >
             <option value={10}>10 / page</option>
             <option value={20}>20 / page</option>
@@ -148,7 +168,7 @@ const AdminUsers = () => {
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value)}
-            className="bg-black/30 border border-white/10 rounded-lg px-3 py-2 text-sm"
+            className="bg-black/30 border border-white/10 rounded-xl px-3 py-2 text-sm"
           >
             <option value="desc">Newest</option>
             <option value="asc">Oldest</option>
@@ -156,17 +176,21 @@ const AdminUsers = () => {
         </div>
       </div>
 
-      {/* ================= DESKTOP / TABLET TABLE ================= */}
-      <div className="hidden sm:block overflow-x-auto rounded-2xl border border-white/10">
+      {/* ================= TABLE ================= */}
+      <div className="overflow-x-auto rounded-2xl border border-white/10">
         <table className="min-w-full text-sm">
-          <thead className="bg-white/5">
+          <thead className="bg-white/5 sticky top-0 backdrop-blur">
             <tr>
               <th className="px-4 py-3">
                 <input
                   type="checkbox"
-                  checked={selected.length === users.length && users.length > 0}
+                  checked={
+                    selected.length === users.length && users.length > 0
+                  }
                   onChange={(e) =>
-                    setSelected(e.target.checked ? users.map(u => u._id) : [])
+                    setSelected(
+                      e.target.checked ? users.map((u) => u._id) : []
+                    )
                   }
                 />
               </th>
@@ -181,7 +205,7 @@ const AdminUsers = () => {
             {loading ? (
               <tr>
                 <td colSpan="5" className="py-10 text-center">
-                  <div className="w-6 h-6 mx-auto border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+                  Loading users...
                 </td>
               </tr>
             ) : users.length === 0 ? (
@@ -192,7 +216,7 @@ const AdminUsers = () => {
               </tr>
             ) : (
               users.map((user) => (
-                <tr key={user._id} className="hover:bg-white/5">
+                <tr key={user._id} className="hover:bg-white/5 transition">
                   <td className="px-4 py-3">
                     <input
                       type="checkbox"
@@ -200,29 +224,33 @@ const AdminUsers = () => {
                       onChange={() =>
                         setSelected((prev) =>
                           prev.includes(user._id)
-                            ? prev.filter(id => id !== user._id)
+                            ? prev.filter((id) => id !== user._id)
                             : [...prev, user._id]
                         )
                       }
                     />
                   </td>
-                  <td className="px-4 py-3">{user.name}</td>
+                  <td className="px-4 py-3 font-medium">{user.name}</td>
                   <td className="px-4 py-3 text-gray-300">{user.email}</td>
                   <td className="px-4 py-3">
-                    {user.isBlocked ? (
-                      <span className="text-red-400">Blocked</span>
-                    ) : (
-                      <span className="text-green-400">Active</span>
-                    )}
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        user.isBlocked
+                          ? "bg-red-600/20 text-red-400"
+                          : "bg-green-600/20 text-green-400"
+                      }`}
+                    >
+                      {user.isBlocked ? "Blocked" : "Active"}
+                    </span>
                   </td>
                   <td className="px-4 py-3 text-right">
                     <button
+                      disabled={actionLoading}
                       onClick={() => toggleBlockUser(user)}
-                      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs
-                      ${
+                      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs transition ${
                         user.isBlocked
-                          ? "bg-green-600/20 text-green-400"
-                          : "bg-red-600/20 text-red-400"
+                          ? "bg-green-600/20 text-green-400 hover:bg-green-600/30"
+                          : "bg-red-600/20 text-red-400 hover:bg-red-600/30"
                       }`}
                     >
                       {user.isBlocked ? (
@@ -243,57 +271,6 @@ const AdminUsers = () => {
         </table>
       </div>
 
-      {/* ================= MOBILE CARDS ================= */}
-      <div className="sm:hidden space-y-4">
-        {loading ? (
-          <div className="flex justify-center py-10">
-            <div className="w-6 h-6 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
-          </div>
-        ) : users.length === 0 ? (
-          <p className="text-center text-gray-400">No users found</p>
-        ) : (
-          users.map((user) => (
-            <div
-              key={user._id}
-              className="bg-white/5 border border-white/10 rounded-xl p-4 space-y-2"
-            >
-              <div className="font-medium">{user.name}</div>
-              <div className="text-sm text-gray-400">{user.email}</div>
-
-              <div className="flex items-center justify-between pt-2">
-                <span
-                  className={`text-xs ${
-                    user.isBlocked ? "text-red-400" : "text-green-400"
-                  }`}
-                >
-                  {user.isBlocked ? "Blocked" : "Active"}
-                </span>
-
-                <button
-                  onClick={() => toggleBlockUser(user)}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs
-                  ${
-                    user.isBlocked
-                      ? "bg-green-600/20 text-green-400"
-                      : "bg-red-600/20 text-red-400"
-                  }`}
-                >
-                  {user.isBlocked ? (
-                    <>
-                      <ShieldCheck size={14} /> Unblock
-                    </>
-                  ) : (
-                    <>
-                      <ShieldOff size={14} /> Block
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
-          ))
-        )}
-      </div>
-
       {/* ================= PAGINATION ================= */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-gray-400">
@@ -301,10 +278,18 @@ const AdminUsers = () => {
         </p>
 
         <div className="flex gap-2">
-          <button disabled={page === 1} onClick={() => setPage(page - 1)}>
+          <button
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+            className="disabled:opacity-40"
+          >
             <ChevronLeft />
           </button>
-          <button disabled={page === pages} onClick={() => setPage(page + 1)}>
+          <button
+            disabled={page === pages}
+            onClick={() => setPage(page + 1)}
+            className="disabled:opacity-40"
+          >
             <ChevronRight />
           </button>
         </div>
