@@ -1,3 +1,4 @@
+
 import axios from "axios";
 
 const API_BASE_URL = "http://localhost:5000/api";
@@ -44,8 +45,8 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshError) {
         localStorage.removeItem("accessToken");
-        window.location.href = "/login";
-        return Promise.reject(refreshError);
+console.error("Auth failed", error);
+return Promise.reject(error);
       }
     }
 

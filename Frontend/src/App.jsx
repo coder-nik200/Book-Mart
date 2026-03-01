@@ -24,19 +24,18 @@ import ProfileOverview from "./pages/profile/ProfileOverview";
 import AddressManager from "./pages/profile/AddressManager";
 import OrderHistory from "./pages/profile/OrderHistory";
 import ChangePassword from "./pages/profile/ChangePassword";
-// import ProfileLayout from "./pages/profile/ProfileLayout";
 import OrderSuccessPageWrapper from "./components/OrderSuccessPageWrapper";
 import AboutPage from "./pages/AboutPage";
+import SearchResultsPage from "./components/SearchResultsPage";
 
 // Admin
 import AdminLogin from "./admin/AdminLogin";
 import AdminDashboard from "./admin/AdminDashboard";
 import AdminLayout from "./admin/AdminLayout";
-import AdminRoute from "./admin/AdminRoute";
 import AdminUsers from "./admin/AdminUsers";
 import AdminBooks from "./admin/AdminBooks";
 import AdminOrders from "./admin/AdminOrders";
-import SearchResultsPage from "./components/SearchResultsPage";
+
 const App = () => {
   return (
     <>
@@ -46,7 +45,7 @@ const App = () => {
         <AuthProvider>
           <CartProvider>
             <Routes>
-              {/* ============ WEBSITE LAYOUT ROUTES ============ */}
+              {/* ================= WEBSITE ROUTES ================= */}
               <Route element={<Layout />}>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/login" element={<LoginPage />} />
@@ -54,7 +53,10 @@ const App = () => {
                 <Route path="/books" element={<BooksPage />} />
                 <Route path="/book/:id" element={<BookDetailsPage />} />
                 <Route path="/about" element={<AboutPage />} />
+                <Route path="/search" element={<SearchResultsPage />} />
+                <Route path="/order-success" element={<OrderSuccessPageWrapper />} />
 
+                {/* Protected User Routes */}
                 <Route
                   path="/cart"
                   element={
@@ -69,22 +71,6 @@ const App = () => {
                   element={
                     <ProtectedRoute>
                       <CheckoutPage />
-                    </ProtectedRoute>
-                  }
-                />
-
-                <Route path="/profile" element={<ProfileLayout />}>
-                  <Route index element={<ProfileOverview />} />
-                  <Route path="addresses" element={<AddressManager />} />
-                  <Route path="security" element={<ChangePassword />} />
-                  <Route path="orders" element={<OrderHistory />} />
-                </Route>
-
-                <Route
-                  path="/orders"
-                  element={
-                    <ProtectedRoute>
-                      <OrderPage />
                     </ProtectedRoute>
                   }
                 />
@@ -107,42 +93,55 @@ const App = () => {
                   }
                 />
 
-                {/* Admin */}
                 <Route
-                  path="/admin"
+                  path="/orders"
                   element={
-                    <ProtectedRoute adminOnly>
-                      <AdminDashboard />
+                    <ProtectedRoute>
+                      <OrderPage />
                     </ProtectedRoute>
                   }
                 />
 
                 <Route
-                  path="/order-success"
-                  element={<OrderSuccessPageWrapper />}
+                  path="/order/:orderId"
+                  element={
+                    <ProtectedRoute>
+                      <OrderPage />
+                    </ProtectedRoute>
+                  }
                 />
-                 <Route path="/search" element={<SearchResultsPage />} />
 
-                <Route path="/order/:orderId" element={<OrderPage />} />
+                {/* Profile Section */}
+                <Route
+                  path="/profile"
+                  element={
+                    <ProtectedRoute>
+                      <ProfileLayout />
+                    </ProtectedRoute>
+                  }
+                >
+                  <Route index element={<ProfileOverview />} />
+                  <Route path="addresses" element={<AddressManager />} />
+                  <Route path="security" element={<ChangePassword />} />
+                  <Route path="orders" element={<OrderHistory />} />
+                </Route>
 
-                {/* Fallback */}
                 <Route path="*" element={<NotFound />} />
               </Route>
 
-              {/* ============ ADMIN ROUTES (NO LAYOUT) ============ */}
-              {/* ============ ADMIN ROUTES ============ */}
+              {/* ================= ADMIN ================= */}
+
               <Route path="/admin/login" element={<AdminLogin />} />
 
               <Route
                 path="/admin"
                 element={
-                  <AdminRoute>
+                  <ProtectedRoute requiredRole="admin">
                     <AdminLayout />
-                  </AdminRoute>
+                  </ProtectedRoute>
                 }
               >
                 <Route path="dashboard" element={<AdminDashboard />} />
-                {/* future admin routes */}
                 <Route path="users" element={<AdminUsers />} />
                 <Route path="books" element={<AdminBooks />} />
                 <Route path="orders" element={<AdminOrders />} />
