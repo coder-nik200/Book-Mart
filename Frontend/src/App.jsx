@@ -44,6 +44,7 @@ import FloatingChatBot from "./components/ChatBot/FloatingChatBot";
 
 // Fallback
 import NotFound from "./pages/404";
+import { WishlistProvider } from "./context/WishlistContext";
 
 /* ===================== ROUTES ===================== */
 
@@ -167,7 +168,9 @@ const App = () => (
     <Router>
       <AuthProvider>
         <CartProvider>
+        <WishlistProvider>
           <AppRoutes />
+          </WishlistProvider>
           <FloatingChatBot />
         </CartProvider>
       </AuthProvider>
