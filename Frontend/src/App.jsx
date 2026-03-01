@@ -36,6 +36,7 @@ import AdminRoute from "./admin/AdminRoute";
 import AdminUsers from "./admin/AdminUsers";
 import AdminBooks from "./admin/AdminBooks";
 import AdminOrders from "./admin/AdminOrders";
+import SearchResultsPage from "./components/SearchResultsPage";
 const App = () => {
   return (
     <>
@@ -120,6 +121,7 @@ const App = () => {
                   path="/order-success"
                   element={<OrderSuccessPageWrapper />}
                 />
+                 <Route path="/search" element={<SearchResultsPage />} />
 
                 <Route path="/order/:orderId" element={<OrderPage />} />
 
