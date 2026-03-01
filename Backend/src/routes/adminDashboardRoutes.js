@@ -8,4 +8,4 @@ const router = express.Router();
 
 router.get("/", protect, adminOnly, getDashboardStats);
 
-export default router;
+export default router

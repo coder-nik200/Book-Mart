@@ -31,3 +31,17 @@ html {
 .hide-scrollbar {
   -ms-overflow-style: none;
 }
+
+/* Hide scrollbar but keep scrolling */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+* {
+  scrollbar-width: none; /* Firefox */
+}

@@ -10,24 +10,23 @@ export const getAllOrders = async (req, res) => {
       .populate("items.book", "title price")
       .sort({ createdAt: -1 });
 
-    res.json(orders);
+    res.json({ orders });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
 /* =========================
-   TOGGLE ORDER STATUS (ADMIN)
+   UPDATE ORDER STATUS (ADMIN)
    Only pending <-> delivered
 ========================= */
 export const updateOrderStatus = async (req, res) => {
   try {
-    const { orderstatus } = req.body;
+    const { status } = req.body; // ✅ FIXED
 
-    // Only allow two statuses
     const allowedStatuses = ["pending", "delivered"];
 
-    if (!allowedStatuses.includes(orderstatus)) {
+    if (!allowedStatuses.includes(status)) {
       return res.status(400).json({
         message: "Only 'pending' or 'delivered' allowed",
       });
@@ -39,10 +38,10 @@ export const updateOrderStatus = async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    order.orderstatus = orderstatus;
+    order.orderstatus = status; // ✅ FIXED FIELD
 
-    // Business rule:
-    if (orderstatus === "delivered") {
+    // Business rule
+    if (status === "delivered") {
       order.paymentStatus = "completed";
     }
 
