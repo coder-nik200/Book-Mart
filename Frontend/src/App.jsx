@@ -40,12 +40,9 @@ import FloatingChatBot from "./components/ChatBot/FloatingChatBot";
 import NotFound from "./pages/404";
 import { WishlistProvider } from "./context/WishlistContext";
 
-
 const AppRoutes = () => (
   <Routes>
-    
     <Route element={<Layout />}>
-  
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
@@ -145,15 +142,14 @@ const AppRoutes = () => (
   </Routes>
 );
 
-
 const App = () => (
   <>
     <Toaster position="top-right" />
     <Router>
       <AuthProvider>
         <CartProvider>
-        <WishlistProvider>
-          <AppRoutes />
+          <WishlistProvider>
+            <AppRoutes />
           </WishlistProvider>
           <FloatingChatBot />
         </CartProvider>
