@@ -42,8 +42,8 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshError) {
         localStorage.removeItem("accessToken");
-console.error("Auth failed", error);
-return Promise.reject(error);
+        console.error("Auth failed", error);
+        return Promise.reject(error);
       }
     }
 
@@ -70,9 +70,9 @@ export const bookAPI = {
   addReview: (bookId, data) =>
     api.post(`/books/${bookId}/reviews`, data),
   searchBooks: (query, limit = 10) =>
-  api.get("/books/search", {
-    params: { q: query, limit },
-  }),
+    api.get("/books/search", {
+      params: { q: query, limit },
+    }),
 };
 
 export const categoryAPI = {

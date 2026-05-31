@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import { generateTokens } from "../utils/generateToken.js";
 import { sendEmail, sendWelcomeEmail, sendPasswordResetEmail } from "../utils/emailService.js";
 import { generateResetToken, generateHash } from "../utils/helpers.js";
+
 export const signup = async (req, res) => {
   try {
     const { name, email, password, confirmPassword } = req.body;
