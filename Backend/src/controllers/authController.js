@@ -1,51 +1,58 @@
 import User from "../models/User.js";
 import { generateTokens } from "../utils/generateToken.js";
 import { sendEmail, sendWelcomeEmail, sendPasswordResetEmail } from "../utils/emailService.js";
-import { generateResetToken, generateHash } from "../utils/helpers.js";
 
 export const signup = async (req, res) => {
   try {
+    console.log("Request Body:", req.body);
+
     const { name, email, password, confirmPassword } = req.body;
+
     if (!name || !email || !password || !confirmPassword) {
-      return res.status(400).json({ success: false, message: "All fields are required" });
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
     }
 
     if (password !== confirmPassword) {
-      return res.status(400).json({ success: false, message: "Passwords do not match" });
+      return res.status(400).json({
+        success: false,
+        message: "Passwords do not match",
+      });
     }
+
     const existingUser = await User.findOne({ email });
+    console.log("Existing User:", existingUser);
+
     if (existingUser) {
-      return res.status(400).json({ success: false, message: "User already exists with this email" });
+      return res.status(400).json({
+        success: false,
+        message: "User already exists",
+      });
     }
+
     const user = await User.create({
       name,
       email,
       password,
     });
-    const { accessToken, refreshToken } = generateTokens(user._id);
 
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 30 * 24 * 60 * 60 * 1000, 
-    });
-    await sendWelcomeEmail(email, name);
+    console.log("Created User:", user);
 
     res.status(201).json({
       success: true,
-      message: "User registered successfully",
-      accessToken,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
+      user,
     });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
   }
 };
+
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -71,7 +78,7 @@ export const login = async (req, res) => {
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      maxAge: 30 * 24 * 60 * 60 * 1000, 
+      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({
@@ -115,6 +122,7 @@ export const refreshAccessToken = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
 export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -137,6 +145,7 @@ export const forgotPassword = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
 export const resetPassword = async (req, res) => {
   try {
     const { token, password, confirmPassword } = req.body;
@@ -157,6 +166,7 @@ export const resetPassword = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
 export const getCurrentUser = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
