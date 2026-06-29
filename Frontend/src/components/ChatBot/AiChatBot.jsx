@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Bot, RotateCcw, Send, X } from "lucide-react";
+import { BookOpen, Bot, RotateCcw, Send, X } from "lucide-react";
 import api from "../../api/apiClient";
 
 function AiChatBot() {
@@ -75,7 +75,7 @@ function AiChatBot() {
         onClick={() => setIsOpen(!isOpen)}
         className="fixed bottom-6 right-6 bg-[#5028c9] text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition z-50"
       >
-        <Bot />
+        <BookOpen />
       </button>
 
       <div

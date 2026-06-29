@@ -9,12 +9,12 @@ const Layout = () => {
     <div className="flex flex-col min-h-screen bg-gray-50 text-gray-800">
       <Navbar />
 
-
-      <main className="flex-grow">
+      <main className="flex-grow w-full">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
+          className="w-full"
         >
           <Outlet />
         </motion.div>

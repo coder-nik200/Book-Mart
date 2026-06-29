@@ -60,7 +60,6 @@ const HomePage = () => {
  
       <HeroSection />
 
-
       <CategorySection />
 
       <BookSection
