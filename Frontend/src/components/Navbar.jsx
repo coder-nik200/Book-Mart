@@ -17,12 +17,12 @@ import {
 
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
-import { useWishlist } from "../context/WishlistContext"; 
+import { useWishlist } from "../context/WishlistContext";
 
 const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const { cart } = useCart();
-  const { totalItems: wishlistCount } = useWishlist(); 
+  const { totalItems: wishlistCount } = useWishlist();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,11 +34,17 @@ const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const searchRef = useRef(null);
+  const mobileSearchRef = useRef(null);
   const profileRef = useRef(null);
 
   useEffect(() => {
     const handler = (e) => {
-      if (searchRef.current && !searchRef.current.contains(e.target)) {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(e.target) &&
+        mobileSearchRef.current &&
+        !mobileSearchRef.current.contains(e.target)
+      ) {
         setShowSuggestions(false);
       }
     };
@@ -69,6 +75,7 @@ const Navbar = () => {
     navigate(`/search?query=${searchQuery}`);
     setShowSuggestions(false);
   };
+
   const fetchSuggestions = async (value) => {
     if (!value.trim()) {
       setSuggestions([]);
@@ -78,7 +85,7 @@ const Navbar = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/books/search?q=${value}&limit=8`,
+        `http://localhost:5000/api/books/search?q=${value}&limit=8`
       );
       const data = await res.json();
       setSuggestions(data.books || []);
@@ -87,21 +94,25 @@ const Navbar = () => {
       console.error("Search error:", err);
     }
   };
+
   const linkStyle = "block px-4 py-2 rounded-md hover:bg-gray-100 transition";
 
   return (
     <nav className="bg-white/80 backdrop-blur-md shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
-    
+        {/* ── Main bar ── */}
+        <div className="flex justify-between items-center h-16 gap-2">
+
+          {/* Logo */}
           <Link
             to="/"
-            className="flex items-center gap-2 text-2xl font-bold text-blue-600"
+            className="flex items-center gap-1.5 text-xl sm:text-2xl font-bold text-blue-600 shrink-0"
           >
-            <BookOpenText size={28} />
-            BookMart
+            <BookOpenText size={26} />
+            <span className="hidden xs:inline sm:inline">BookMart</span>
           </Link>
 
+          {/* Desktop search */}
           <div ref={searchRef} className="hidden md:flex flex-1 mx-8 relative">
             <form onSubmit={handleSearch} className="w-full">
               <div className="flex w-full items-center bg-gray-100 rounded-lg px-4">
@@ -124,7 +135,6 @@ const Navbar = () => {
                   <div
                     key={book._id}
                     onMouseDown={(e) => {
-                    
                       e.preventDefault();
                       setSearchQuery("");
                       setShowSuggestions(false);
@@ -139,64 +149,46 @@ const Navbar = () => {
             )}
           </div>
 
-          <div className="flex items-center gap-6">
-      
-            <div className="flex items-center gap-2 pl-2 md:hidden w-full">
-       
-              <div className="relative flex-1" ref={searchRef}>
-                <form onSubmit={handleSearch}>
-                  <div className="flex items-center bg-gray-100 rounded-lg px-2 py-1">
-                    <Search size={16} className="text-gray-400" />
-                    <input
-                      value={searchQuery}
-                      onChange={(e) => {
-                        setSearchQuery(e.target.value);
-                        fetchSuggestions(e.target.value);
-                      }}
-                      placeholder="Search..."
-                      className="flex-1 bg-transparent px-1 py-1 outline-none text-xs max-w-[120px]"
-                    />
-                  </div>
-                </form>
-
-                {showSuggestions && suggestions.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-1 bg-white shadow-lg rounded-lg z-50 max-h-52 overflow-y-auto">
-                    {suggestions.map((book) => (
-                      <div
-                        key={book._id}
-                        onClick={() => {
-                          navigate(`/book/${book._id}`);
-                          setSearchQuery("");
-                          setShowSuggestions(false);
-                        }}
-                        className="px-4 py-2 cursor-pointer hover:bg-gray-100 transition text-sm"
-                      >
-                        {book.title}
-                      </div>
-                    ))}
-                  </div>
-                )}
+          {/* Mobile search */}
+          <div ref={mobileSearchRef} className="flex md:hidden flex-1 mx-2 relative">
+            <form onSubmit={handleSearch} className="w-full">
+              <div className="flex items-center bg-gray-100 rounded-lg px-3 py-1.5">
+                <Search size={16} className="text-gray-400 shrink-0" />
+                <input
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    fetchSuggestions(e.target.value);
+                  }}
+                  placeholder="Search..."
+                  className="flex-1 bg-transparent px-2 outline-none text-sm min-w-0"
+                />
               </div>
+            </form>
 
-              <NavLink to="/wishlist">
-                <Heart size={22} />
-              </NavLink>
+            {showSuggestions && suggestions.length > 0 && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white shadow-lg rounded-lg z-50 max-h-52 overflow-y-auto">
+                {suggestions.map((book) => (
+                  <div
+                    key={book._id}
+                    onClick={() => {
+                      navigate(`/book/${book._id}`);
+                      setSearchQuery("");
+                      setShowSuggestions(false);
+                    }}
+                    className="px-4 py-2 cursor-pointer hover:bg-gray-100 transition text-sm"
+                  >
+                    {book.title}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
-              <NavLink to="/cart" className="relative">
-                <ShoppingCart size={22} />
-                {cart?.totalItems > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                    {cart.totalItems}
-                  </span>
-                )}
-              </NavLink>
+          {/* Right-side icons */}
+          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
 
-              <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-                {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
-            </div>
-
-  
+            {/* Wishlist – always visible */}
             <NavLink to="/wishlist" className="relative">
               <Heart size={22} />
               {wishlistCount > 0 && (
@@ -206,6 +198,7 @@ const Navbar = () => {
               )}
             </NavLink>
 
+            {/* Cart – always visible */}
             <NavLink to="/cart" className="relative">
               <ShoppingCart size={22} />
               {cart?.totalItems > 0 && (
@@ -215,6 +208,7 @@ const Navbar = () => {
               )}
             </NavLink>
 
+            {/* Desktop: profile dropdown or login/signup */}
             {isAuthenticated ? (
               <div className="relative hidden md:block" ref={profileRef}>
                 <button onClick={() => setProfileOpen(!profileOpen)}>
@@ -227,24 +221,13 @@ const Navbar = () => {
                       Hi, {user?.name}
                     </p>
 
-                    <NavLink
-                      to="/profile"
-                      className="block px-4 py-2 hover:bg-gray-100"
-                    >
+                    <NavLink to="/profile" className="block px-4 py-2 hover:bg-gray-100">
                       Profile
                     </NavLink>
-
-                    <NavLink
-                      to="/orders"
-                      className="block px-4 py-2 hover:bg-gray-100"
-                    >
+                    <NavLink to="/orders" className="block px-4 py-2 hover:bg-gray-100">
                       My Orders
                     </NavLink>
-
-                    <NavLink
-                      to="/dashboard"
-                      className="block px-4 py-2 hover:bg-gray-100"
-                    >
+                    <NavLink to="/dashboard" className="block px-4 py-2 hover:bg-gray-100">
                       Dashboard
                     </NavLink>
 
@@ -265,26 +248,27 @@ const Navbar = () => {
                 </NavLink>
               </div>
             )}
+
+            {/* Mobile: hamburger */}
             <button
               className="md:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
 
+        {/* ── Mobile dropdown menu ── */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t py-4 space-y-2">
+          <div className="md:hidden border-t py-4 space-y-1">
             {isAuthenticated ? (
               <>
                 <NavLink
                   to="/profile"
                   className={({ isActive }) =>
-                    `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 transition ${
-                      isActive
-                        ? "bg-blue-50 text-blue-600 font-medium"
-                        : "text-gray-700"
+                    `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 transition ${isActive ? "bg-blue-50 text-blue-600 font-medium" : "text-gray-700"
                     }`
                   }
                 >
@@ -294,10 +278,7 @@ const Navbar = () => {
                 <NavLink
                   to="/orders"
                   className={({ isActive }) =>
-                    `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 transition ${
-                      isActive
-                        ? "bg-blue-50 text-blue-600 font-medium"
-                        : "text-gray-700"
+                    `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 transition ${isActive ? "bg-blue-50 text-blue-600 font-medium" : "text-gray-700"
                     }`
                   }
                 >
@@ -307,10 +288,7 @@ const Navbar = () => {
                 <NavLink
                   to="/wishlist"
                   className={({ isActive }) =>
-                    `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 transition ${
-                      isActive
-                        ? "bg-blue-50 text-blue-600 font-medium"
-                        : "text-gray-700"
+                    `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 transition ${isActive ? "bg-blue-50 text-blue-600 font-medium" : "text-gray-700"
                     }`
                   }
                 >
@@ -320,10 +298,7 @@ const Navbar = () => {
                 <NavLink
                   to="/dashboard"
                   className={({ isActive }) =>
-                    `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 transition ${
-                      isActive
-                        ? "bg-blue-50 text-blue-600 font-medium"
-                        : "text-gray-700"
+                    `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 transition ${isActive ? "bg-blue-50 text-blue-600 font-medium" : "text-gray-700"
                     }`
                   }
                 >
@@ -342,10 +317,7 @@ const Navbar = () => {
                 <NavLink
                   to="/login"
                   className={({ isActive }) =>
-                    `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 transition ${
-                      isActive
-                        ? "bg-blue-50 text-blue-600 font-medium"
-                        : "text-gray-700"
+                    `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 transition ${isActive ? "bg-blue-50 text-blue-600 font-medium" : "text-gray-700"
                     }`
                   }
                 >
@@ -355,10 +327,7 @@ const Navbar = () => {
                 <NavLink
                   to="/signup"
                   className={({ isActive }) =>
-                    `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 transition ${
-                      isActive
-                        ? "bg-blue-50 text-blue-600 font-medium"
-                        : "text-gray-700"
+                    `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 transition ${isActive ? "bg-blue-50 text-blue-600 font-medium" : "text-gray-700"
                     }`
                   }
                 >
