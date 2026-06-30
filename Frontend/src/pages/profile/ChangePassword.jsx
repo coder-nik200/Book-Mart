@@ -58,93 +58,104 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 max-w-xl mx-auto">
-     
+    <div className="font-['DM_Sans',sans-serif] text-white max-w-xl mx-auto">
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+      `}</style>
+
+      {/* Header */}
       <div className="mb-6 sm:mb-8">
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+        <h2 className="font-['Cormorant_Garamond',serif] text-xl sm:text-2xl font-bold text-white">
           Change Password
         </h2>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-white/55 mt-1">
           Keep your account secure by using a strong password
         </p>
       </div>
 
-
+      {/* Fields */}
       <div className="space-y-4 sm:space-y-6">
-    
+        {/* Current Password */}
         <div>
-          <label className="text-sm text-gray-600">Current Password</label>
-          <div className="relative mt-1">
-            <Lock className="absolute left-3 top-3 text-gray-400" size={18} />
+          <label className="text-[0.78rem] font-medium text-white/65 tracking-[0.03em]">
+            Current Password
+          </label>
+          <div className="mt-1.5 relative flex items-center">
+            <Lock className="absolute left-3 text-white/45 pointer-events-none" size={18} />
             <input
               type={show.current ? "text" : "password"}
               name="currentPassword"
               value={form.currentPassword}
               onChange={handleChange}
-              className="w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 transition"
+              className="w-full pl-10 pr-10 py-3 bg-white/[0.08] border border-white/[0.18] rounded-xl text-white text-[0.9rem] outline-none transition focus:border-amber-400/70 focus:bg-white/[0.12] focus:ring-[3px] focus:ring-amber-400/15"
             />
             <button
               type="button"
               onClick={() => toggleShow("current")}
-              className="absolute right-3 top-2.5 text-gray-400"
+              className="absolute right-3 text-white/45 hover:text-white/80 transition"
             >
               {show.current ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
         </div>
 
-    
+        {/* New Password */}
         <div>
-          <label className="text-sm text-gray-600">New Password</label>
-          <div className="relative mt-1">
-            <Lock className="absolute left-3 top-3 text-gray-400" size={18} />
+          <label className="text-[0.78rem] font-medium text-white/65 tracking-[0.03em]">
+            New Password
+          </label>
+          <div className="mt-1.5 relative flex items-center">
+            <Lock className="absolute left-3 text-white/45 pointer-events-none" size={18} />
             <input
               type={show.new ? "text" : "password"}
               name="newPassword"
               value={form.newPassword}
               onChange={handleChange}
-              className="w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 transition"
+              className="w-full pl-10 pr-10 py-3 bg-white/[0.08] border border-white/[0.18] rounded-xl text-white text-[0.9rem] outline-none transition focus:border-amber-400/70 focus:bg-white/[0.12] focus:ring-[3px] focus:ring-amber-400/15"
             />
             <button
               type="button"
               onClick={() => toggleShow("new")}
-              className="absolute right-3 top-2.5 text-gray-400"
+              className="absolute right-3 text-white/45 hover:text-white/80 transition"
             >
               {show.new ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-white/45 mt-1.5">
             Must be at least 8 characters long
           </p>
         </div>
 
+        {/* Confirm Password */}
         <div>
-          <label className="text-sm text-gray-600">Confirm New Password</label>
-          <div className="relative mt-1">
-            <Lock className="absolute left-3 top-3 text-gray-400" size={18} />
+          <label className="text-[0.78rem] font-medium text-white/65 tracking-[0.03em]">
+            Confirm New Password
+          </label>
+          <div className="mt-1.5 relative flex items-center">
+            <Lock className="absolute left-3 text-white/45 pointer-events-none" size={18} />
             <input
               type={show.confirm ? "text" : "password"}
               name="confirmPassword"
               value={form.confirmPassword}
               onChange={handleChange}
-              className="w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 transition"
+              className="w-full pl-10 pr-10 py-3 bg-white/[0.08] border border-white/[0.18] rounded-xl text-white text-[0.9rem] outline-none transition focus:border-amber-400/70 focus:bg-white/[0.12] focus:ring-[3px] focus:ring-amber-400/15"
             />
             <button
               type="button"
               onClick={() => toggleShow("confirm")}
-              className="absolute right-3 top-2.5 text-gray-400"
+              className="absolute right-3 text-white/45 hover:text-white/80 transition"
             >
               {show.confirm ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
         </div>
 
-  
-        <div className="pt-4 flex flex-col sm:flex-row justify-end gap-3">
+        {/* Actions */}
+        <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row justify-end gap-3">
           <button
             onClick={submit}
             disabled={loading}
-            className="flex items-center justify-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-60 w-full sm:w-auto transition"
+            className="flex items-center justify-center gap-2 px-5 py-2.5 bg-amber-400 text-[#1a1a1a] font-semibold rounded-xl shadow-[0_4px_20px_rgba(251,191,36,0.4)] transition w-full sm:w-auto disabled:opacity-55 disabled:cursor-not-allowed enabled:hover:bg-amber-300 enabled:hover:-translate-y-px enabled:hover:shadow-[0_8px_28px_rgba(251,191,36,0.5)]"
           >
             {loading ? (
               <Loader2 size={16} className="animate-spin" />
