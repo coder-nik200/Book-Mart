@@ -41,26 +41,55 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="login-root">
-      <style>{styles}</style>
+    <div className="relative min-h-screen flex items-center justify-center px-4 py-8 sm:px-6 overflow-hidden bg-gradient-to-br from-[#1e1b4b] via-[#1e3a8a] via-45% via-[#312e81] via-80% to-[#0f172a] font-['DM_Sans',sans-serif]">
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+        .login-grain {
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+          background-size: 200px;
+        }
+        .login-spinner {
+          border-top-color: #1a1a1a;
+          animation: spin 0.7s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+      `}</style>
 
       {/* Background orbs */}
-      <div className="login-orb login-orb1" aria-hidden="true" />
-      <div className="login-orb login-orb2" aria-hidden="true" />
-      <div className="login-orb login-orb3" aria-hidden="true" />
-      <div className="login-grain" aria-hidden="true" />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-32 -left-20 w-[260px] h-[260px] sm:w-[380px] sm:h-[380px] rounded-full blur-[70px]"
+        style={{ background: "radial-gradient(circle, rgba(139,92,246,0.5) 0%, transparent 70%)" }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-24 -right-16 w-[220px] h-[220px] sm:w-[320px] sm:h-[320px] rounded-full blur-[70px]"
+        style={{ background: "radial-gradient(circle, rgba(234,179,8,0.3) 0%, transparent 70%)" }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute top-1/2 left-3/5 w-[160px] h-[160px] sm:w-[220px] sm:h-[220px] rounded-full blur-[70px]"
+        style={{ background: "radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 70%)" }}
+      />
+      <div aria-hidden="true" className="login-grain pointer-events-none absolute inset-0 opacity-[0.025]" />
 
       {/* Card */}
-      <div className="login-card">
+      <div className="relative z-10 w-full max-w-[420px] bg-white/[0.07] backdrop-blur-2xl border border-white/15 rounded-[22px] sm:rounded-[28px] px-5 py-7 sm:px-8 sm:py-9 shadow-[0_8px_40px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.12)]">
 
         {/* Brand mark */}
-        <div className="login-brand">
-          <span className="login-brand-icon">📖</span>
-          <span className="login-brand-name">BookMart</span>
+        <div className="flex items-center justify-center gap-2 mb-5 sm:mb-6">
+          <span className="text-[1.3rem]">📖</span>
+          <span className="font-['Cormorant_Garamond',serif] text-[1.1rem] font-bold text-white/70 tracking-[0.04em]">
+            BookMart
+          </span>
         </div>
 
-        <h1 className="login-title">Welcome Back 👋</h1>
-        <p className="login-sub">Sign in to your BookMart account</p>
+        <h1 className="font-['Cormorant_Garamond',serif] text-center text-white font-bold tracking-[-0.01em] mb-1.5 text-[1.75rem] sm:text-[2.25rem]">
+          Welcome Back 👋
+        </h1>
+        <p className="text-center text-white/60 text-sm font-light mb-6 sm:mb-7">
+          Sign in to your BookMart account
+        </p>
 
         {errors.submit && (
           <div className="mb-4">
@@ -68,44 +97,48 @@ const LoginPage = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="login-form">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:gap-[1.1rem]">
 
           {/* Email */}
-          <div className="login-field">
-            <label className="login-label">Email Address</label>
-            <div className="login-input-wrap">
-              <Mail className="login-input-icon" size={18} />
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[0.78rem] font-medium text-white/65 tracking-[0.03em]">
+              Email Address
+            </label>
+            <div className="relative flex items-center">
+              <Mail className="absolute left-3 text-white/45 pointer-events-none" size={18} />
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="you@example.com"
-                className="login-input"
                 autoComplete="email"
+                className="w-full pl-10 pr-3.5 py-3 bg-white/[0.08] border border-white/[0.18] rounded-xl text-white text-[0.9rem] placeholder-white/30 outline-none transition focus:border-amber-400/70 focus:bg-white/[0.12] focus:ring-[3px] focus:ring-amber-400/15"
               />
             </div>
           </div>
 
           {/* Password */}
-          <div className="login-field">
-            <label className="login-label">Password</label>
-            <div className="login-input-wrap">
-              <Lock className="login-input-icon" size={18} />
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[0.78rem] font-medium text-white/65 tracking-[0.03em]">
+              Password
+            </label>
+            <div className="relative flex items-center">
+              <Lock className="absolute left-3 text-white/45 pointer-events-none" size={18} />
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="••••••••"
-                className="login-input login-input--password"
                 autoComplete="current-password"
+                className="w-full pl-10 pr-11 py-3 bg-white/[0.08] border border-white/[0.18] rounded-xl text-white text-[0.9rem] placeholder-white/30 outline-none transition focus:border-amber-400/70 focus:bg-white/[0.12] focus:ring-[3px] focus:ring-amber-400/15"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword((v) => !v)}
-                className="login-eye-btn"
                 aria-label={showPassword ? "Hide password" : "Show password"}
+                className="absolute right-2.5 p-1 text-white/45 rounded-md transition hover:text-white/90 hover:bg-white/[0.08] flex items-center justify-center leading-none"
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -113,8 +146,11 @@ const LoginPage = () => {
           </div>
 
           {/* Forgot password */}
-          <div className="login-forgot-row">
-            <Link to="/forgot-password" className="login-forgot">
+          <div className="flex justify-end -mt-1.5">
+            <Link
+              to="/forgot-password"
+              className="text-[0.78rem] text-white/50 no-underline transition hover:text-amber-400"
+            >
               Forgot password?
             </Link>
           </div>
@@ -123,19 +159,19 @@ const LoginPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="login-submit-btn"
+            className="w-full mt-1 min-h-[48px] py-3.5 bg-amber-400 text-[#1a1a1a] text-[0.95rem] font-semibold rounded-xl shadow-[0_4px_20px_rgba(251,191,36,0.4)] transition flex items-center justify-center disabled:opacity-55 disabled:cursor-not-allowed enabled:hover:bg-amber-300 enabled:hover:-translate-y-px enabled:hover:shadow-[0_8px_28px_rgba(251,191,36,0.5)]"
           >
             {loading ? (
-              <span className="login-spinner" />
+              <span className="login-spinner w-[18px] h-[18px] border-2 border-black/20 rounded-full" />
             ) : (
               "Sign In"
             )}
           </button>
         </form>
 
-        <p className="login-footer">
+        <p className="text-center text-[0.85rem] text-white/55 mt-6">
           Don't have an account?{" "}
-          <Link to="/signup" className="login-signup-link">
+          <Link to="/signup" className="text-amber-400 font-semibold no-underline transition hover:text-amber-300">
             Sign Up
           </Link>
         </p>
@@ -143,275 +179,5 @@ const LoginPage = () => {
     </div>
   );
 };
-
-const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
-
-  /* ── ROOT ────────────────────────────────────────── */
-  .login-root {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem;
-    background: linear-gradient(135deg, #1e1b4b 0%, #1e3a8a 45%, #312e81 80%, #0f172a 100%);
-    position: relative;
-    overflow: hidden;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  /* ── ORBS ────────────────────────────────────────── */
-  .login-orb {
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-    filter: blur(70px);
-  }
-  .login-orb1 {
-    width: 380px; height: 380px;
-    top: -120px; left: -80px;
-    background: radial-gradient(circle, rgba(139,92,246,0.5) 0%, transparent 70%);
-  }
-  .login-orb2 {
-    width: 320px; height: 320px;
-    bottom: -100px; right: -60px;
-    background: radial-gradient(circle, rgba(234,179,8,0.3) 0%, transparent 70%);
-  }
-  .login-orb3 {
-    width: 220px; height: 220px;
-    top: 50%; left: 60%;
-    background: radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 70%);
-  }
-
-  /* ── GRAIN ───────────────────────────────────────── */
-  .login-grain {
-    position: absolute;
-    inset: 0;
-    opacity: 0.025;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size: 200px;
-    pointer-events: none;
-  }
-
-  /* ── CARD ────────────────────────────────────────── */
-  .login-card {
-    position: relative;
-    z-index: 10;
-    width: 100%;
-    max-width: 420px;
-    background: rgba(255, 255, 255, 0.07);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 28px;
-    padding: 2.25rem 2rem;
-    box-shadow:
-      0 8px 40px rgba(0, 0, 0, 0.35),
-      inset 0 1px 0 rgba(255,255,255,0.12);
-  }
-
-  @media (max-width: 480px) {
-    .login-card { padding: 1.75rem 1.25rem; border-radius: 22px; }
-  }
-
-  /* ── BRAND ───────────────────────────────────────── */
-  .login-brand {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-  }
-  .login-brand-icon { font-size: 1.3rem; }
-  .login-brand-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: rgba(255,255,255,0.7);
-    letter-spacing: 0.04em;
-  }
-
-  /* ── HEADING ─────────────────────────────────────── */
-  .login-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.75rem, 5vw, 2.25rem);
-    font-weight: 700;
-    color: #fff;
-    text-align: center;
-    margin-bottom: 0.35rem;
-    letter-spacing: -0.01em;
-  }
-
-  .login-sub {
-    font-size: 0.875rem;
-    color: rgba(255,255,255,0.6);
-    text-align: center;
-    margin-bottom: 1.75rem;
-    font-weight: 300;
-  }
-
-  /* ── FORM ────────────────────────────────────────── */
-  .login-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.1rem;
-  }
-
-  .login-field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-  }
-
-  .login-label {
-    font-size: 0.78rem;
-    font-weight: 500;
-    color: rgba(255,255,255,0.65);
-    letter-spacing: 0.03em;
-  }
-
-  /* Input wrapper */
-  .login-input-wrap {
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
-
-  .login-input-icon {
-    position: absolute;
-    left: 12px;
-    color: rgba(255,255,255,0.45);
-    pointer-events: none;
-    flex-shrink: 0;
-  }
-
-  .login-input {
-    width: 100%;
-    padding: 0.75rem 0.875rem 0.75rem 2.5rem;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 12px;
-    color: #fff;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    outline: none;
-    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-  }
-
-  .login-input::placeholder {
-    color: rgba(255,255,255,0.3);
-  }
-
-  .login-input:focus {
-    border-color: rgba(251,191,36,0.7);
-    background: rgba(255,255,255,0.12);
-    box-shadow: 0 0 0 3px rgba(251,191,36,0.15);
-  }
-
-  /* Password field — extra right padding for eye button */
-  .login-input--password {
-    padding-right: 2.75rem;
-  }
-
-  /* ── EYE BUTTON (fixed) ──────────────────────────── */
-  .login-eye-btn {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    padding: 4px;
-    cursor: pointer;
-    color: rgba(255,255,255,0.45);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-    transition: color 0.15s, background 0.15s;
-    line-height: 0;
-  }
-
-  .login-eye-btn:hover {
-    color: rgba(255,255,255,0.9);
-    background: rgba(255,255,255,0.08);
-  }
-
-  /* ── FORGOT ROW ──────────────────────────────────── */
-  .login-forgot-row {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: -0.35rem;
-  }
-  .login-forgot {
-    font-size: 0.78rem;
-    color: rgba(255,255,255,0.5);
-    text-decoration: none;
-    transition: color 0.15s;
-  }
-  .login-forgot:hover { color: #fbbf24; }
-
-  /* ── SUBMIT ──────────────────────────────────────── */
-  .login-submit-btn {
-    width: 100%;
-    padding: 0.85rem;
-    margin-top: 0.25rem;
-    background: #fbbf24;
-    color: #1a1a1a;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 600;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    box-shadow: 0 4px 20px rgba(251,191,36,0.4);
-    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 48px;
-  }
-
-  .login-submit-btn:hover:not(:disabled) {
-    background: #fcd34d;
-    transform: translateY(-1px);
-    box-shadow: 0 8px 28px rgba(251,191,36,0.5);
-  }
-
-  .login-submit-btn:disabled {
-    opacity: 0.55;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  /* Spinner inside button */
-  .login-spinner {
-    width: 18px;
-    height: 18px;
-    border: 2px solid rgba(0,0,0,0.2);
-    border-top-color: #1a1a1a;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* ── FOOTER ──────────────────────────────────────── */
-  .login-footer {
-    text-align: center;
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.55);
-    margin-top: 1.5rem;
-  }
-
-  .login-signup-link {
-    color: #fbbf24;
-    font-weight: 600;
-    text-decoration: none;
-    transition: color 0.15s;
-  }
-
-  .login-signup-link:hover { color: #fcd34d; }
-`;
 
 export default LoginPage;
