@@ -1,150 +1,346 @@
-# 📚 BookMart - Full Stack E-Commerce Platform
+# 📚 BookMart
 
-A complete, production-ready e-commerce platform for selling books online. Built with modern technologies and industry best practices.
+A modern full-stack e-commerce platform for buying and selling books online. BookMart delivers a seamless shopping experience with secure authentication, advanced search, personalized recommendations, wishlist management, Stripe payments, and a powerful admin dashboard for managing the store.
 
-## 🎯 Features
+## 🚀 Live Demo
 
-### 👤 User Features
-- ✅ User Authentication (Signup/Login) with JWT
-- ✅ Home page with featured, new arrivals, and best-sellers
-- ✅ Advanced book search and filtering
-- ✅ Book listing with pagination and sorting
-- ✅ Shopping cart functionality with persistence
-- ✅ Wishlist management
-- ✅ Checkout process with address selection
-- ✅ Orders history and tracking
-- ✅ User profile management
-- ✅ Address management (CRUD)
-- ✅ Password reset functionality
+- 🌐 **Frontend:** https://book-mart-frontend.vercel.app/
 
-### 👨‍💼 Admin Features
-- ✅ Admin dashboard with analytics
-- ✅ Book management (CRUD)
-- ✅ Category management
-- ✅ User management (Block/Unblock)
-- ✅ Order status management
-- ✅ Review moderation
+---
 
-### 🔧 Tech Stack
-- **Backend**: Node.js, Express.js, MongoDB, Mongoose
-- **Frontend**: React 19, Vite, Tailwind CSS 4
-- **Authentication**: JWT with Refresh Tokens
-- **Payment**: Stripe Integration
-- **Email**: Nodemailer
-- **Validation**: Express-validator
+## 📖 Overview
 
-## 🚀 Quick Start
+BookMart is built with the MERN stack and follows modern development practices to provide a fast, scalable, and secure online bookstore. Customers can browse books, manage their cart and wishlist, place orders, and track purchases, while administrators can efficiently manage books, users, categories, and orders through a dedicated dashboard.
 
-### Backend Setup
+---
+
+# ✨ Features
+
+## 👤 Customer Features
+
+- 🔐 Secure JWT Authentication
+- 👤 User Registration & Login
+- 🔄 Automatic Refresh Token Authentication
+- 📚 Browse Books
+- 🔍 Advanced Search & Filters
+- 📖 Book Details Page
+- ⭐ Featured Books
+- 🔥 Best Sellers
+- 🆕 New Arrivals
+- ❤️ Wishlist Management
+- 🛒 Shopping Cart
+- ➕ Update Cart Quantity
+- 💳 Secure Stripe Checkout
+- 📦 Order History
+- 🚚 Order Tracking
+- 🏠 Address Management
+- 👤 Profile Management
+- 🔑 Forgot & Reset Password
+- 📱 Fully Responsive UI
+
+---
+
+## 👨‍💼 Admin Features
+
+- 📊 Analytics Dashboard
+- 📚 Book Management (CRUD)
+- 🗂️ Category Management
+- 👥 User Management
+- 🚫 Block / Unblock Users
+- 📦 Order Management
+- 🔄 Update Order Status
+- ⭐ Review Moderation
+
+---
+
+# 🛠️ Tech Stack
+
+### Frontend
+
+- React 19
+- Vite
+- Tailwind CSS 4
+- React Router
+- Axios
+- Framer Motion
+- React Hot Toast
+
+### Backend
+
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+
+### Authentication
+
+- JWT Access Token
+- JWT Refresh Token
+- bcryptjs
+
+### Payment
+
+- Stripe
+
+### Email Service
+
+- Nodemailer
+
+### Validation
+
+- Express Validator
+
+### Deployment
+
+- Frontend – Vercel
+- Backend – Vercel
+- Database – MongoDB Atlas
+
+---
+
+# 📂 Project Structure
+
+```text
+BookMart/
+│
+├── Frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── context/
+│   │   ├── hooks/
+│   │   ├── api/
+│   │   ├── utils/
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│
+├── Backend/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── config/
+│   ├── utils/
+│   ├── server.js
+│   └── package.json
+│
+└── README.md
+```
+
+---
+
+# ⚙️ Installation
+
+## Clone Repository
+
+```bash
+git clone https://github.com/coder-nik200/Book-Mart.git
+```
+
+```bash
+cd BookMart
+```
+
+---
+
+## Backend Setup
+
 ```bash
 cd Backend
 npm install
-cp .env.example .env  # Configure environment variables
-npm run seed          # Load sample data
-npm start
 ```
 
-### Frontend Setup
+Create a `.env` file and add:
+
+```env
+PORT=5000
+
+MONGO_URI=your_mongodb_connection
+
+JWT_SECRET=your_jwt_secret
+
+JWT_REFRESH_SECRET=your_refresh_secret
+
+STRIPE_SECRET_KEY=your_stripe_secret
+
+EMAIL_USER=your_email
+
+EMAIL_PASS=your_password
+
+FRONTEND_URL=http://localhost:5173
+```
+
+Run the backend:
+
+```bash
+npm run dev
+```
+
+---
+
+## Frontend Setup
+
 ```bash
 cd Frontend
 npm install
 npm run dev
 ```
 
-## 📚 Database Collections
-- **users** - User accounts with authentication
-- **books** - Book catalog with pricing and inventory
-- **categories** - Book categories
-- **orders** - Customer orders
-- **carts** - Shopping carts
-- **wishlists** - Saved books
-- **reviews** - Book ratings and reviews
-- **addresses** - Delivery addresses
-- **coupons** - Discount codes
+---
 
-## 🔌 Key API Endpoints
+# 📚 Database Collections
 
-### Auth
-- `POST /api/auth/signup` - Register
-- `POST /api/auth/login` - Login
-- `POST /api/auth/refresh-token` - Refresh token
+- Users
+- Books
+- Categories
+- Orders
+- Cart
+- Wishlist
+- Reviews
+- Addresses
+- Coupons
 
-### Books
-- `GET /api/books` - Get all books (with filters)
-- `GET /api/books/:id` - Get book details
-- `GET /api/books/featured` - Featured books
-- `GET /api/books/best-sellers` - Best sellers
+---
 
-### Cart (Protected)
-- `GET /api/cart` - Get cart
-- `POST /api/cart/add` - Add to cart
-- `PUT /api/cart/update` - Update quantity
-- `DELETE /api/cart/:bookId` - Remove from cart
+# 🔌 API Endpoints
 
-### Orders (Protected)
-- `POST /api/orders/create` - Create order
-- `GET /api/orders/my-orders` - Get user orders
-- `GET /api/orders/:orderId` - Get order details
+## Authentication
 
-### Admin (Protected - Admin role required)
-- `GET /api/admin/dashboard` - Dashboard stats
-- `POST /api/admin/books` - Add book
-- `PUT /api/admin/books/:id` - Update book
-- `DELETE /api/admin/books/:id` - Delete book
-- And more...
+```http
+POST /api/auth/signup
+POST /api/auth/login
+POST /api/auth/logout
+POST /api/auth/refresh-token
+POST /api/auth/forgot-password
+POST /api/auth/reset-password
+```
 
-## ✨ Key Features Implemented
+## Books
 
-✅ JWT Authentication with access & refresh tokens
-✅ Role-based authorization (customer/admin)
-✅ Protected routes with middleware
-✅ Automatic token refresh on expiry
-✅ Product search, filtering, and sorting
-✅ Shopping cart with localStorage persistence
-✅ Wishlist functionality
-✅ Complete checkout process
-✅ Order management and history
-✅ Admin dashboard with analytics
-✅ Email notifications
-✅ Responsive design with Tailwind CSS
-✅ Error handling and validation
-✅ Toast notifications
+```http
+GET /api/books
+GET /api/books/:id
+GET /api/books/featured
+GET /api/books/new-arrivals
+GET /api/books/best-sellers
+```
 
-## 🔐 Security Features
+## Cart
 
-- Password hashing with bcryptjs
-- JWT token-based authentication
-- Role-based access control
-- Input validation with express-validator
-- CORS configuration
-- Protected API endpoints
-- Secure payment handling with Stripe
+```http
+GET /api/cart
+POST /api/cart/add
+PUT /api/cart/update
+DELETE /api/cart/:bookId
+```
 
-## 📦 Deployment
+## Wishlist
 
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions for:
-- Backend (Heroku, Railway, Render)
-- Frontend (Vercel, Netlify)
-- Database (MongoDB Atlas)
+```http
+GET /api/wishlist
+POST /api/wishlist
+DELETE /api/wishlist/:bookId
+```
 
-## 🧪 Testing
+## Orders
 
-1. Run `npm run seed` in Backend to populate sample data
-2. Create user account via signup
-3. Browse books, add to cart, checkout
-4. Create admin account to access admin panel
+```http
+POST /api/orders/create
+GET /api/orders/my-orders
+GET /api/orders/:id
+```
 
-## 🐛 Troubleshooting
+## Admin
 
-**CORS errors**: Check FRONTEND_URL in `.env`
-**MongoDB connection failed**: Check MONGO_URI
-**JWT token issues**: Clear localStorage and re-login
-**Email not sending**: Check SMTP credentials
+```http
+GET /api/admin/dashboard
+POST /api/admin/books
+PUT /api/admin/books/:id
+DELETE /api/admin/books/:id
+```
 
-## 📝 License
+---
 
-MIT License - Open source and free to use
+# 🔒 Security Features
 
-## 🙏 Acknowledgments
+- JWT Authentication
+- Refresh Tokens
+- Password Hashing (bcryptjs)
+- Role-Based Authorization
+- Protected Routes
+- Input Validation
+- CORS Protection
+- Secure Stripe Payments
+- Secure HTTP Cookies
 
-Built with Express.js, React, MongoDB, and Tailwind CSS
+---
+
+# ✨ Highlights
+
+- ✅ Modern Responsive UI
+- ✅ Full Authentication System
+- ✅ Book Search & Filtering
+- ✅ Shopping Cart
+- ✅ Wishlist
+- ✅ Stripe Payment Gateway
+- ✅ Complete Checkout Flow
+- ✅ Order Tracking
+- ✅ Admin Dashboard
+- ✅ Email Notifications
+- ✅ Protected APIs
+- ✅ RESTful Architecture
+- ✅ Error Handling
+- ✅ Toast Notifications
+
+---
+
+# 🧪 Running Tests
+
+```bash
+npm run seed
+```
+
+Then:
+
+1. Register a new account.
+2. Browse books.
+3. Add books to the cart.
+4. Complete checkout.
+5. Log in as an admin to manage the store.
+
+---
+
+# 🚀 Future Enhancements
+
+- AI Book Recommendation System
+- Product Reviews & Ratings
+- Coupons & Promotions
+- Multi-language Support
+- Dark Mode
+- Sales Analytics
+- Inventory Alerts
+- PDF Invoice Generation
+
+---
+
+# 👨‍💻 Author
+
+**Nitish Bharti**
+
+- 💼 Portfolio: https://nitish-portfolio17.netlify.app/
+- 💻 GitHub: https://github.com/coder-nik200
+- 🔗 LinkedIn: https://www.linkedin.com/in/nitish-kumar-bharti-631a37359/
+
+---
+
+# 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+# ⭐ Support
+
+If you found this project helpful, please consider giving it a **⭐ on GitHub**.
